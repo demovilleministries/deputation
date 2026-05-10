@@ -2,285 +2,292 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#4A3728">
 <title>DeMoville Deputation Command Center</title>
+<link rel="manifest" href="data:application/manifest+json,{%22name%22:%22DeMoville%20Deputation%22,%22short_name%22:%22DeMoville%22,%22display%22:%22standalone%22,%22start_url%22:%22./%22,%22background_color%22:%22%23FBF5E8%22,%22theme_color%22:%22%234A3728%22,%22icons%22:[{%22src%22:%22data:image/svg+xml,%3Csvg%20xmlns=%5C%22http://www.w3.org/2000/svg%5C%22%20viewBox=%5C%220%200%20512%20512%5C%22%3E%3Crect%20width=%5C%22512%5C%22%20height=%5C%22512%5C%22%20fill=%5C%22%234A3728%5C%22/%3E%3Ctext%20x=%5C%22256%5C%22%20y=%5C%22340%5C%22%20font-size=%5C%22300%5C%22%20text-anchor=%5C%22middle%5C%22%20fill=%5C%22%23EDD9BC%5C%22%3E%E2%9C%A6%3C/text%3E%3C/svg%3E%22,%22sizes%22:%22512x512%22,%22type%22:%22image/svg+xml%22}]}">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --parch: #D4B896;
-  --parch-light: #EDD9BC;
-  --parch-dark: #B89870;
-  --parch-bg: #F5ECD8;
-  --parch-pale: #FAF3E6;
-  --sage: #5C7A5C;
-  --sage-light: #7A9E7A;
-  --sage-pale: #E8F0E8;
-  --bamboo: #8B7355;
-  --brown: #4A3728;
-  --brown-light: #6B5040;
-  --cream: #FBF5E8;
-  --gold: #C49A2A;
-  --gold-light: #E8C35A;
-  --white: #FFFDF8;
-  --gray: #7A6A5A;
-  --lgray: #A89880;
-  --green: #2D5A2D;
-  --lgreen: #E8F0E8;
-  --red: #8B2020;
-  --lred: #F5E8E8;
-  --text: #2A1F14;
+:root{
+  --parch:#D4B896;--parch-light:#EDD9BC;--parch-dark:#B89870;--parch-bg:#F5ECD8;--parch-pale:#FAF3E6;
+  --sage:#5C7A5C;--sage-light:#7A9E7A;--sage-pale:#E8F0E8;
+  --bamboo:#8B7355;--brown:#4A3728;--brown-light:#6B5040;--cream:#FBF5E8;
+  --gold:#C49A2A;--gold-light:#E8C35A;--white:#FFFDF8;
+  --gray:#7A6A5A;--lgray:#A89880;
+  --green:#2D5A2D;--lgreen:#E8F0E8;--red:#8B2020;--lred:#F5E8E8;
+  --text:#2A1F14;
 }
-* { margin:0; padding:0; box-sizing:border-box; }
-body { background:var(--cream); font-family:'Crimson Pro',Georgia,serif; color:var(--text); }
-
-/* BAMBOO TEXTURE PATTERN */
-.bamboo-bg {
-  background-color: var(--parch-bg);
-  background-image:
-    linear-gradient(180deg, rgba(92,122,92,0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(139,115,85,0.04) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--cream);font-family:'Crimson Pro',Georgia,serif;color:var(--text);min-height:100vh}
+.bamboo-bg{background-color:var(--parch-bg);background-image:linear-gradient(180deg,rgba(92,122,92,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(139,115,85,0.04) 1px,transparent 1px);background-size:40px 40px}
 
 /* NAV */
-nav {
-  background: linear-gradient(180deg, var(--brown) 0%, var(--brown-light) 100%);
-  position: sticky; top: 0; z-index: 100;
-  border-bottom: 3px solid var(--parch);
-  box-shadow: 0 2px 12px rgba(74,55,40,0.3);
-}
-.nav-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; }
-.nav-brand {
-  font-family: 'Cinzel', serif;
-  color: var(--parch-light);
-  font-size: 13px; letter-spacing: 2px;
-  padding: 14px 20px;
-  border-right: 1px solid rgba(212,184,150,0.25);
-  white-space: nowrap;
-}
-.nav-tabs { display: flex; overflow-x: auto; }
-.nav-tab {
-  font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 1.5px;
-  color: rgba(253,245,232,0.55); padding: 16px 16px;
-  cursor: pointer; border: none; background: none;
-  border-bottom: 3px solid transparent;
-  transition: all 0.2s; white-space: nowrap; text-transform: uppercase;
-}
-.nav-tab:hover { color: var(--parch-light); }
-.nav-tab.active { color: var(--parch-light); border-bottom: 3px solid var(--parch); }
+nav{background:linear-gradient(180deg,var(--brown) 0%,var(--brown-light) 100%);position:sticky;top:0;z-index:100;border-bottom:3px solid var(--parch);box-shadow:0 2px 12px rgba(74,55,40,0.3)}
+.nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center}
+.nav-brand{font-family:'Cinzel',serif;color:var(--parch-light);font-size:13px;letter-spacing:2px;padding:14px 20px;border-right:1px solid rgba(212,184,150,0.25);white-space:nowrap}
+.nav-tabs{display:flex;overflow-x:auto;flex:1;scrollbar-width:thin;scrollbar-color:var(--parch) transparent}
+.nav-tabs::-webkit-scrollbar{height:4px}
+.nav-tabs::-webkit-scrollbar-thumb{background:var(--parch)}
+.nav-tab{font-family:'Cinzel',serif;font-size:11px;letter-spacing:1.5px;color:rgba(253,245,232,0.55);padding:16px 12px;cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap;text-transform:uppercase}
+.nav-tab:hover{color:var(--parch-light)}
+.nav-tab.active{color:var(--parch-light);border-bottom:3px solid var(--parch)}
+.sync-pill{margin-left:auto;padding:0 14px;font-size:10px;color:rgba(253,245,232,0.55);font-family:'Cinzel',serif;letter-spacing:1px;display:flex;align-items:center;gap:6px}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:var(--lgray)}
+.sync-dot.ok{background:#7DD87D;box-shadow:0 0 6px rgba(125,216,125,0.6)}
+.sync-dot.err{background:var(--red)}
+.sync-dot.busy{background:var(--gold);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
 
 /* HERO */
-.hero {
-  background: var(--parch-bg);
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cellipse cx='30' cy='100' rx='8' ry='80' fill='none' stroke='rgba(92,122,92,0.15)' stroke-width='16'/%3E%3Cellipse cx='170' cy='100' rx='8' ry='80' fill='none' stroke='rgba(92,122,92,0.15)' stroke-width='16'/%3E%3Cellipse cx='30' cy='30' rx='20' ry='12' fill='rgba(92,122,92,0.1)'/%3E%3Cellipse cx='30' cy='60' rx='22' ry='11' fill='rgba(92,122,92,0.1)'/%3E%3Cellipse cx='170' cy='140' rx='20' ry='12' fill='rgba(92,122,92,0.1)'/%3E%3Cellipse cx='170' cy='170' rx='22' ry='11' fill='rgba(92,122,92,0.1)'/%3E%3C/svg%3E");
-  background-size: 200px 200px;
-  padding: 50px 20px 40px; text-align: center;
-  border-bottom: 2px solid var(--parch-dark);
-  position: relative; overflow: hidden;
-}
-.hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse at center, rgba(212,184,150,0.3) 0%, transparent 70%);
-}
-.hero-ornament {
-  font-family: 'Cinzel', serif; color: var(--bamboo);
-  font-size: 11px; letter-spacing: 6px; text-transform: uppercase;
-  margin-bottom: 16px; opacity: 0.7; position: relative;
-}
-.hero-title {
-  font-family: 'Cinzel', serif; color: var(--brown);
-  font-size: clamp(24px,5vw,48px); font-weight: 600;
-  letter-spacing: 3px; line-height: 1.1; position: relative;
-}
-.hero-sub {
-  font-family: 'Playfair Display', serif; color: var(--sage);
-  font-size: clamp(13px,2.5vw,18px); font-style: italic;
-  margin: 10px 0 18px; position: relative;
-}
-.hero-rule {
-  width: 120px; height: 2px;
-  background: linear-gradient(90deg, transparent, var(--bamboo), transparent);
-  margin: 0 auto 16px; position: relative;
-}
-.hero-motto {
-  font-family: 'Crimson Pro', serif; color: var(--bamboo);
-  font-size: clamp(11px,2vw,14px); letter-spacing: 2px;
-  text-transform: uppercase; position: relative;
-}
+.hero{background:var(--parch-bg);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cellipse cx='30' cy='100' rx='8' ry='80' fill='none' stroke='rgba(92,122,92,0.15)' stroke-width='16'/%3E%3Cellipse cx='170' cy='100' rx='8' ry='80' fill='none' stroke='rgba(92,122,92,0.15)' stroke-width='16'/%3E%3Cellipse cx='30' cy='30' rx='20' ry='12' fill='rgba(92,122,92,0.1)'/%3E%3Cellipse cx='30' cy='60' rx='22' ry='11' fill='rgba(92,122,92,0.1)'/%3E%3Cellipse cx='170' cy='140' rx='20' ry='12' fill='rgba(92,122,92,0.1)'/%3E%3Cellipse cx='170' cy='170' rx='22' ry='11' fill='rgba(92,122,92,0.1)'/%3E%3C/svg%3E");background-size:200px 200px;padding:50px 20px 40px;text-align:center;border-bottom:2px solid var(--parch-dark);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(212,184,150,0.3) 0%,transparent 70%)}
+.hero-ornament{font-family:'Cinzel',serif;color:var(--bamboo);font-size:11px;letter-spacing:6px;text-transform:uppercase;margin-bottom:16px;opacity:.7;position:relative}
+.hero-title{font-family:'Cinzel',serif;color:var(--brown);font-size:clamp(24px,5vw,48px);font-weight:600;letter-spacing:3px;line-height:1.1;position:relative}
+.hero-sub{font-family:'Playfair Display',serif;color:var(--sage);font-size:clamp(13px,2.5vw,18px);font-style:italic;margin:10px 0 18px;position:relative}
+.hero-rule{width:120px;height:2px;background:linear-gradient(90deg,transparent,var(--bamboo),transparent);margin:0 auto 16px;position:relative}
+.hero-motto{font-family:'Crimson Pro',serif;color:var(--bamboo);font-size:clamp(11px,2vw,14px);letter-spacing:2px;text-transform:uppercase;position:relative}
 
 /* STATS BAR */
-.stats-bar {
-  background: var(--brown);
-  display: grid; grid-template-columns: repeat(4,1fr);
-  border-bottom: 3px solid var(--parch-dark);
-}
-.stat { padding: 16px 10px; text-align: center; border-right: 1px solid rgba(212,184,150,0.15); }
-.stat:last-child { border-right: none; }
-.stat-val { font-family: 'Cinzel', serif; color: var(--parch-light); font-size: clamp(14px,2.5vw,22px); font-weight: 600; display: block; }
-.stat-lbl { color: rgba(253,245,232,0.4); font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 3px; display: block; }
+.stats-bar{background:var(--brown);display:grid;grid-template-columns:repeat(4,1fr);border-bottom:3px solid var(--parch-dark)}
+.stat{padding:16px 10px;text-align:center;border-right:1px solid rgba(212,184,150,0.15)}
+.stat:last-child{border-right:none}
+.stat-val{font-family:'Cinzel',serif;color:var(--parch-light);font-size:clamp(14px,2.5vw,22px);font-weight:600;display:block}
+.stat-lbl{color:rgba(253,245,232,0.4);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin-top:3px;display:block}
+.progress-wrap{background:var(--brown-light);padding:10px 20px 14px}
+.progress-inner{max-width:1100px;margin:0 auto}
+.progress-label{display:flex;justify-content:space-between;color:rgba(253,245,232,0.55);font-size:10px;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+.progress-bar{background:rgba(255,255,255,0.1);border-radius:4px;height:10px;overflow:hidden;position:relative}
+.progress-fill{background:linear-gradient(90deg,var(--parch-dark),var(--parch-light),var(--gold-light));height:100%;border-radius:4px;transition:width .8s cubic-bezier(.22,.61,.36,1);position:relative}
+.progress-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);animation:shimmer 2.4s infinite}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
 
-/* PROGRESS */
-.progress-wrap { background: var(--brown-light); padding: 10px 20px 14px; }
-.progress-inner { max-width: 1100px; margin: 0 auto; }
-.progress-label { display: flex; justify-content: space-between; color: rgba(253,245,232,0.45); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
-.progress-bar { background: rgba(255,255,255,0.1); border-radius: 4px; height: 8px; overflow: hidden; }
-.progress-fill { background: linear-gradient(90deg, var(--parch-dark), var(--parch-light)); height: 100%; border-radius: 4px; }
+/* ALERT */
+.alert{padding:12px 20px;text-align:center;font-size:14px;border-bottom:2px solid var(--parch-dark)}
+.alert-green{background:var(--green);color:var(--parch-pale)}
+.alert-red{background:var(--red);color:var(--parch-pale)}
 
-/* ALERT BANNER */
-.alert { padding: 12px 20px; text-align: center; font-size: 14px; border-bottom: 2px solid var(--parch-dark); }
-.alert-green { background: var(--green); color: var(--parch-pale); }
-.alert-red { background: var(--red); color: var(--parch-pale); }
+.container{max-width:1100px;margin:0 auto;padding:0 16px 80px}
+.page{display:none}
+.page.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-/* MAIN */
-.container { max-width: 1100px; margin: 0 auto; padding: 0 16px 60px; }
-.page { display: none; }
-.page.active { display: block; }
+/* SECTION */
+.section{margin-top:36px}
+.section-head{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.section-title{font-family:'Cinzel',serif;font-size:clamp(15px,2.5vw,20px);color:var(--brown);font-weight:600;letter-spacing:2px;white-space:nowrap}
+.section-line{flex:1;height:1px;background:linear-gradient(90deg,var(--parch-dark),transparent)}
+.section-year{font-family:'Cinzel',serif;font-size:11px;color:var(--bamboo);letter-spacing:2px}
 
-/* SECTION HEADERS */
-.section { margin-top: 36px; }
-.section-head { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
-.section-title { font-family: 'Cinzel', serif; font-size: clamp(15px,2.5vw,20px); color: var(--brown); font-weight: 600; letter-spacing: 2px; white-space: nowrap; }
-.section-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--parch-dark), transparent); }
-.section-year { font-family: 'Cinzel', serif; font-size: 11px; color: var(--bamboo); letter-spacing: 2px; }
+/* BANNERS */
+.banner{background:linear-gradient(135deg,var(--brown) 0%,var(--brown-light) 100%);border:1px solid var(--parch);border-radius:6px;padding:18px 24px;text-align:center;margin-bottom:18px}
+.banner h3{font-family:'Cinzel',serif;color:var(--parch-light);font-size:clamp(13px,2vw,18px);letter-spacing:3px;text-transform:uppercase}
+.banner p{color:rgba(253,245,232,0.7);font-size:13px;font-style:italic;margin-top:4px}
 
-/* SPECIAL BANNERS */
-.banner { background: linear-gradient(135deg, var(--brown) 0%, var(--brown-light) 100%); border: 1px solid var(--parch); border-radius: 6px; padding: 18px 24px; text-align: center; margin-bottom: 18px; }
-.banner h3 { font-family: 'Cinzel', serif; color: var(--parch-light); font-size: clamp(13px,2vw,18px); letter-spacing: 3px; text-transform: uppercase; }
-.banner p { color: rgba(253,245,232,0.55); font-size: 13px; font-style: italic; margin-top: 4px; }
-
-/* WEDDING BLOCK */
-.wedding { background: linear-gradient(135deg, var(--brown) 0%, #2A1408 100%); border: 2px solid var(--parch); border-radius: 8px; padding: 28px; text-align: center; margin: 20px 0; }
-.wedding-date { font-family: 'Cinzel', serif; color: var(--parch-light); font-size: clamp(20px,3.5vw,34px); font-weight: 600; letter-spacing: 3px; }
-.wedding-names { font-family: 'Playfair Display', serif; color: var(--cream); font-size: clamp(14px,2.5vw,24px); font-style: italic; margin: 6px 0 4px; }
-.wedding-sub { color: rgba(253,245,232,0.45); font-size: 13px; letter-spacing: 2px; text-transform: uppercase; }
+.wedding{background:linear-gradient(135deg,var(--brown) 0%,#2A1408 100%);border:2px solid var(--parch);border-radius:8px;padding:28px;text-align:center;margin:20px 0}
+.wedding-date{font-family:'Cinzel',serif;color:var(--parch-light);font-size:clamp(20px,3.5vw,34px);font-weight:600;letter-spacing:3px}
+.wedding-names{font-family:'Playfair Display',serif;color:var(--cream);font-size:clamp(14px,2.5vw,24px);font-style:italic;margin:6px 0 4px}
+.wedding-sub{color:rgba(253,245,232,0.5);font-size:13px;letter-spacing:2px;text-transform:uppercase}
 
 /* TASK BOX */
-.task-box { background: var(--parch-pale); border-left: 4px solid var(--parch-dark); border-radius: 0 6px 6px 0; padding: 14px 18px; margin-bottom: 14px; border: 1px solid rgba(212,184,150,0.3); border-left: 4px solid var(--bamboo); }
-.task-box-title { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 2px; color: var(--bamboo); text-transform: uppercase; margin-bottom: 10px; }
-.task-item { display: flex; align-items: flex-start; gap: 10px; padding: 5px 0; font-size: 15px; line-height: 1.4; cursor: pointer; }
-.task-item input[type=checkbox] { margin-top: 3px; flex-shrink: 0; width: 16px; height: 16px; accent-color: var(--bamboo); cursor: pointer; }
-.task-item.urgent { color: var(--red); font-weight: 600; }
-.task-item.done label { text-decoration: line-through; opacity: 0.5; }
+.task-box{background:var(--parch-pale);border:1px solid rgba(212,184,150,0.3);border-left:4px solid var(--bamboo);border-radius:0 6px 6px 0;padding:14px 18px;margin-bottom:14px}
+.task-box-title{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;color:var(--bamboo);text-transform:uppercase;margin-bottom:10px}
+.task-item{display:flex;align-items:flex-start;gap:10px;padding:5px 0;font-size:15px;line-height:1.4;cursor:pointer}
+.task-item input[type=checkbox]{margin-top:3px;flex-shrink:0;width:16px;height:16px;accent-color:var(--bamboo);cursor:pointer}
+.task-item.urgent{color:var(--red);font-weight:600}
+.task-item.done span{text-decoration:line-through;opacity:.5}
 
-/* EVENT ROWS */
-.event-list { border: 1px solid rgba(212,184,150,0.3); border-radius: 6px; overflow: hidden; background: var(--white); box-shadow: 0 1px 4px rgba(74,55,40,0.06); }
-.event-row { display: grid; grid-template-columns: 100px 30px 1fr; gap: 0 10px; align-items: start; padding: 10px 14px; border-bottom: 1px solid rgba(212,184,150,0.15); transition: background 0.15s; }
-.event-row:last-child { border-bottom: none; }
-.event-row:hover { background: rgba(212,184,150,0.08); }
-.event-row.confirmed { border-left: 3px solid var(--green); }
-.event-row.urgent-row { border-left: 3px solid var(--red); background: var(--lred); }
-.event-row.open-row { opacity: 0.6; }
-.event-date { font-family: 'Cinzel', serif; font-size: 12px; color: var(--bamboo); font-weight: 600; padding-top: 2px; }
-.event-icon { font-size: 15px; text-align: center; padding-top: 2px; }
-.event-title { font-size: 15px; font-weight: 600; color: var(--brown); line-height: 1.3; }
-.event-title.confirmed { color: var(--green); }
-.event-title.urgent-t { color: var(--red); }
-.event-title.open-t { color: var(--lgray); font-style: italic; }
-.event-detail { font-size: 12.5px; color: var(--lgray); font-style: italic; margin-top: 2px; }
-.badge { display: inline-block; font-size: 9px; font-family: 'Cinzel', serif; letter-spacing: 1px; padding: 2px 6px; border-radius: 2px; margin-left: 6px; vertical-align: middle; text-transform: uppercase; }
-.badge-confirmed { background: rgba(45,90,45,0.1); color: var(--green); border: 1px solid rgba(45,90,45,0.3); }
-.badge-overdue { background: rgba(139,32,32,0.1); color: var(--red); border: 1px solid rgba(139,32,32,0.3); }
-.badge-potential { background: rgba(196,154,42,0.12); color: #8a6a10; border: 1px solid rgba(196,154,42,0.4); }
+/* EVENT */
+.event-list{border:1px solid rgba(212,184,150,0.3);border-radius:6px;overflow:hidden;background:var(--white);box-shadow:0 1px 4px rgba(74,55,40,0.06)}
+.event-row{display:grid;grid-template-columns:100px 30px 1fr;gap:0 10px;align-items:start;padding:10px 14px;border-bottom:1px solid rgba(212,184,150,0.15);transition:background .15s;cursor:pointer}
+.event-row:last-child{border-bottom:none}
+.event-row:hover{background:rgba(212,184,150,0.08)}
+.event-row.confirmed{border-left:3px solid var(--green)}
+.event-row.urgent-row{border-left:3px solid var(--red);background:var(--lred)}
+.event-row.open-row{opacity:.6}
+.event-date{font-family:'Cinzel',serif;font-size:12px;color:var(--bamboo);font-weight:600;padding-top:2px}
+.event-icon{font-size:15px;text-align:center;padding-top:2px}
+.event-title{font-size:15px;font-weight:600;color:var(--brown);line-height:1.3}
+.event-title.confirmed{color:var(--green)}
+.event-title.urgent-t{color:var(--red)}
+.event-title.open-t{color:var(--lgray);font-style:italic}
+.event-detail{font-size:12.5px;color:var(--lgray);font-style:italic;margin-top:2px}
+.badge{display:inline-block;font-size:9px;font-family:'Cinzel',serif;letter-spacing:1px;padding:2px 6px;border-radius:2px;margin-left:6px;vertical-align:middle;text-transform:uppercase}
+.badge-confirmed{background:rgba(45,90,45,0.1);color:var(--green);border:1px solid rgba(45,90,45,0.3)}
+.badge-overdue{background:rgba(139,32,32,0.1);color:var(--red);border:1px solid rgba(139,32,32,0.3)}
+.badge-potential{background:rgba(196,154,42,0.12);color:#8a6a10;border:1px solid rgba(196,154,42,0.4)}
 
-/* HOME BREAK */
-.home-break { background: var(--parch-pale); border: 1px solid rgba(212,184,150,0.4); border-radius: 6px; padding: 20px; text-align: center; margin: 32px 0; }
-.home-break h3 { font-family: 'Cinzel', serif; color: var(--brown); font-size: clamp(13px,2vw,18px); letter-spacing: 2px; }
-.home-break p { color: var(--bamboo); font-size: 13px; font-style: italic; margin-top: 4px; }
+.home-break{background:var(--parch-pale);border:1px solid rgba(212,184,150,0.4);border-radius:6px;padding:20px;text-align:center;margin:32px 0}
+.home-break h3{font-family:'Cinzel',serif;color:var(--brown);font-size:clamp(13px,2vw,18px);letter-spacing:2px}
+.home-break p{color:var(--bamboo);font-size:13px;font-style:italic;margin-top:4px}
 
-/* CIRCUIT TABLE */
-.circuit { background: linear-gradient(135deg, var(--brown), #2A1408); border-radius: 6px; padding: 20px 24px; margin-top: 14px; border: 1px solid var(--parch-dark); }
-.circuit h4 { font-family: 'Cinzel', serif; color: var(--parch-light); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; }
-.circuit-row { display: flex; align-items: baseline; gap: 14px; padding: 6px 0; border-bottom: 1px solid rgba(212,184,150,0.1); }
-.circuit-row:last-child { border-bottom: none; }
-.circuit-region { font-family: 'Cinzel', serif; color: var(--parch); font-size: 12px; font-weight: 600; min-width: 100px; }
-.circuit-desc { color: rgba(253,245,232,0.7); font-size: 14px; }
-.circuit-count { color: var(--parch-light); font-size: 12px; font-style: italic; margin-left: auto; }
+.circuit{background:linear-gradient(135deg,var(--brown),#2A1408);border-radius:6px;padding:20px 24px;margin-top:14px;border:1px solid var(--parch-dark)}
+.circuit h4{font-family:'Cinzel',serif;color:var(--parch-light);font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px}
+.circuit-row{display:flex;align-items:baseline;gap:14px;padding:6px 0;border-bottom:1px solid rgba(212,184,150,0.1)}
+.circuit-row:last-child{border-bottom:none}
+.circuit-region{font-family:'Cinzel',serif;color:var(--parch);font-size:12px;font-weight:600;min-width:100px}
+.circuit-desc{color:rgba(253,245,232,0.7);font-size:14px}
+.circuit-count{color:var(--parch-light);font-size:12px;font-style:italic;margin-left:auto}
 
-/* CHURCH PIPELINE */
-.filter-wrap { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-.filter-btn { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 1px; padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(212,184,150,0.4); background: var(--white); color: var(--brown); cursor: pointer; transition: all 0.2s; text-transform: uppercase; }
-.filter-btn.active, .filter-btn:hover { background: var(--brown); color: var(--parch-light); border-color: var(--brown); }
-.church-card { background: var(--white); border: 1px solid rgba(212,184,150,0.2); border-radius: 6px; padding: 14px 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: background 0.15s; }
-.church-card:hover { background: var(--parch-pale); }
-.church-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
-.dot-completed { background: var(--green); }
-.dot-scheduled { background: var(--bamboo); }
-.dot-pending { background: var(--parch-dark); }
-.dot-contacted { background: var(--lgray); }
-.church-name { font-size: 15px; font-weight: 600; color: var(--brown); }
-.church-detail { font-size: 12.5px; color: var(--lgray); font-style: italic; margin-top: 2px; }
-.church-offering { font-family: 'Cinzel', serif; font-size: 12px; color: var(--green); font-weight: 600; margin-left: auto; white-space: nowrap; }
+/* FILTERS + CARDS */
+.filter-wrap{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.filter-btn{font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;padding:6px 12px;border-radius:20px;border:1px solid rgba(212,184,150,0.4);background:var(--white);color:var(--brown);cursor:pointer;transition:all .2s;text-transform:uppercase}
+.filter-btn.active,.filter-btn:hover{background:var(--brown);color:var(--parch-light);border-color:var(--brown)}
+.church-card{background:var(--white);border:1px solid rgba(212,184,150,0.2);border-radius:6px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:background .15s}
+.church-card:hover{background:var(--parch-pale)}
+.church-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+.dot-completed{background:var(--green)}
+.dot-scheduled{background:var(--bamboo)}
+.dot-pending{background:var(--parch-dark)}
+.dot-contacted{background:var(--lgray)}
+.church-name{font-size:15px;font-weight:600;color:var(--brown)}
+.church-detail{font-size:12.5px;color:var(--lgray);font-style:italic;margin-top:2px}
+.church-offering{font-family:'Cinzel',serif;font-size:12px;color:var(--green);font-weight:600;margin-left:auto;white-space:nowrap}
 
 /* MODAL */
-.modal-overlay { position: fixed; inset: 0; background: rgba(42,31,20,0.7); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; }
-.modal { background: var(--white); border-radius: 10px; padding: 24px; max-width: 500px; width: 100%; border: 2px solid var(--parch); max-height: 80vh; overflow-y: auto; }
-.modal h3 { font-family: 'Cinzel', serif; color: var(--brown); font-size: 16px; letter-spacing: 1.5px; margin-bottom: 16px; border-bottom: 1px solid var(--parch-pale); padding-bottom: 10px; }
-.modal-field { margin-bottom: 12px; }
-.modal-field label { display: block; font-family: 'Cinzel', serif; font-size: 10px; color: var(--bamboo); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
-.modal-field input, .modal-field select, .modal-field textarea { width: 100%; padding: 8px 10px; border: 1px solid rgba(212,184,150,0.4); border-radius: 4px; font-family: 'Crimson Pro', serif; font-size: 15px; color: var(--text); background: var(--parch-pale); outline: none; }
-.modal-field textarea { min-height: 70px; resize: vertical; }
-.modal-actions { display: flex; gap: 8px; margin-top: 16px; }
-.btn { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; padding: 9px 20px; border-radius: 4px; border: none; cursor: pointer; transition: all 0.2s; }
-.btn-primary { background: var(--brown); color: var(--parch-light); }
-.btn-primary:hover { background: #2A1408; }
-.btn-secondary { background: var(--parch-pale); color: var(--brown); border: 1px solid rgba(212,184,150,0.4); }
+.modal-overlay{position:fixed;inset:0;background:rgba(42,31,20,0.7);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(2px)}
+.modal{background:var(--white);border-radius:10px;padding:24px;max-width:540px;width:100%;border:2px solid var(--parch);max-height:90vh;overflow-y:auto;box-shadow:0 10px 50px rgba(42,31,20,0.4)}
+.modal h3{font-family:'Cinzel',serif;color:var(--brown);font-size:16px;letter-spacing:1.5px;margin-bottom:16px;border-bottom:1px solid var(--parch-pale);padding-bottom:10px}
+.modal-field{margin-bottom:12px}
+.modal-field label{display:block;font-family:'Cinzel',serif;font-size:10px;color:var(--bamboo);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
+.modal-field input,.modal-field select,.modal-field textarea{width:100%;padding:8px 10px;border:1px solid rgba(212,184,150,0.4);border-radius:4px;font-family:'Crimson Pro',serif;font-size:15px;color:var(--text);background:var(--parch-pale);outline:none}
+.modal-field textarea{min-height:70px;resize:vertical}
+.modal-actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.btn{font-family:'Cinzel',serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:9px 20px;border-radius:4px;border:none;cursor:pointer;transition:all .2s}
+.btn-primary{background:var(--brown);color:var(--parch-light)}
+.btn-primary:hover{background:#2A1408}
+.btn-secondary{background:var(--parch-pale);color:var(--brown);border:1px solid rgba(212,184,150,0.4)}
+.btn-danger{background:var(--red);color:var(--parch-pale)}
 
 /* FINANCIAL */
-.fin-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 12px; margin-bottom: 20px; }
-.fin-card { background: var(--white); border: 1px solid rgba(212,184,150,0.2); border-radius: 8px; padding: 16px; text-align: center; }
-.fin-val { font-family: 'Cinzel', serif; font-size: 22px; color: var(--brown); font-weight: 600; }
-.fin-lbl { font-size: 10px; color: var(--lgray); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
-.partner-row { display: flex; align-items: center; gap: 12px; background: var(--white); border: 1px solid rgba(212,184,150,0.2); border-radius: 6px; padding: 11px 14px; margin-bottom: 8px; }
-.partner-amount { font-family: 'Cinzel', serif; color: var(--green); font-weight: 600; font-size: 16px; min-width: 75px; }
-.partner-name { font-size: 14px; font-weight: 600; color: var(--brown); }
-.partner-detail { font-size: 11px; color: var(--lgray); font-style: italic; }
-.status-pill { font-size: 10px; padding: 3px 8px; border-radius: 10px; white-space: nowrap; }
-.pill-active { background: var(--lgreen); color: var(--green); }
-.pill-pending { background: var(--parch-pale); color: var(--bamboo); }
-.offering-table { width: 100%; border-collapse: collapse; background: var(--white); border-radius: 8px; overflow: hidden; border: 1px solid rgba(212,184,150,0.2); }
-.offering-table th { background: var(--brown); color: var(--parch-light); font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 1px; padding: 9px 12px; text-align: left; text-transform: uppercase; }
-.offering-table td { padding: 9px 12px; border-bottom: 1px solid rgba(212,184,150,0.1); font-size: 14px; }
-.offering-table tr:last-child td { border-bottom: none; font-weight: 600; background: var(--parch-pale); }
+.fin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px}
+.fin-card{background:var(--white);border:1px solid rgba(212,184,150,0.2);border-radius:8px;padding:16px;text-align:center}
+.fin-val{font-family:'Cinzel',serif;font-size:22px;color:var(--brown);font-weight:600}
+.fin-lbl{font-size:10px;color:var(--lgray);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+.partner-row{display:flex;align-items:center;gap:12px;background:var(--white);border:1px solid rgba(212,184,150,0.2);border-radius:6px;padding:11px 14px;margin-bottom:8px}
+.partner-amount{font-family:'Cinzel',serif;color:var(--green);font-weight:600;font-size:16px;min-width:75px}
+.partner-name{font-size:14px;font-weight:600;color:var(--brown)}
+.partner-detail{font-size:11px;color:var(--lgray);font-style:italic}
+.status-pill{font-size:10px;padding:3px 8px;border-radius:10px;white-space:nowrap;font-family:'Cinzel',serif;letter-spacing:1px}
+.pill-active{background:var(--lgreen);color:var(--green)}
+.pill-pending{background:var(--parch-pale);color:var(--bamboo)}
+.offering-table{width:100%;border-collapse:collapse;background:var(--white);border-radius:8px;overflow:hidden;border:1px solid rgba(212,184,150,0.2)}
+.offering-table th{background:var(--brown);color:var(--parch-light);font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;padding:9px 12px;text-align:left;text-transform:uppercase}
+.offering-table td{padding:9px 12px;border-bottom:1px solid rgba(212,184,150,0.1);font-size:14px}
+.offering-table tr:last-child td{border-bottom:none;font-weight:600;background:var(--parch-pale)}
 
-/* ACTION ITEMS */
-.action-item { display: flex; align-items: flex-start; gap: 12px; background: var(--white); border: 1px solid rgba(212,184,150,0.2); border-radius: 6px; padding: 11px 14px; margin-bottom: 8px; cursor: pointer; transition: background 0.15s; }
-.action-item.urgent { border-left: 4px solid var(--red); background: var(--lred); }
-.action-item.done-item { background: var(--sage-pale); opacity: 0.65; }
-.action-cb { flex-shrink: 0; width: 19px; height: 19px; border: 2px solid var(--bamboo); border-radius: 3px; display: flex; align-items: center; justify-content: center; margin-top: 2px; transition: all 0.2s; background: var(--white); }
-.action-cb.checked { background: var(--bamboo); border-color: var(--bamboo); }
-.action-text { flex: 1; font-size: 14px; line-height: 1.4; }
-.action-text.urgent-t { color: var(--red); font-weight: 600; }
-.action-due { font-size: 11px; color: var(--lgray); font-style: italic; margin-top: 2px; }
-.add-task-box { background: var(--white); border: 1px solid rgba(212,184,150,0.3); border-radius: 8px; padding: 14px; margin-bottom: 16px; }
-.add-task-box input, .add-task-box select { padding: 8px 10px; border: 1px solid rgba(212,184,150,0.3); border-radius: 4px; font-family: 'Crimson Pro', serif; font-size: 14px; background: var(--parch-pale); color: var(--text); width: 100%; margin-bottom: 8px; outline: none; }
+/* ACTIONS */
+.action-item{display:flex;align-items:flex-start;gap:12px;background:var(--white);border:1px solid rgba(212,184,150,0.2);border-radius:6px;padding:11px 14px;margin-bottom:8px;cursor:pointer;transition:background .15s}
+.action-item.urgent{border-left:4px solid var(--red);background:var(--lred)}
+.action-item.done-item{background:var(--sage-pale);opacity:.65}
+.action-cb{flex-shrink:0;width:19px;height:19px;border:2px solid var(--bamboo);border-radius:3px;display:flex;align-items:center;justify-content:center;margin-top:2px;transition:all .2s;background:var(--white)}
+.action-cb.checked{background:var(--bamboo);border-color:var(--bamboo)}
+.action-text{flex:1;font-size:14px;line-height:1.4}
+.action-text.urgent-t{color:var(--red);font-weight:600}
+.action-due{font-size:11px;color:var(--lgray);font-style:italic;margin-top:2px}
+.add-task-box{background:var(--white);border:1px solid rgba(212,184,150,0.3);border-radius:8px;padding:14px;margin-bottom:16px}
+.add-task-box input,.add-task-box select{padding:8px 10px;border:1px solid rgba(212,184,150,0.3);border-radius:4px;font-family:'Crimson Pro',serif;font-size:14px;background:var(--parch-pale);color:var(--text);width:100%;margin-bottom:8px;outline:none}
+
+/* ADVENTURE */
+.adv-bigbtn{background:linear-gradient(135deg,var(--brown),#2A1408);color:var(--parch-light);border:2px solid var(--parch);border-radius:14px;padding:30px 18px;width:100%;font-family:'Cinzel',serif;font-size:clamp(14px,2.4vw,18px);letter-spacing:2px;text-transform:uppercase;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(74,55,40,0.25);transition:transform .15s}
+.adv-bigbtn:hover{transform:translateY(-2px)}
+.adv-bigbtn .em{font-size:48px}
+.adv-bigbtn small{display:block;font-size:11px;letter-spacing:1px;color:rgba(253,245,232,0.65);text-transform:none;font-style:italic;font-family:'Playfair Display',serif}
+.adv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:16px}
+.adv-thumb{aspect-ratio:1;border-radius:8px;background:var(--parch-pale);position:relative;overflow:hidden;cursor:pointer;border:1px solid rgba(212,184,150,0.3)}
+.adv-thumb img{width:100%;height:100%;object-fit:cover}
+.adv-thumb-meta{position:absolute;bottom:0;left:0;right:0;padding:6px 8px;background:linear-gradient(transparent,rgba(0,0,0,.65));color:#fff;font-size:11px}
+.adv-thumb-empty{display:flex;align-items:center;justify-content:center;color:var(--bamboo);font-size:11px;height:100%;text-align:center;padding:8px;font-style:italic}
+.adv-month{margin-top:24px}
+.adv-month h4{font-family:'Cinzel',serif;color:var(--brown);font-size:13px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--parch-dark)}
+
+/* EXPENSES */
+.exp-quickrow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;background:var(--white);padding:14px;border-radius:8px;border:1px solid rgba(212,184,150,0.3);margin-bottom:10px}
+.exp-list{background:var(--white);border:1px solid rgba(212,184,150,0.2);border-radius:8px;overflow:hidden}
+.exp-row{display:grid;grid-template-columns:50px 1fr 90px 80px;gap:10px;align-items:center;padding:10px 14px;border-bottom:1px solid rgba(212,184,150,0.15);cursor:pointer}
+.exp-row:hover{background:var(--parch-pale)}
+.exp-row:last-child{border-bottom:none}
+.exp-thumb{width:42px;height:42px;border-radius:6px;background:var(--parch-pale);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.exp-thumb img{width:100%;height:100%;object-fit:cover}
+.exp-vendor{font-size:14px;font-weight:600;color:var(--brown)}
+.exp-meta{font-size:11px;color:var(--lgray);font-style:italic;margin-top:2px}
+.exp-amount{font-family:'Cinzel',serif;color:var(--brown);font-weight:600;text-align:right}
+.exp-tag{font-size:10px;padding:3px 8px;border-radius:10px;text-align:center;font-family:'Cinzel',serif;letter-spacing:1px;text-transform:uppercase}
+.exp-tag.business{background:rgba(45,90,45,0.15);color:var(--green)}
+.exp-tag.personal{background:rgba(139,32,32,0.12);color:var(--red)}
+.exp-tag.unset{background:var(--parch-pale);color:var(--bamboo)}
+.exp-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.exp-summary > div{background:var(--white);border:1px solid rgba(212,184,150,0.2);border-radius:6px;padding:12px;text-align:center}
+.exp-summary .v{font-family:'Cinzel',serif;font-size:18px;font-weight:600;color:var(--brown)}
+.exp-summary .l{font-size:10px;color:var(--lgray);letter-spacing:1px;text-transform:uppercase;margin-top:3px}
+
+/* DRIVE MODE */
+.drive-card{background:linear-gradient(135deg,var(--brown),#2A1408);color:var(--parch-light);border-radius:18px;padding:32px 24px;text-align:center;margin-bottom:14px;border:2px solid var(--parch)}
+.drive-eta{font-family:'Cinzel',serif;font-size:clamp(28px,5vw,48px);font-weight:600;letter-spacing:3px;color:var(--parch-light)}
+.drive-dest{font-family:'Playfair Display',serif;font-size:clamp(18px,3vw,28px);margin:8px 0;font-style:italic;color:var(--cream)}
+.drive-meta{color:rgba(253,245,232,0.6);font-size:14px;letter-spacing:2px;text-transform:uppercase}
+.drive-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:14px}
+.drive-btn{background:var(--white);border:2px solid var(--parch-dark);border-radius:14px;padding:24px 14px;font-family:'Cinzel',serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;color:var(--brown);cursor:pointer;transition:all .15s}
+.drive-btn:hover{background:var(--parch-pale)}
+.drive-btn .em{display:block;font-size:34px;margin-bottom:6px}
+
+/* PRAYER + SERMON cards */
+.entry-card{background:var(--white);border:1px solid rgba(212,184,150,0.25);border-radius:8px;padding:14px;margin-bottom:10px;cursor:pointer;transition:background .15s}
+.entry-card:hover{background:var(--parch-pale)}
+.entry-card.answered{background:var(--sage-pale);border-color:var(--sage-light)}
+.entry-card.answered .entry-title{text-decoration:line-through;opacity:.65}
+.entry-title{font-size:15px;font-weight:600;color:var(--brown);line-height:1.3}
+.entry-meta{font-size:11.5px;color:var(--lgray);font-style:italic;margin-top:3px}
+.entry-tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:8px;background:var(--parch-pale);color:var(--bamboo);font-family:'Cinzel',serif;letter-spacing:.5px;margin-right:6px;margin-top:6px}
+
+/* PHILIPPINES */
+.ph-card{background:linear-gradient(135deg,var(--sage) 0%,#3F5A3F 100%);color:#fff;border-radius:10px;padding:20px;margin-bottom:14px;border:1px solid var(--sage-light)}
+.ph-card h4{font-family:'Cinzel',serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.ceb-row{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;background:var(--white);border:1px solid rgba(212,184,150,0.25);border-radius:6px;padding:10px 14px;margin-bottom:6px;align-items:center;font-size:14px}
+.ceb-row .en{color:var(--brown);font-weight:600}
+.ceb-row .ceb{color:var(--sage);font-style:italic}
+.ceb-row .ck{cursor:pointer;width:22px;height:22px;border:2px solid var(--bamboo);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.ceb-row .ck.done{background:var(--sage);border-color:var(--sage);color:#fff}
+
+/* SETTINGS */
+.set-row{background:var(--white);border:1px solid rgba(212,184,150,0.3);border-radius:8px;padding:16px;margin-bottom:12px}
+.set-row label{display:block;font-family:'Cinzel',serif;font-size:11px;color:var(--bamboo);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+.set-row input{width:100%;padding:10px 12px;border:1px solid rgba(212,184,150,0.4);border-radius:5px;font-size:14px;font-family:'Crimson Pro',serif;background:var(--parch-pale);outline:none}
+.set-row .help{font-size:12px;color:var(--lgray);font-style:italic;margin-top:6px}
+
+/* COMING SOON */
+.coming-soon{background:linear-gradient(135deg,var(--parch-bg),var(--parch-pale));border:2px dashed var(--parch-dark);border-radius:12px;padding:34px 20px;text-align:center;color:var(--bamboo);margin:14px 0}
+.coming-soon h4{font-family:'Cinzel',serif;color:var(--brown);font-size:16px;letter-spacing:2px;margin-bottom:8px;text-transform:uppercase}
+.coming-soon p{font-style:italic;font-size:14px;line-height:1.5}
+
+/* FAB */
+.fab{position:fixed;bottom:20px;right:20px;width:60px;height:60px;border-radius:50%;background:var(--brown);color:var(--parch-light);border:3px solid var(--parch);font-size:28px;cursor:pointer;box-shadow:0 6px 20px rgba(74,55,40,0.4);z-index:90;display:flex;align-items:center;justify-content:center}
+.fab:hover{background:#2A1408}
+
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--brown);color:var(--parch-light);padding:10px 18px;border-radius:24px;font-family:'Cinzel',serif;font-size:12px;letter-spacing:1px;box-shadow:0 4px 14px rgba(0,0,0,.25);z-index:300;opacity:0;transition:opacity .2s}
+.toast.show{opacity:1}
 
 /* FOOTER */
-footer { background: linear-gradient(180deg, var(--brown-light), var(--brown)); padding: 30px 20px; text-align: center; margin-top: 60px; border-top: 2px solid var(--parch-dark); }
-.footer-verse { font-family: 'Playfair Display', serif; color: rgba(253,245,232,0.5); font-style: italic; font-size: 13px; line-height: 1.7; max-width: 500px; margin: 0 auto 10px; }
-.footer-contact { font-family: 'Cinzel', serif; color: var(--parch); font-size: 10px; letter-spacing: 1.5px; }
+footer{background:linear-gradient(180deg,var(--brown-light),var(--brown));padding:30px 20px;text-align:center;border-top:2px solid var(--parch-dark)}
+.footer-verse{font-family:'Playfair Display',serif;color:rgba(253,245,232,0.5);font-style:italic;font-size:13px;line-height:1.7;max-width:560px;margin:0 auto 10px}
+.footer-contact{font-family:'Cinzel',serif;color:var(--parch);font-size:10px;letter-spacing:1.5px}
 
-/* RESPONSIVE */
-@media(max-width:600px) {
-  .stats-bar { grid-template-columns: repeat(2,1fr); }
-  .stat { border-right: none; border-bottom: 1px solid rgba(212,184,150,0.1); }
-  .stat:nth-child(odd) { border-right: 1px solid rgba(212,184,150,0.1); }
-  .event-row { grid-template-columns: 72px 24px 1fr; }
-  .nav-brand { font-size: 10px; padding: 12px 10px; }
-  .nav-tab { padding: 13px 10px; font-size: 10px; }
+@media(max-width:600px){
+  .stats-bar{grid-template-columns:repeat(2,1fr)}
+  .stat{border-right:none;border-bottom:1px solid rgba(212,184,150,0.1)}
+  .stat:nth-child(odd){border-right:1px solid rgba(212,184,150,0.1)}
+  .event-row{grid-template-columns:80px 24px 1fr}
+  .nav-brand{font-size:10px;padding:12px 10px}
+  .nav-tab{padding:13px 10px;font-size:10px}
+  .exp-row{grid-template-columns:42px 1fr 70px;gap:8px}
+  .exp-row .exp-tag{display:none}
 }
-
-/* ANIMATIONS */
-@keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-.page.active { animation: fadeIn 0.3s ease; }
-@keyframes unfurl { from { opacity:0; transform:scale(0.97); } to { opacity:1; transform:scale(1); } }
-.hero { animation: unfurl 0.6s ease; }
+@keyframes unfurl{from{opacity:0;transform:scale(0.97)}to{opacity:1;transform:scale(1)}}
+.hero{animation:unfurl .6s ease}
 </style>
 </head>
 <body class="bamboo-bg">
 
-<!-- NAV -->
 <nav>
   <div class="nav-inner">
     <div class="nav-brand">DeMoville ✦ FBMI</div>
@@ -289,12 +296,20 @@ footer { background: linear-gradient(180deg, var(--brown-light), var(--brown)); 
       <button class="nav-tab" onclick="showPage('pipeline',this)">Churches</button>
       <button class="nav-tab" onclick="showPage('financial',this)">Financial</button>
       <button class="nav-tab" onclick="showPage('actions',this)">Actions</button>
-      <button class="nav-tab" onclick="showPage('leads',this)">Warm Leads</button>
+      <button class="nav-tab" onclick="showPage('leads',this)">Leads</button>
+      <button class="nav-tab" onclick="showPage('adventure',this)">Adventure</button>
+      <button class="nav-tab" onclick="showPage('expenses',this)">Expenses</button>
+      <button class="nav-tab" onclick="showPage('drive',this)">Drive</button>
+      <button class="nav-tab" onclick="showPage('prayer',this)">Prayer</button>
+      <button class="nav-tab" onclick="showPage('sermons',this)">Sermons</button>
+      <button class="nav-tab" onclick="showPage('followups',this)">Follow-ups</button>
+      <button class="nav-tab" onclick="showPage('philippines',this)">Philippines</button>
+      <button class="nav-tab" onclick="showPage('settings',this)">⚙</button>
     </div>
+    <div class="sync-pill"><span class="sync-dot" id="sync-dot"></span><span id="sync-label">Local</span></div>
   </div>
 </nav>
 
-<!-- HERO -->
 <div class="hero">
   <div class="hero-ornament">✦ &nbsp; F B M I &nbsp; M i s s i o n a r i e s &nbsp; ✦</div>
   <div class="hero-title">DeMoville Ministry</div>
@@ -303,40 +318,36 @@ footer { background: linear-gradient(180deg, var(--brown-light), var(--brown)); 
   <div class="hero-motto">Reaching the Lost &nbsp;&middot;&nbsp; Reviving the Church &nbsp;&middot;&nbsp; Raising the Next Generation</div>
 </div>
 
-<!-- STATS -->
 <div class="stats-bar">
   <div class="stat"><span class="stat-val">$6,300</span><span class="stat-lbl">Monthly Goal</span></div>
-  <div class="stat"><span class="stat-val" id="stat-raised">$225/mo</span><span class="stat-lbl">Raised (3.6%)</span></div>
-  <div class="stat"><span class="stat-val">9</span><span class="stat-lbl">Meetings Done</span></div>
-  <div class="stat"><span class="stat-val">8</span><span class="stat-lbl">Upcoming</span></div>
+  <div class="stat"><span class="stat-val" id="stat-raised">$225/mo</span><span class="stat-lbl" id="stat-raised-lbl">Raised (3.6%)</span></div>
+  <div class="stat"><span class="stat-val" id="stat-done">9</span><span class="stat-lbl">Meetings Done</span></div>
+  <div class="stat"><span class="stat-val" id="stat-up">8</span><span class="stat-lbl">Upcoming</span></div>
 </div>
 <div class="progress-wrap">
   <div class="progress-inner">
-    <div class="progress-label"><span>Support Progress</span><span>$225 of $6,300/mo</span></div>
-    <div class="progress-bar"><div class="progress-fill" style="width:3.6%"></div></div>
+    <div class="progress-label"><span>Support Progress</span><span id="prog-text">$225 of $6,300/mo</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:3.6%"></div></div>
   </div>
 </div>
 
-<!-- ALERTS -->
 <div class="alert alert-green">🎉 <strong>FBC Hammond officially confirmed monthly support!</strong> — Amount TBD &nbsp;&middot;&nbsp; Reply to Carissa &amp; record intro video</div>
 
-<!-- MAIN -->
 <div class="container">
 
-  <!-- ═══ TIMELINE ═══ -->
+  <!-- TIMELINE -->
   <div id="page-timeline" class="page active">
-
     <div class="section">
       <div class="section-head"><span class="section-title">MAY</span><span class="section-year">2026</span><div class="section-line"></div></div>
       <div class="task-box">
         <div class="task-box-title">⚠️ Urgent This Week</div>
-        <label class="task-item urgent"><input type="checkbox" onchange="saveCheck(this,'t1')"> Reply to Carissa Maskey — FBC Hammond support + ask monthly amount</label>
-        <label class="task-item urgent"><input type="checkbox" onchange="saveCheck(this,'t2')"> Record 1–3 min self-introduction video for FBC Hammond</label>
-        <label class="task-item urgent"><input type="checkbox" onchange="saveCheck(this,'t3')"> Send ministry presentation video link to Carissa Maskey</label>
-        <label class="task-item urgent"><input type="checkbox" onchange="saveCheck(this,'t4')"> Decide Leah's UK ticket with Daniel Solt — OVERDUE</label>
-        <label class="task-item urgent"><input type="checkbox" onchange="saveCheck(this,'t5')"> Send Valley Baptist paperwork (prayer card + testimonials) — OVERDUE</label>
-        <label class="task-item"><input type="checkbox" onchange="saveCheck(this,'t6')"> Call Pastor Anglea — Faith Baptist Bourbonnais IL — 815-933-9400</label>
-        <label class="task-item"><input type="checkbox" onchange="saveCheck(this,'t7')"> Confirm Cody WY details with Pastor Young — fbccody@gmail.com — by May 15</label>
+        <label class="task-item urgent"><input type="checkbox" data-tk="t1"><span>Reply to Carissa Maskey — FBC Hammond support + ask monthly amount</span></label>
+        <label class="task-item urgent"><input type="checkbox" data-tk="t2"><span>Record 1–3 min self-introduction video for FBC Hammond</span></label>
+        <label class="task-item urgent"><input type="checkbox" data-tk="t3"><span>Send ministry presentation video link to Carissa Maskey</span></label>
+        <label class="task-item urgent"><input type="checkbox" data-tk="t4"><span>Decide Leah's UK ticket with Daniel Solt — OVERDUE</span></label>
+        <label class="task-item urgent"><input type="checkbox" data-tk="t5"><span>Send Valley Baptist paperwork (prayer card + testimonials) — OVERDUE</span></label>
+        <label class="task-item"><input type="checkbox" data-tk="t6"><span>Call Pastor Anglea — Faith Baptist Bourbonnais IL — 815-933-9400</span></label>
+        <label class="task-item"><input type="checkbox" data-tk="t7"><span>Confirm Cody WY details with Pastor Young — fbccody@gmail.com — by May 15</span></label>
       </div>
       <div class="event-list">
         <div class="event-row"><span class="event-date">May 9–10</span><span class="event-icon">✈️</span><div><div class="event-title">Friend's Wedding — Kittanning, PA</div><div class="event-detail">Meet Pastor Lenze (Victory Baptist) · (417) 955-5055 · warm lead!</div></div></div>
@@ -350,14 +361,14 @@ footer { background: linear-gradient(180deg, var(--brown-light), var(--brown)); 
       <div class="section-head"><span class="section-title">JUNE</span><span class="section-year">2026</span><div class="section-line"></div></div>
       <div class="task-box">
         <div class="task-box-title">📋 Tasks</div>
-        <label class="task-item"><input type="checkbox" onchange="saveCheck(this,'t8')"> Write Prayer Letter #3</label>
-        <label class="task-item"><input type="checkbox" onchange="saveCheck(this,'t9')"> Collect missing pastor emails for FBMI subscriber list</label>
-        <label class="task-item"><input type="checkbox" onchange="saveCheck(this,'t10')"> Follow up Pastor Ellis — Oct 4 details — by Jun 1</label>
-        <label class="task-item"><input type="checkbox" onchange="saveCheck(this,'t11')"> Follow up Pastor Dominguez — Nov 13–15 details — by Jun 1</label>
+        <label class="task-item"><input type="checkbox" data-tk="t8"><span>Write Prayer Letter #3</span></label>
+        <label class="task-item"><input type="checkbox" data-tk="t9"><span>Collect missing pastor emails for FBMI subscriber list</span></label>
+        <label class="task-item"><input type="checkbox" data-tk="t10"><span>Follow up Pastor Ellis — Oct 4 details — by Jun 1</span></label>
+        <label class="task-item"><input type="checkbox" data-tk="t11"><span>Follow up Pastor Dominguez — Nov 13–15 details — by Jun 1</span></label>
       </div>
       <div class="event-list">
         <div class="event-row"><span class="event-date">Jun 7</span><span class="event-icon">⛪</span><div><div class="event-title">Madison Baptist — Madison, WI</div><div class="event-detail">Pastor Mike Weiss · Draft in Gmail</div></div></div>
-        <div class="event-row"><span class="event-date">Jun 14</span><span class="event-icon">⛪</span><div><div class="event-title">Berean Baptist — Galesville, WI ⭐</div><div class="event-detail">Pastor Mark Stauffacher · Warm lead — met at conference · Draft in Gmail</div></div></div>
+        <div class="event-row"><span class="event-date">Jun 14</span><span class="event-icon">⛪</span><div><div class="event-title">Berean Baptist — Galesville, WI ⭐</div><div class="event-detail">Pastor Mark Stauffacher · Warm lead — met at conference</div></div></div>
         <div class="event-row"><span class="event-date">Jun 21</span><span class="event-icon">⛪</span><div><div class="event-title">Hope Baptist — Bettendorf, IA</div><div class="event-detail">Pastor Mark Cannon · Draft in Gmail</div></div></div>
         <div class="event-row"><span class="event-date">Jun 28</span><span class="event-icon">⛪</span><div><div class="event-title">Bible Baptist — Dubuque, IA</div><div class="event-detail">Pastor Tom Brennan · Draft in Gmail</div></div></div>
       </div>
@@ -369,8 +380,8 @@ footer { background: linear-gradient(180deg, var(--brown-light), var(--brown)); 
         <div class="event-row"><span class="event-date">Jul 5</span><span class="event-icon">⛪</span><div><div class="event-title">Bible Baptist — Terre Haute, IN</div><div class="event-detail">Pastor Kevin Szwarga · Referral</div></div></div>
         <div class="event-row confirmed"><span class="event-date">Jul 12</span><span class="event-icon">⛪</span><div><div class="event-title confirmed">Liberty Baptist — Rochester, IN <span class="badge badge-confirmed">Confirmed</span></div><div class="event-detail">Pastor Bill McSpadden · (574) 223-8328</div></div></div>
         <div class="event-row open-row"><span class="event-date">Jul 19</span><span class="event-icon">⛪</span><div><div class="event-title open-t">OPEN — to be scheduled</div></div></div>
-        <div class="event-row"><span class="event-date">Jul 27</span><span class="event-icon">✈️</span><div><div class="event-title">Depart ORD — Terminal 5 at 10:25 PM</div><div class="event-detail">Icelandair 856 → Reykjavik (arrives Jul 28 9:30 AM) · 22h 30m layover</div></div></div>
-        <div class="event-row"><span class="event-date">Jul 29</span><span class="event-icon">✈️</span><div><div class="event-title">Reykjavik → Manchester</div><div class="event-detail">Icelandair 440 · Departs 8:00 AM · Arrives 11:40 AM MAN Terminal 2</div></div></div>
+        <div class="event-row"><span class="event-date">Jul 27</span><span class="event-icon">✈️</span><div><div class="event-title">Depart ORD — Terminal 5 at 10:25 PM</div><div class="event-detail">Icelandair 856 → Reykjavik · Conf BBAOAI · $982.97</div></div></div>
+        <div class="event-row"><span class="event-date">Jul 29</span><span class="event-icon">✈️</span><div><div class="event-title">Reykjavik → Manchester</div><div class="event-detail">Icelandair 440 · 8:00 AM → 11:40 AM MAN T2</div></div></div>
         <div class="event-row confirmed"><span class="event-date">Jul 29</span><span class="event-icon">🇬🇧</span><div><div class="event-title confirmed">Arrive Preston, England — Ministry Begins <span class="badge badge-confirmed">Confirmed</span></div><div class="event-detail">Daniel Solt's Church · Preach + VBS week · Flight, lodging &amp; meals covered</div></div></div>
       </div>
     </div>
@@ -379,8 +390,8 @@ footer { background: linear-gradient(180deg, var(--brown-light), var(--brown)); 
       <div class="section-head"><span class="section-title">AUGUST</span><span class="section-year">2026</span><div class="section-line"></div></div>
       <div class="event-list">
         <div class="event-row confirmed"><span class="event-date">Aug 2</span><span class="event-icon">⛪</span><div><div class="event-title confirmed">Preach — Daniel Solt's Church, Preston England <span class="badge badge-confirmed">Confirmed</span></div></div></div>
-        <div class="event-row"><span class="event-date">Aug 3</span><span class="event-icon">✈️</span><div><div class="event-title">Return to Chicago</div><div class="event-detail">MAN 1:05 PM → Reykjavik → ORD · Arrive 6:15 PM · Icelandair 441 + 853</div></div></div>
-        <div class="event-row"><span class="event-date">Aug 9–21</span><span class="event-icon">🏠</span><div><div class="event-title">Wedding Prep &amp; Final Details</div></div></div>
+        <div class="event-row"><span class="event-date">Aug 3</span><span class="event-icon">✈️</span><div><div class="event-title">Return to Chicago</div><div class="event-detail">MAN 1:05 PM → Reykjavik → ORD 6:15 PM · Icelandair 441 + 853</div></div></div>
+        <div class="event-row"><span class="event-date">Aug 9–20</span><span class="event-icon">🏠</span><div><div class="event-title">Wedding Prep &amp; Final Details</div></div></div>
       </div>
       <div class="wedding">
         <div class="wedding-date">💍 &nbsp; August 21, 2026 &nbsp; 💍</div>
@@ -392,19 +403,16 @@ footer { background: linear-gradient(180deg, var(--brown-light), var(--brown)); 
       </div>
       <div class="task-box" style="margin-top:14px">
         <div class="task-box-title">📋 Tasks</div>
-        <label class="task-item"><input type="checkbox" onchange="saveCheck(this,'t12')"> Leah: passport renewal</label>
-        <label class="task-item"><input type="checkbox" onchange="saveCheck(this,'t13')"> Leah: UK ETA visa (after honeymoon Aug 29+)</label>
+        <label class="task-item"><input type="checkbox" data-tk="t12"><span>Leah: passport renewal</span></label>
+        <label class="task-item"><input type="checkbox" data-tk="t13"><span>Leah: UK ETA visa (after honeymoon Aug 29+)</span></label>
       </div>
     </div>
 
     <div class="section">
-      <div class="banner">
-        <h3>✦ &nbsp; September 2026 &nbsp; ✦</h3>
-        <p>Full-Time Deputation Begins — Mr. &amp; Mrs. DeMoville on the Road</p>
-      </div>
+      <div class="banner"><h3>✦ &nbsp; September 2026 &nbsp; ✦</h3><p>Full-Time Deputation Begins — Mr. &amp; Mrs. DeMoville on the Road</p></div>
       <div class="event-list">
         <div class="event-row"><span class="event-date">Sep 1</span><span class="event-icon">📞</span><div><div class="event-title">Call El Vista Baptist — Pastor Joey Watt</div><div class="event-detail">He asked to be called back in September</div></div></div>
-        <div class="event-row confirmed"><span class="event-date">Sep 6</span><span class="event-icon">⛪</span><div><div class="event-title confirmed">First Baptist — Cody, WY <span class="badge badge-confirmed">Confirmed</span></div><div class="event-detail">Pastor Jeremiah Young · fbccody@gmail.com · Missions house · Yellowstone possible!</div></div></div>
+        <div class="event-row confirmed"><span class="event-date">Sep 6</span><span class="event-icon">⛪</span><div><div class="event-title confirmed">First Baptist — Cody, WY <span class="badge badge-confirmed">Confirmed</span></div><div class="event-detail">Pastor Jeremiah Young · Missions house · Yellowstone possible!</div></div></div>
         <div class="event-row"><span class="event-date">Sep 13+</span><span class="event-icon">🚗</span><div><div class="event-title">Wyoming + Montana + Wisconsin Circuit</div></div></div>
       </div>
     </div>
@@ -443,7 +451,7 @@ footer { background: linear-gradient(180deg, var(--brown-light), var(--brown)); 
     <div class="section">
       <div class="section-head"><span class="section-title">FEB – APRIL</span><span class="section-year">2027</span><div class="section-line"></div></div>
       <div class="event-list">
-        <div class="event-row"><span class="event-date">Feb–Apr</span><span class="event-icon">✈️</span><div><div class="event-title">East Coast Circuit</div><div class="event-detail">NC · VA · PA · NY · NJ · MD — 130+ prospects · LBC Revival network (John Early, 607-857-1668)</div></div></div>
+        <div class="event-row"><span class="event-date">Feb–Apr</span><span class="event-icon">✈️</span><div><div class="event-title">East Coast Circuit</div><div class="event-detail">NC · VA · PA · NY · NJ · MD — 130+ prospects · LBC Revival network</div></div></div>
         <div class="event-row"><span class="event-date">Feb 18–22</span><span class="event-icon">⛪</span><div><div class="event-title">Gateway Baptist — Chesterfield, VA <span class="badge badge-potential">Potential Hold</span></div><div class="event-detail">Pastor David DeMoss · Call November 2026 to confirm</div></div></div>
       </div>
     </div>
@@ -451,15 +459,15 @@ footer { background: linear-gradient(180deg, var(--brown-light), var(--brown)); 
     <div class="section">
       <div class="section-head"><span class="section-title">MAY</span><span class="section-year">2027</span><div class="section-line"></div></div>
       <div class="event-list">
-        <div class="event-row confirmed"><span class="event-date">May 2</span><span class="event-icon">⛪</span><div><div class="event-title confirmed">Berean Baptist — Greenwood, IN <span class="badge badge-confirmed">Confirmed</span></div><div class="event-detail">Pastor Bill Blakely · Sunday Night Service · (317) 888-4003 · office@bbcgreenwood.com · ~2hrs from Hammond</div></div></div>
-        <div class="event-row"><span class="event-date">May</span><span class="event-icon">✈️</span><div><div class="event-title">Alaska — Dedicated Trip</div><div class="event-detail">Fly into Anchorage · Best weather window · Maximize trip length</div></div></div>
+        <div class="event-row confirmed"><span class="event-date">May 2</span><span class="event-icon">⛪</span><div><div class="event-title confirmed">Berean Baptist — Greenwood, IN <span class="badge badge-confirmed">Confirmed</span></div><div class="event-detail">Pastor Bill Blakely · Sunday Night · (317) 888-4003 · ~2hrs from Hammond</div></div></div>
+        <div class="event-row"><span class="event-date">May</span><span class="event-icon">✈️</span><div><div class="event-title">Alaska — Dedicated Trip</div><div class="event-detail">Fly into Anchorage · Best weather window</div></div></div>
       </div>
     </div>
 
     <div class="section">
       <div class="section-head"><span class="section-title">JUN – JUL</span><span class="section-year">2027</span><div class="section-line"></div></div>
       <div class="event-list">
-        <div class="event-row"><span class="event-date">Jun–Jul</span><span class="event-icon">✈️</span><div><div class="event-title">West Coast — California + Oregon</div><div class="event-detail">CA: 66 prospects · Fly LAX → work north → exit SFO</div></div></div>
+        <div class="event-row"><span class="event-date">Jun–Jul</span><span class="event-icon">✈️</span><div><div class="event-title">West Coast — California + Oregon</div><div class="event-detail">CA: 66 prospects · LAX → SFO</div></div></div>
       </div>
     </div>
 
@@ -475,10 +483,9 @@ footer { background: linear-gradient(180deg, var(--brown-light), var(--brown)); 
         <div class="circuit-row"><span class="circuit-region">Florida</span><span class="circuit-desc">Largest southern state</span><span class="circuit-count">38 prospects</span></div>
       </div>
     </div>
+  </div>
 
-  </div><!-- /timeline -->
-
-  <!-- ═══ CHURCHES ═══ -->
+  <!-- CHURCHES -->
   <div id="page-pipeline" class="page">
     <div class="section">
       <div class="section-head"><span class="section-title">CHURCH PIPELINE</span><div class="section-line"></div></div>
@@ -489,246 +496,964 @@ footer { background: linear-gradient(180deg, var(--brown-light), var(--brown)); 
         <button class="filter-btn" onclick="filterChurches('pending',this)">⏳ Pending</button>
         <button class="filter-btn" onclick="filterChurches('contacted',this)">📞 Contacted</button>
       </div>
-      <div id="church-list">
-        <div class="church-card" data-status="completed" onclick="showChurch(this)"><div class="church-dot dot-completed"></div><div><div class="church-name">First Baptist — Urbandale, IA</div><div class="church-detail">Pastor Dan McCoy · Oct 12, 2025 · ⭐ First meeting ever!</div></div><div class="church-offering">$800 · $75/mo ✅</div></div>
-        <div class="church-card" data-status="completed" onclick="showChurch(this)"><div class="church-dot dot-completed"></div><div><div class="church-name">Bible Baptist — New Franklin, MO</div><div class="church-detail">Pastor Larry Markowski (Leah's dad) · Oct 25-26, 2025</div></div><div class="church-offering">$250</div></div>
-        <div class="church-card" data-status="completed" onclick="showChurch(this)"><div class="church-dot dot-completed"></div><div><div class="church-name">Heritage Baptist — Albany, GA</div><div class="church-detail">Pastor Glenn Robinson · Dec 28, 2025</div></div><div class="church-offering">$200</div></div>
-        <div class="church-card" data-status="completed" onclick="showChurch(this)"><div class="church-dot dot-completed"></div><div><div class="church-name">FBC Hammond — Hammond, IN</div><div class="church-detail">Pastor John Wilkerson · Jan 10-14, 2026 · Featured Missionary</div></div><div class="church-offering">$3,000+ · Support ✅</div></div>
-        <div class="church-card" data-status="completed" onclick="showChurch(this)"><div class="church-dot dot-completed"></div><div><div class="church-name">Beecher Fellowship — Beecher, IL</div><div class="church-detail">Pastor Brett Haynes · Jan 18, 2026</div></div><div class="church-offering">$360</div></div>
-        <div class="church-card" data-status="completed" onclick="showChurch(this)"><div class="church-dot dot-completed"></div><div><div class="church-name">Emmanuel Baptist — Valparaiso, IN</div><div class="church-detail">Pastor John Allen · Jan 25, 2026</div></div><div class="church-offering">$600</div></div>
-        <div class="church-card" data-status="completed" onclick="showChurch(this)"><div class="church-dot dot-completed"></div><div><div class="church-name">Roseville Baptist — Roseville, IL</div><div class="church-detail">Pastor Chris Cunningham · Feb 15, 2026</div></div><div class="church-offering">$403</div></div>
-        <div class="church-card" data-status="completed" onclick="showChurch(this)"><div class="church-dot dot-completed"></div><div><div class="church-name">Calvary Baptist — Akron, OH</div><div class="church-detail">Pastor Jeffrey Smale · Mar 15, 2026</div></div><div class="church-offering">$400</div></div>
-        <div class="church-card" data-status="completed" onclick="showChurch(this)"><div class="church-dot dot-completed"></div><div><div class="church-name">New Life Baptist — Galesburg, IL</div><div class="church-detail">Pastor Darrell Grimm · Apr 12, 2026</div></div><div class="church-offering">$803 · $125/mo ✅</div></div>
-        <div class="church-card" data-status="scheduled" onclick="showChurch(this)"><div class="church-dot dot-scheduled"></div><div><div class="church-name">Liberty Baptist — Rochester, IN</div><div class="church-detail">Pastor Bill McSpadden · Jul 12, 2026 · (574) 223-8328</div></div><div class="church-offering">Upcoming</div></div>
-        <div class="church-card" data-status="scheduled" onclick="showChurch(this)"><div class="church-dot dot-scheduled"></div><div><div class="church-name">Daniel Solt's Church — Preston, England</div><div class="church-detail">Daniel Solt · Jul 27–Aug 3, 2026</div></div><div class="church-offering">$25/mo ✅</div></div>
-        <div class="church-card" data-status="scheduled" onclick="showChurch(this)"><div class="church-dot dot-scheduled"></div><div><div class="church-name">First Baptist — Cody, WY</div><div class="church-detail">Pastor Jeremiah Young · Sep 6, 2026 · fbccody@gmail.com</div></div><div class="church-offering">Upcoming</div></div>
-        <div class="church-card" data-status="scheduled" onclick="showChurch(this)"><div class="church-dot dot-scheduled"></div><div><div class="church-name">Jordan Baptist — Burbank, IL</div><div class="church-detail">Pastor Keith Ellis · Oct 4, 2026 · pastor@jbcburbank.com</div></div><div class="church-offering">Offering only</div></div>
-        <div class="church-card" data-status="scheduled" onclick="showChurch(this)"><div class="church-dot dot-scheduled"></div><div><div class="church-name">Valley Baptist Missions Conference</div><div class="church-detail">Pastor Cowling · Oct 18-22, 2026 ⚠️ Send paperwork!</div></div><div class="church-offering">Upcoming</div></div>
-        <div class="church-card" data-status="scheduled" onclick="showChurch(this)"><div class="church-dot dot-scheduled"></div><div><div class="church-name">First Baptist — Burbank, IL</div><div class="church-detail">Pastor Bill Erickson · Nov 1-4, 2026</div></div><div class="church-offering">Upcoming</div></div>
-        <div class="church-card" data-status="scheduled" onclick="showChurch(this)"><div class="church-dot dot-scheduled"></div><div><div class="church-name">Pastor Dominguez's Church — Seattle, WA</div><div class="church-detail">Jesse Dominguez · Nov 13-15, 2026</div></div><div class="church-offering">Upcoming</div></div>
-        <div class="church-card" data-status="scheduled" onclick="showChurch(this)"><div class="church-dot dot-scheduled"></div><div><div class="church-name">Berean Baptist — Greenwood, IN</div><div class="church-detail">Pastor Bill Blakely · May 2, 2027 · (317) 888-4003</div></div><div class="church-offering">Upcoming</div></div>
-        <div class="church-card" data-status="pending" onclick="showChurch(this)"><div class="church-dot dot-pending"></div><div><div class="church-name">Faith Baptist — Bourbonnais, IL</div><div class="church-detail">Pastor Terry Anglea · Call Mon-Wed 8:30-12 · 815-933-9400</div></div><div class="church-offering">Pending</div></div>
-        <div class="church-card" data-status="pending" onclick="showChurch(this)"><div class="church-dot dot-pending"></div><div><div class="church-name">Gateway Baptist — Chesterfield, VA</div><div class="church-detail">Pastor David DeMoss · Feb 2027 potential hold</div></div><div class="church-offering">Potential</div></div>
-        <div class="church-card" data-status="contacted" onclick="showChurch(this)"><div class="church-dot dot-contacted"></div><div><div class="church-name">Lakecrest Baptist — Waterford, MI</div><div class="church-detail">Pastor Kevin Dail · Called May 5 — left voicemail · (919) 616-3592</div></div><div class="church-offering">Warm lead</div></div>
-        <div class="church-card" data-status="contacted" onclick="showChurch(this)"><div class="church-dot dot-contacted"></div><div><div class="church-name">Berean Baptist — Galesville, WI</div><div class="church-detail">Pastor Mark Stauffacher · (608) 582-2824 · Met at conference</div></div><div class="church-offering">Warm lead</div></div>
-        <div class="church-card" data-status="contacted" onclick="showChurch(this)"><div class="church-dot dot-contacted"></div><div><div class="church-name">Victory Baptist — Kittanning, PA</div><div class="church-detail">Pastor Lenze · (417) 955-5055 · Met at wedding May 9</div></div><div class="church-offering">Warm lead</div></div>
-        <div class="church-card" data-status="contacted" onclick="showChurch(this)"><div class="church-dot dot-contacted"></div><div><div class="church-name">Eastern Hills Baptist — Council Bluffs, IA</div><div class="church-detail">Pastor Brian Tatman · (712) 314-0693 · Referral from Levisit Scott</div></div><div class="church-offering">Warm lead</div></div>
-        <div class="church-card" data-status="contacted" onclick="showChurch(this)"><div class="church-dot dot-contacted"></div><div><div class="church-name">Gospel Light Baptist — Marion, IA</div><div class="church-detail">Pastor Joel Bible · (319) 373-2470 · Warm lead</div></div><div class="church-offering">Warm lead</div></div>
-      </div>
+      <div id="church-list"></div>
     </div>
   </div>
 
-  <!-- ═══ FINANCIAL ═══ -->
+  <!-- FINANCIAL -->
   <div id="page-financial" class="page">
     <div class="section">
-      <div class="section-head"><span class="section-title">FINANCIAL TRACKER</span><div class="section-line"></div></div>
+      <div class="section-head"><span class="section-title">SUPPORT DASHBOARD</span><div class="section-line"></div></div>
       <div class="fin-grid">
         <div class="fin-card"><div class="fin-val">$6,300/mo</div><div class="fin-lbl">Monthly Goal</div></div>
-        <div class="fin-card"><div class="fin-val" style="color:var(--green)">$225/mo</div><div class="fin-lbl">Confirmed (3.6%)</div></div>
-        <div class="fin-card"><div class="fin-val" style="color:var(--red)">$6,075/mo</div><div class="fin-lbl">Still Needed</div></div>
-        <div class="fin-card"><div class="fin-val">$6,816+</div><div class="fin-lbl">Total Offerings</div></div>
+        <div class="fin-card"><div class="fin-val" style="color:var(--green)" id="fin-confirmed">$225/mo</div><div class="fin-lbl" id="fin-confirmed-lbl">Confirmed (3.6%)</div></div>
+        <div class="fin-card"><div class="fin-val" style="color:var(--red)" id="fin-needed">$6,075/mo</div><div class="fin-lbl">Still Needed</div></div>
+        <div class="fin-card"><div class="fin-val" id="fin-offered">$6,816+</div><div class="fin-lbl">Total Offerings</div></div>
       </div>
-
       <div class="section-head" style="margin-top:20px"><span class="section-title">Monthly Partners</span><div class="section-line"></div></div>
-      <div class="partner-row"><span class="partner-amount">$75/mo</span><div><div class="partner-name">First Baptist — Urbandale, IA</div><div class="partner-detail">Pastor Dan McCoy</div></div><span class="status-pill pill-active">Active</span></div>
-      <div class="partner-row"><span class="partner-amount">$125/mo</span><div><div class="partner-name">New Life Baptist — Galesburg, IL</div><div class="partner-detail">Pastor Darrell Grimm · Starts May 2026</div></div><span class="status-pill pill-active">Active</span></div>
-      <div class="partner-row"><span class="partner-amount">$25/mo</span><div><div class="partner-name">Daniel Solt — Preston, England</div><div class="partner-detail">UK Ministry Partner</div></div><span class="status-pill pill-active">Active</span></div>
-      <div class="partner-row" style="border:2px solid var(--green)"><span class="partner-amount">TBD 🎉</span><div><div class="partner-name">FBC Hammond — Hammond, IN</div><div class="partner-detail">Confirmed May 8, 2026 · Amount pending · Ask Carissa!</div></div><span class="status-pill pill-pending">Pending Amt</span></div>
-
+      <div id="partner-list"></div>
       <div class="section-head" style="margin-top:20px"><span class="section-title">Love Offerings</span><div class="section-line"></div></div>
-      <table class="offering-table">
-        <thead><tr><th>Date</th><th>Church</th><th>Amount</th></tr></thead>
-        <tbody>
-          <tr><td>Oct 12, 2025</td><td>First Baptist — Urbandale, IA</td><td style="color:var(--green);font-weight:600">$800.00</td></tr>
-          <tr><td>Oct 26, 2025</td><td>Bible Baptist — New Franklin, MO</td><td style="color:var(--green);font-weight:600">$250.00</td></tr>
-          <tr><td>Dec 28, 2025</td><td>Heritage Baptist — Albany, GA</td><td style="color:var(--green);font-weight:600">$200.00</td></tr>
-          <tr><td>Jan 2026</td><td>FBC Hammond — Hammond, IN</td><td style="color:var(--green);font-weight:600">$3,000.00+</td></tr>
-          <tr><td>Jan 18, 2026</td><td>Beecher Fellowship — Beecher, IL</td><td style="color:var(--green);font-weight:600">$360.00</td></tr>
-          <tr><td>Jan 25, 2026</td><td>Emmanuel Baptist — Valparaiso, IN</td><td style="color:var(--green);font-weight:600">$600.00</td></tr>
-          <tr><td>Feb 15, 2026</td><td>Roseville Baptist — Roseville, IL</td><td style="color:var(--green);font-weight:600">$403.00</td></tr>
-          <tr><td>Mar 15, 2026</td><td>Calvary Baptist — Akron, OH</td><td style="color:var(--green);font-weight:600">$400.00</td></tr>
-          <tr><td>Apr 12, 2026</td><td>New Life Baptist — Galesburg, IL</td><td style="color:var(--green);font-weight:600">$803.00</td></tr>
-          <tr><td colspan="2"><strong>Total (minimum)</strong></td><td style="color:var(--green);font-weight:700">$6,816.00</td></tr>
-        </tbody>
-      </table>
+      <table class="offering-table"><thead><tr><th>Date</th><th>Church</th><th>Amount</th></tr></thead><tbody id="offering-tbody"></tbody></table>
     </div>
   </div>
 
-  <!-- ═══ ACTIONS ═══ -->
+  <!-- ACTIONS -->
   <div id="page-actions" class="page">
     <div class="section">
       <div class="section-head"><span class="section-title">ACTION ITEMS</span><div class="section-line"></div></div>
-
       <div class="add-task-box">
         <div style="font-family:'Cinzel',serif;font-size:10px;color:var(--bamboo);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">+ Add Task</div>
         <input type="text" id="new-task" placeholder="Task description..." onkeydown="if(event.key==='Enter')addTask()">
         <div style="display:flex;gap:8px">
           <input type="text" id="new-due" placeholder="Due date / note..." style="flex:1">
-          <button onclick="addTask()" style="background:var(--brown);color:var(--parch-light);border:none;border-radius:4px;padding:8px 16px;cursor:pointer;font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;white-space:nowrap">ADD</button>
+          <button onclick="addTask()" class="btn btn-primary">ADD</button>
         </div>
       </div>
-
       <div style="font-family:'Cinzel',serif;font-size:10px;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">⚠️ Urgent</div>
       <div id="urgent-list"></div>
-
       <div style="font-family:'Cinzel',serif;font-size:10px;color:var(--bamboo);letter-spacing:2px;text-transform:uppercase;margin:16px 0 8px">📋 All Tasks</div>
       <div id="regular-list"></div>
     </div>
   </div>
 
-  <!-- ═══ WARM LEADS ═══ -->
+  <!-- LEADS -->
   <div id="page-leads" class="page">
     <div class="section">
       <div class="section-head"><span class="section-title">WARM LEADS</span><div class="section-line"></div></div>
-      <div class="event-list">
-        <div class="event-row"><span class="event-date">Kittanning PA</span><span class="event-icon">⭐</span><div><div class="event-title">Victory Baptist — Pastor Lenze</div><div class="event-detail">(417) 955-5055 · Met at Huckins/Lenze wedding May 9</div></div></div>
-        <div class="event-row"><span class="event-date">Waterford MI</span><span class="event-icon">📞</span><div><div class="event-title">Lakecrest Baptist — Pastor Kevin Dail</div><div class="event-detail">(919) 616-3592 · Called May 5 — left voicemail · ~4hrs from Hammond</div></div></div>
-        <div class="event-row"><span class="event-date">Galesville WI</span><span class="event-icon">⭐</span><div><div class="event-title">Berean Baptist — Pastor Mark Stauffacher</div><div class="event-detail">(608) 582-2824 · Met at conference · Very warm lead</div></div></div>
-        <div class="event-row"><span class="event-date">Terre Haute IN</span><span class="event-icon">📞</span><div><div class="event-title">Bible Baptist — Pastor Kevin Szwarga</div><div class="event-detail">(812) 238-2541 · info@thbiblebaptist.com · Referral</div></div></div>
-        <div class="event-row"><span class="event-date">Council Bluffs IA</span><span class="event-icon">📞</span><div><div class="event-title">Eastern Hills Baptist — Pastor Brian Tatman</div><div class="event-detail">(712) 314-0693 · info@easternhillsbaptistchurch.org · Referral from Levisit Scott · ~6.5hrs drive</div></div></div>
-        <div class="event-row"><span class="event-date">Marion IA</span><span class="event-icon">📞</span><div><div class="event-title">Gospel Light Baptist — Pastor Joel Bible</div><div class="event-detail">(319) 373-2470 · goslig@msn.com · Warm lead · ~5hrs drive · Near Council Bluffs on same Iowa trip</div></div></div>
-        <div class="event-row"><span class="event-date">Chesterfield VA</span><span class="event-icon">⏳</span><div><div class="event-title">Gateway Baptist — Pastor David DeMoss</div><div class="event-detail">(971) 269-4048 · Feb 2027 potential hold · Call November 2026</div></div></div>
+      <div id="leads-list" class="event-list"></div>
+    </div>
+  </div>
+
+  <!-- ADVENTURE LOG -->
+  <div id="page-adventure" class="page">
+    <div class="section">
+      <div class="section-head"><span class="section-title">ADVENTURE &amp; MEMORY LOG</span><div class="section-line"></div></div>
+      <button class="adv-bigbtn" onclick="capturePhoto('adventure')">
+        <span class="em">📸</span>
+        Capture Memory
+        <small>auto-tags GPS &amp; date · saves to Drive</small>
+      </button>
+      <input type="file" id="adv-input" accept="image/*" capture="environment" style="display:none" onchange="onPhoto(event,'adventure')">
+      <div class="filter-wrap" style="margin-top:18px">
+        <button class="filter-btn active" onclick="filterAdv('all',this)">All</button>
+        <button class="filter-btn" onclick="filterAdv('week',this)">This Week</button>
+        <button class="filter-btn" onclick="filterAdv('month',this)">This Month</button>
+        <button class="filter-btn" onclick="filterAdv('year',this)">This Year</button>
+      </div>
+      <div id="adv-content"></div>
+    </div>
+  </div>
+
+  <!-- EXPENSES -->
+  <div id="page-expenses" class="page">
+    <div class="section">
+      <div class="section-head"><span class="section-title">EXPENSE TRACKER</span><div class="section-line"></div></div>
+      <div class="exp-summary">
+        <div><div class="v" id="exp-month">$0</div><div class="l">This Month</div></div>
+        <div><div class="v" style="color:var(--green)" id="exp-business">$0</div><div class="l">Business</div></div>
+        <div><div class="v" style="color:var(--red)" id="exp-personal">$0</div><div class="l">Personal</div></div>
+      </div>
+      <button class="adv-bigbtn" onclick="capturePhoto('expense')">
+        <span class="em">🧾</span>
+        Snap Receipt
+        <small>captures vendor &amp; date · add price + category</small>
+      </button>
+      <input type="file" id="exp-input" accept="image/*" capture="environment" style="display:none" onchange="onPhoto(event,'expense')">
+      <div class="filter-wrap" style="margin-top:18px">
+        <button class="filter-btn active" onclick="filterExp('all',this)">All</button>
+        <button class="filter-btn" onclick="filterExp('unset',this)">Uncategorized</button>
+        <button class="filter-btn" onclick="filterExp('business',this)">Business</button>
+        <button class="filter-btn" onclick="filterExp('personal',this)">Personal</button>
+      </div>
+      <div id="exp-list" class="exp-list"></div>
+      <button class="btn btn-secondary" style="margin-top:14px" onclick="exportExpenses()">⬇ Export Month CSV (tax-ready)</button>
+    </div>
+  </div>
+
+  <!-- DRIVE MODE -->
+  <div id="page-drive" class="page">
+    <div class="section">
+      <div class="section-head"><span class="section-title">DRIVE MODE</span><div class="section-line"></div></div>
+      <div class="drive-card">
+        <div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;color:rgba(253,245,232,0.5)">NEXT MEETING</div>
+        <div class="drive-dest" id="drive-dest">First Baptist — Cody, WY</div>
+        <div class="drive-eta" id="drive-eta">Sep 6</div>
+        <div class="drive-meta" id="drive-meta">Pastor Jeremiah Young</div>
+      </div>
+      <div class="drive-actions">
+        <button class="drive-btn" onclick="driveAction('arrived')"><span class="em">📍</span>We Arrived</button>
+        <button class="drive-btn" onclick="driveAction('offering')"><span class="em">💵</span>Log Offering</button>
+        <button class="drive-btn" onclick="capturePhoto('adventure')"><span class="em">📸</span>Photo</button>
+        <button class="drive-btn" onclick="capturePhoto('expense')"><span class="em">🧾</span>Receipt</button>
+      </div>
+      <p style="font-size:13px;color:var(--lgray);font-style:italic;text-align:center;margin-top:16px">Big buttons · keep your eyes on the road</p>
+    </div>
+  </div>
+
+  <!-- PRAYER -->
+  <div id="page-prayer" class="page">
+    <div class="section">
+      <div class="section-head"><span class="section-title">PRAYER LOG</span><div class="section-line"></div></div>
+      <div class="add-task-box">
+        <div style="font-family:'Cinzel',serif;font-size:10px;color:var(--bamboo);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">+ Add Prayer Request</div>
+        <input type="text" id="new-prayer" placeholder="Prayer request..." onkeydown="if(event.key==='Enter')addPrayer()">
+        <div style="display:flex;gap:8px">
+          <input type="text" id="new-prayer-from" placeholder="From whom / context..." style="flex:1">
+          <button onclick="addPrayer()" class="btn btn-primary">ADD</button>
+        </div>
+      </div>
+      <div class="filter-wrap">
+        <button class="filter-btn active" onclick="filterPrayer('open',this)">🙏 Open</button>
+        <button class="filter-btn" onclick="filterPrayer('answered',this)">✅ Answered</button>
+        <button class="filter-btn" onclick="filterPrayer('all',this)">All</button>
+      </div>
+      <div id="prayer-list"></div>
+      <div class="section-head" style="margin-top:30px"><span class="section-title">PRAYER LETTER BUILDER</span><div class="section-line"></div></div>
+      <div class="coming-soon">
+        <h4>Coming Soon</h4>
+        <p>One tap at end-of-month: pulls your top moments, photos &amp; updates into a draft prayer letter ready to email Carissa. Ships in next build.</p>
       </div>
     </div>
   </div>
 
-</div><!-- /container -->
+  <!-- SERMONS -->
+  <div id="page-sermons" class="page">
+    <div class="section">
+      <div class="section-head"><span class="section-title">SERMON &amp; TEACHING TRACKER</span><div class="section-line"></div></div>
+      <div class="add-task-box">
+        <div style="font-family:'Cinzel',serif;font-size:10px;color:var(--bamboo);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">+ Log Sermon</div>
+        <input type="text" id="new-sermon-title" placeholder="Sermon / lesson title...">
+        <input type="text" id="new-sermon-where" placeholder="Where preached (church name)...">
+        <div style="display:flex;gap:8px">
+          <select id="new-sermon-type" style="flex:1;padding:8px 10px;border:1px solid rgba(212,184,150,0.3);border-radius:4px;background:var(--parch-pale);font-family:'Crimson Pro',serif;font-size:14px">
+            <option value="Sunday AM">Sunday AM</option>
+            <option value="Sunday PM">Sunday PM</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Sunday School">Sunday School</option>
+            <option value="Youth">Youth</option>
+            <option value="Children">Children's Church</option>
+            <option value="Conference">Conference</option>
+            <option value="Other">Other</option>
+          </select>
+          <button onclick="addSermon()" class="btn btn-primary">LOG</button>
+        </div>
+      </div>
+      <div class="filter-wrap">
+        <button class="filter-btn active" onclick="filterSermon('all',this)">All</button>
+        <button class="filter-btn" onclick="filterSermon('Sunday AM',this)">Sunday AM</button>
+        <button class="filter-btn" onclick="filterSermon('Sunday PM',this)">Sunday PM</button>
+        <button class="filter-btn" onclick="filterSermon('Conference',this)">Conference</button>
+      </div>
+      <div id="sermon-list"></div>
+    </div>
+  </div>
+
+  <!-- FOLLOW-UPS -->
+  <div id="page-followups" class="page">
+    <div class="section">
+      <div class="section-head"><span class="section-title">FOLLOW-UP REMINDERS</span><div class="section-line"></div></div>
+      <p style="color:var(--lgray);font-style:italic;font-size:14px;margin-bottom:14px">Each completed meeting auto-generates a 30-day reminder so no contact goes cold.</p>
+      <div id="followup-list"></div>
+    </div>
+  </div>
+
+  <!-- PHILIPPINES -->
+  <div id="page-philippines" class="page">
+    <div class="section">
+      <div class="section-head"><span class="section-title">PHILIPPINES PREP</span><div class="section-line"></div></div>
+      <div class="ph-card">
+        <h4>🇵🇭 Vision</h4>
+        <p style="font-size:14px;line-height:1.5">Plant solid IFB churches across Negros Island, the Visayas, and the Philippines — soul-winning, discipling, sending missionaries. Successful outreach to politicians without compromising. KJV. Cebuano fluency. Help Dad's Bible college. Eventually plant my own.</p>
+      </div>
+
+      <div class="section-head" style="margin-top:24px"><span class="section-title">Cebuano Tracker</span><div class="section-line"></div></div>
+      <p style="color:var(--lgray);font-style:italic;font-size:13px;margin-bottom:10px">Tap the circle when you've got it down. (Track your own daily lessons separately — these are common phrases for ministry.)</p>
+      <div id="ceb-list"></div>
+
+      <div class="section-head" style="margin-top:24px"><span class="section-title">Negros Island Notes</span><div class="section-line"></div></div>
+      <div class="add-task-box">
+        <input type="text" id="new-ph-note" placeholder="Add ministry note, contact, or prayer point..." onkeydown="if(event.key==='Enter')addPhNote()">
+        <button onclick="addPhNote()" class="btn btn-primary" style="width:100%">SAVE NOTE</button>
+      </div>
+      <div id="ph-notes"></div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div id="page-settings" class="page">
+    <div class="section">
+      <div class="section-head"><span class="section-title">SETTINGS &amp; SYNC</span><div class="section-line"></div></div>
+      <div class="set-row">
+        <label>Apps Script Web App URL</label>
+        <input type="text" id="setting-url" placeholder="https://script.google.com/macros/s/.../exec">
+        <div class="help">After deploying the bound Apps Script as Web App (Execute as: Me · Access: Anyone), paste the URL here. This unlocks Google Sheets sync between Christian's and Leah's devices.</div>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="saveSettings()">💾 Save &amp; Test</button>
+          <button class="btn btn-secondary" onclick="manualSync()">🔄 Sync Now</button>
+        </div>
+      </div>
+      <div class="set-row">
+        <label>Drive Photo Folder ID (optional)</label>
+        <input type="text" id="setting-drive" placeholder="Drive folder ID for photos">
+        <div class="help">When set, all Adventure + Receipt photos auto-upload to this Drive folder. Long-term storage, syncs to phone via Drive app, viewable in this site forever. Leave blank to use local-only.</div>
+      </div>
+      <div class="set-row">
+        <label>User</label>
+        <select id="setting-user" style="width:100%;padding:10px 12px;border:1px solid rgba(212,184,150,0.4);border-radius:5px;font-size:14px;background:var(--parch-pale)">
+          <option value="Christian">Christian</option>
+          <option value="Leah">Leah</option>
+        </select>
+        <div class="help">Identifies who added each entry when you both use the same site.</div>
+      </div>
+      <div class="set-row">
+        <label>Local Data</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-secondary" onclick="exportAll()">⬇ Export Everything (JSON)</button>
+          <button class="btn btn-danger" onclick="clearLocal()">🗑 Clear Local Cache</button>
+        </div>
+        <div class="help">Local cache holds anything not yet synced to Sheets. Exporting gives you a complete backup.</div>
+      </div>
+      <div class="set-row" style="background:var(--parch-pale)">
+        <label>About this site</label>
+        <div class="help" style="font-size:13px;color:var(--text)">
+          <strong>v2.0</strong> — DeMoville Deputation Command Center<br>
+          <em>Reaching the Lost · Reviving the Church · Raising the Next Generation</em><br><br>
+          Phase 1 complete: Sheets sync, persistent state.<br>
+          Phase 2 complete: Adventure log, expense tracker.<br>
+          Phase 3: Drive Mode, Support Dashboard.<br>
+          Phase 4: Prayer Log, Sermon Tracker, Follow-Ups.<br>
+          Phase 5: Philippines Prep, Cebuano tracker.<br>
+          <em>Prayer Letter Builder ships in next build.</em>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 <footer>
   <div class="footer-verse">"Being confident of this very thing, that he which hath begun a good work in you will perform it until the day of Jesus Christ." — Philippians 1:6</div>
   <div class="footer-contact">Christian DeMoville &nbsp;·&nbsp; (219) 308-4198 &nbsp;·&nbsp; christian.demoville@fbmi.org &nbsp;·&nbsp; demovilleministries.github.io/deputation</div>
 </footer>
 
-<!-- CHURCH MODAL -->
+<!-- Floating add button (context-aware) -->
+<button class="fab" id="fab" onclick="fabAction()" title="Quick Add">+</button>
+
+<!-- Generic Modal -->
 <div id="modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeModal()">
   <div class="modal">
-    <h3 id="modal-title">Church Info</h3>
+    <h3 id="modal-title">Edit</h3>
     <div id="modal-content"></div>
     <div class="modal-actions">
-      <button class="btn btn-primary" onclick="closeModal()">Close</button>
+      <button class="btn btn-primary" id="modal-save" onclick="modalSave()">Save</button>
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-danger" id="modal-delete" style="display:none" onclick="modalDelete()">Delete</button>
     </div>
   </div>
 </div>
 
+<div id="toast" class="toast"></div>
+
 <script>
-// PAGE NAV
-function showPage(id, btn) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
-  btn.classList.add('active');
-}
+/* ============ STATE & STORAGE ============ */
+const LS = {
+  get(k,d){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch{return d} },
+  set(k,v){ localStorage.setItem(k,JSON.stringify(v)) },
+  del(k){ localStorage.removeItem(k) }
+};
 
-// CHURCH FILTER
-function filterChurches(status, btn) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('.church-card').forEach(c => {
-    c.style.display = (status === 'all' || c.dataset.status === status) ? 'flex' : 'none';
-  });
-}
+const settings = {
+  url: LS.get('s.url',''),
+  driveFolderId: LS.get('s.drive',''),
+  user: LS.get('s.user','Christian')
+};
 
-// CHURCH MODAL
-function showChurch(card) {
-  const name = card.querySelector('.church-name').textContent;
-  const detail = card.querySelector('.church-detail').textContent;
-  const offering = card.querySelector('.church-offering').textContent;
-  document.getElementById('modal-title').textContent = name;
-  document.getElementById('modal-content').innerHTML = `
-    <div class="modal-field"><label>Details</label><input type="text" value="${detail}"></div>
-    <div class="modal-field"><label>Offering / Support</label><input type="text" value="${offering}"></div>
-    <div class="modal-field"><label>Notes</label><textarea placeholder="Add notes..."></textarea></div>
-  `;
-  document.getElementById('modal').style.display = 'flex';
-}
-function closeModal() { document.getElementById('modal').style.display = 'none'; }
+let currentModal=null;
 
-// CHECKBOX SAVE
-function saveCheck(cb, key) {
-  localStorage.setItem('chk_' + key, cb.checked);
-}
-
-// ACTION ITEMS
-const defaultActions = [
-  { id:'a1', text:'Reply to Carissa Maskey — FBC Hammond support + ask monthly amount', urgent:true, due:'Tonight' },
-  { id:'a2', text:'Record 1–3 min self-introduction video for FBC Hammond', urgent:true, due:'This week' },
-  { id:'a3', text:'Send ministry presentation video link to Carissa Maskey', urgent:true, due:'This week' },
-  { id:'a4', text:'Decide Leah\'s UK ticket with Daniel Solt', urgent:true, due:'OVERDUE' },
-  { id:'a5', text:'Send Valley Baptist paperwork (prayer card + testimonials)', urgent:true, due:'OVERDUE' },
-  { id:'a6', text:'Call Pastor Anglea — Faith Baptist Bourbonnais IL', urgent:false, due:'Mon-Wed 8:30-12 · 815-933-9400' },
-  { id:'a7', text:'Confirm Cody WY details with Pastor Young', urgent:false, due:'by May 15 · fbccody@gmail.com' },
-  { id:'a8', text:'Call Pastor Brian Tatman — Eastern Hills Baptist, Council Bluffs IA', urgent:false, due:'Monday · (712) 314-0693' },
-  { id:'a9', text:'Contact Pastor Joel Bible — Gospel Light Baptist, Marion IA', urgent:false, due:'Monday · (319) 373-2470' },
-  { id:'a10', text:'Review and send 9 Gmail drafts (WI/IA churches)', urgent:false, due:'ASAP' },
-  { id:'a11', text:'Follow up Pastor Ellis — Oct 4 details', urgent:false, due:'June 1' },
-  { id:'a12', text:'Follow up Pastor Dominguez — Nov 13-15 details', urgent:false, due:'June 1' },
-  { id:'a13', text:'Update financial tracker once FBC Hammond amount confirmed', urgent:false, due:'This week' },
-  { id:'a14', text:'Write Prayer Letter #3', urgent:false, due:'May/June 2026' },
-  { id:'a15', text:'Get 8 missing pastor emails for Carissa Maskey', urgent:false, due:'Ongoing' },
-  { id:'a16', text:'Follow up Pastor Dail — Lakecrest Baptist Waterford MI', urgent:false, due:'(919) 616-3592' },
-  { id:'a17', text:'Find Pastor Tar\'s church — Fort Wayne IN', urgent:false, due:'Ongoing' },
-  { id:'a18', text:'Set up Gmail Send mail as FBMI + Outlook forwarding', urgent:false, due:'On computer' },
-  { id:'a19', text:'Call El Vista Baptist — Pastor Joey Watt', urgent:false, due:'September 1' },
-  { id:'a20', text:'Call Pastor DeMoss — lock in Feb 2027 conference', urgent:false, due:'November 2026 · (971) 269-4048' },
-  { id:'a21', text:'Leah: passport renewal + UK ETA visa', urgent:false, due:'After honeymoon Aug 29+' },
+/* ============ STATIC DATA (defaults) ============ */
+const DEFAULT_ACTIONS = [
+  {id:'a1',text:'Reply to Carissa Maskey — FBC Hammond support + ask monthly amount',urgent:true,due:'Tonight'},
+  {id:'a2',text:'Record 1–3 min self-introduction video for FBC Hammond',urgent:true,due:'This week'},
+  {id:'a3',text:'Send ministry presentation video link to Carissa Maskey',urgent:true,due:'This week'},
+  {id:'a4',text:"Decide Leah's UK ticket with Daniel Solt",urgent:true,due:'OVERDUE'},
+  {id:'a5',text:'Send Valley Baptist paperwork (prayer card + testimonials)',urgent:true,due:'OVERDUE'},
+  {id:'a6',text:'Call Pastor Anglea — Faith Baptist Bourbonnais IL',due:'Mon-Wed 8:30-12 · 815-933-9400'},
+  {id:'a7',text:'Confirm Cody WY details with Pastor Young',due:'by May 15 · fbccody@gmail.com'},
+  {id:'a8',text:'Call Pastor Brian Tatman — Eastern Hills Baptist Council Bluffs IA',due:'Monday · (712) 314-0693'},
+  {id:'a9',text:'Contact Pastor Joel Bible — Gospel Light Baptist Marion IA',due:'Monday · (319) 373-2470'},
+  {id:'a10',text:'Review and send 9 Gmail drafts (WI/IA churches)',due:'ASAP'},
+  {id:'a11',text:'Follow up Pastor Ellis — Oct 4 details',due:'June 1'},
+  {id:'a12',text:'Follow up Pastor Dominguez — Nov 13-15 details',due:'June 1'},
+  {id:'a13',text:'Update financial tracker once FBC Hammond amount confirmed',due:'This week'},
+  {id:'a14',text:'Write Prayer Letter #3',due:'May/June 2026'},
+  {id:'a15',text:'Get 8 missing pastor emails for Carissa Maskey',due:'Ongoing'},
+  {id:'a16',text:'Follow up Pastor Dail — Lakecrest Baptist Waterford MI',due:'(919) 616-3592'},
+  {id:'a17',text:"Find Pastor Tar's church — Fort Wayne IN",due:'Ongoing'},
+  {id:'a18',text:'Set up Gmail Send mail as FBMI + Outlook forwarding',due:'On computer'},
+  {id:'a19',text:'Call El Vista Baptist — Pastor Joey Watt',due:'September 1'},
+  {id:'a20',text:'Call Pastor DeMoss — lock in Feb 2027 conference',due:'November 2026 · (971) 269-4048'},
+  {id:'a21',text:'Leah: passport renewal + UK ETA visa',due:'After honeymoon Aug 29+'}
 ];
 
-function getActions() {
-  const saved = localStorage.getItem('custom_actions');
-  const custom = saved ? JSON.parse(saved) : [];
-  return [...defaultActions, ...custom];
+const CHURCHES = [
+  {s:'completed',n:'First Baptist — Urbandale, IA',d:'Pastor Dan McCoy · Oct 12, 2025 · ⭐ First meeting ever!',o:'$800 · $75/mo ✅'},
+  {s:'completed',n:'Bible Baptist — New Franklin, MO',d:"Pastor Larry Markowski (Leah's dad) · Oct 25-26, 2025",o:'$250'},
+  {s:'completed',n:'Heritage Baptist — Albany, GA',d:'Pastor Glenn Robinson · Dec 28, 2025',o:'$200'},
+  {s:'completed',n:'FBC Hammond — Hammond, IN',d:'Pastor John Wilkerson · Jan 10-14, 2026 · Featured Missionary',o:'$3,000+ · Support ✅'},
+  {s:'completed',n:'Beecher Fellowship — Beecher, IL',d:'Pastor Brett Haynes · Jan 18, 2026',o:'$360'},
+  {s:'completed',n:'Emmanuel Baptist — Valparaiso, IN',d:'Pastor John Allen · Jan 25, 2026',o:'$600'},
+  {s:'completed',n:'Roseville Baptist — Roseville, IL',d:'Pastor Chris Cunningham · Feb 15, 2026',o:'$403'},
+  {s:'completed',n:'Calvary Baptist — Akron, OH',d:'Pastor Jeffrey Smale · Mar 15, 2026',o:'$400'},
+  {s:'completed',n:'New Life Baptist — Galesburg, IL',d:'Pastor Darrell Grimm · Apr 12, 2026',o:'$803 · $125/mo ✅'},
+  {s:'scheduled',n:'Liberty Baptist — Rochester, IN',d:'Pastor Bill McSpadden · Jul 12, 2026 · (574) 223-8328',o:'Upcoming'},
+  {s:'scheduled',n:"Daniel Solt's Church — Preston, England",d:'Daniel Solt · Jul 27–Aug 3, 2026',o:'$25/mo ✅'},
+  {s:'scheduled',n:'First Baptist — Cody, WY',d:'Pastor Jeremiah Young · Sep 6, 2026 · fbccody@gmail.com',o:'Upcoming'},
+  {s:'scheduled',n:'Jordan Baptist — Burbank, IL',d:'Pastor Keith Ellis · Oct 4, 2026',o:'Offering only'},
+  {s:'scheduled',n:'Valley Baptist Missions Conf',d:'Pastor Cowling · Oct 18-22, 2026 ⚠️ Send paperwork!',o:'Upcoming'},
+  {s:'scheduled',n:'First Baptist — Burbank, IL',d:'Pastor Bill Erickson · Nov 1-4, 2026',o:'Upcoming'},
+  {s:'scheduled',n:"Pastor Dominguez's Church — Seattle, WA",d:'Jesse Dominguez · Nov 13-15, 2026',o:'Upcoming'},
+  {s:'scheduled',n:'Berean Baptist — Greenwood, IN',d:'Pastor Bill Blakely · May 2, 2027 · (317) 888-4003',o:'Upcoming'},
+  {s:'pending',n:'Faith Baptist — Bourbonnais, IL',d:'Pastor Terry Anglea · 815-933-9400',o:'Pending'},
+  {s:'pending',n:'Gateway Baptist — Chesterfield, VA',d:'Pastor David DeMoss · Feb 2027 potential hold',o:'Potential'},
+  {s:'contacted',n:'Lakecrest Baptist — Waterford, MI',d:'Pastor Kevin Dail · (919) 616-3592 · Called May 5',o:'Warm lead'},
+  {s:'contacted',n:'Berean Baptist — Galesville, WI',d:'Pastor Mark Stauffacher · (608) 582-2824 · Met at conference',o:'Warm lead'},
+  {s:'contacted',n:'Victory Baptist — Kittanning, PA',d:'Pastor Lenze · (417) 955-5055 · Met at wedding May 9',o:'Warm lead'},
+  {s:'contacted',n:'Eastern Hills Baptist — Council Bluffs, IA',d:'Pastor Brian Tatman · (712) 314-0693 · Referral from Levisit Scott',o:'Warm lead'},
+  {s:'contacted',n:'Gospel Light Baptist — Marion, IA',d:'Pastor Joel Bible · (319) 373-2470 · Warm lead',o:'Warm lead'}
+];
+
+const PARTNERS = [
+  {amt:75,name:'First Baptist — Urbandale, IA',det:'Pastor Dan McCoy',status:'Active'},
+  {amt:125,name:'New Life Baptist — Galesburg, IL',det:'Pastor Darrell Grimm · Starts May 2026',status:'Active'},
+  {amt:25,name:'Daniel Solt — Preston, England',det:'UK Ministry Partner',status:'Active'},
+  {amt:0,name:'FBC Hammond — Hammond, IN',det:'Confirmed May 8, 2026 · Amount pending · Ask Carissa!',status:'PendingAmt',hi:true}
+];
+
+const OFFERINGS = [
+  ['Oct 12, 2025','First Baptist — Urbandale, IA',800],
+  ['Oct 26, 2025','Bible Baptist — New Franklin, MO',250],
+  ['Dec 28, 2025','Heritage Baptist — Albany, GA',200],
+  ['Jan 2026','FBC Hammond — Hammond, IN',3000],
+  ['Jan 18, 2026','Beecher Fellowship — Beecher, IL',360],
+  ['Jan 25, 2026','Emmanuel Baptist — Valparaiso, IN',600],
+  ['Feb 15, 2026','Roseville Baptist — Roseville, IL',403],
+  ['Mar 15, 2026','Calvary Baptist — Akron, OH',400],
+  ['Apr 12, 2026','New Life Baptist — Galesburg, IL',803]
+];
+
+const LEADS = [
+  ['Kittanning PA','⭐','Victory Baptist — Pastor Lenze','(417) 955-5055 · Met at Huckins/Lenze wedding May 9'],
+  ['Waterford MI','📞','Lakecrest Baptist — Pastor Kevin Dail','(919) 616-3592 · Called May 5 · ~4hrs from Hammond'],
+  ['Galesville WI','⭐','Berean Baptist — Pastor Mark Stauffacher','(608) 582-2824 · Met at conference · Very warm'],
+  ['Terre Haute IN','📞','Bible Baptist — Pastor Kevin Szwarga','(812) 238-2541 · info@thbiblebaptist.com'],
+  ['Council Bluffs IA','📞','Eastern Hills Baptist — Pastor Brian Tatman','(712) 314-0693 · Referral from Levisit Scott · ~6.5hrs drive'],
+  ['Marion IA','📞','Gospel Light Baptist — Pastor Joel Bible','(319) 373-2470 · goslig@msn.com · Pairs w/ Tatman on Iowa trip'],
+  ['Chesterfield VA','⏳','Gateway Baptist — Pastor David DeMoss','(971) 269-4048 · Feb 2027 potential · Call Nov 2026']
+];
+
+const CEB_DEFAULTS = [
+  ['Hello / Welcome','Maayong adlaw / Maligayang pag-abot'],
+  ['Thank you','Salamat'],
+  ['God bless you','Panalanginan ka sa Diyos'],
+  ['Praise the Lord','Dayegon ang Ginoo'],
+  ['Jesus loves you','Si Hesus naghigugma kanimo'],
+  ['Pray with me','Mag-ampo ta'],
+  ['What is your name?','Unsay imong ngalan?'],
+  ['I am a missionary','Misyonero ko'],
+  ['Where is the church?','Asa ang simbahan?'],
+  ['How are you?','Kumusta ka?']
+];
+
+/* ============ NAV ============ */
+function showPage(id, btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  updateFab(id);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function updateFab(id){
+  const fab=document.getElementById('fab');
+  const map={adventure:'📸',expenses:'🧾',prayer:'🙏',sermons:'📖',actions:'+',drive:'🚗'};
+  fab.textContent = map[id]||'+';
+  fab.dataset.page = id;
+}
+function fabAction(){
+  const p=document.getElementById('fab').dataset.page;
+  if(p==='adventure')capturePhoto('adventure');
+  else if(p==='expenses')capturePhoto('expense');
+  else if(p==='prayer')document.getElementById('new-prayer').focus();
+  else if(p==='sermons')document.getElementById('new-sermon-title').focus();
+  else { showPage('actions',document.querySelectorAll('.nav-tab')[3]); document.getElementById('new-task').focus(); }
 }
 
-function renderActions() {
-  const actions = getActions();
-  const ul = document.getElementById('urgent-list');
-  const rl = document.getElementById('regular-list');
-  ul.innerHTML = ''; rl.innerHTML = '';
-  actions.forEach(a => {
-    const done = localStorage.getItem('act_' + a.id) === 'true';
-    const div = document.createElement('div');
-    div.className = 'action-item' + (a.urgent ? ' urgent' : '') + (done ? ' done-item' : '');
+/* ============ SYNC STATUS ============ */
+function setSync(state, label){
+  const dot=document.getElementById('sync-dot'), lbl=document.getElementById('sync-label');
+  dot.className='sync-dot '+(state||'');
+  lbl.textContent = label || (state==='ok'?'Synced':state==='busy'?'Syncing...':state==='err'?'Offline':'Local');
+}
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 1800);
+}
+
+/* ============ BACKEND ============ */
+async function api(action, data){
+  if(!settings.url) return null;
+  setSync('busy');
+  try{
+    if(action==='getAll'){
+      const res = await fetch(settings.url+'?action=getAll');
+      const j = await res.json();
+      setSync('ok'); return j;
+    } else {
+      const res = await fetch(settings.url, {method:'POST', body:JSON.stringify({action,...data}), headers:{'Content-Type':'text/plain'}});
+      const j = await res.json();
+      setSync('ok'); return j;
+    }
+  } catch(e){ setSync('err','Offline'); return null; }
+}
+
+/* ============ CHURCHES ============ */
+function renderChurches(){
+  const list = document.getElementById('church-list');
+  list.innerHTML = CHURCHES.map((c,i)=>`
+    <div class="church-card" data-status="${c.s}" onclick="editChurch(${i})">
+      <div class="church-dot dot-${c.s}"></div>
+      <div><div class="church-name">${c.n}</div><div class="church-detail">${c.d}</div></div>
+      <div class="church-offering">${c.o}</div>
+    </div>`).join('');
+}
+function filterChurches(status, btn){
+  document.querySelectorAll('#page-pipeline .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#church-list .church-card').forEach(c=>{
+    c.style.display = (status==='all'||c.dataset.status===status)?'flex':'none';
+  });
+}
+function editChurch(i){
+  const c = CHURCHES[i];
+  openModal('Edit Church', `
+    <div class="modal-field"><label>Church</label><input id="m-name" value="${esc(c.n)}"></div>
+    <div class="modal-field"><label>Details</label><input id="m-det" value="${esc(c.d)}"></div>
+    <div class="modal-field"><label>Offering / Status</label><input id="m-off" value="${esc(c.o)}"></div>
+    <div class="modal-field"><label>Status</label><select id="m-stat">
+      <option value="completed"${c.s==='completed'?' selected':''}>Completed</option>
+      <option value="scheduled"${c.s==='scheduled'?' selected':''}>Scheduled</option>
+      <option value="pending"${c.s==='pending'?' selected':''}>Pending</option>
+      <option value="contacted"${c.s==='contacted'?' selected':''}>Contacted (warm lead)</option>
+    </select></div>
+    <div class="modal-field"><label>Notes</label><textarea id="m-notes" placeholder="Add notes...">${esc(LS.get('chnotes_'+i,''))}</textarea></div>
+  `, ()=>{
+    c.n=val('m-name'); c.d=val('m-det'); c.o=val('m-off'); c.s=val('m-stat');
+    LS.set('chnotes_'+i, val('m-notes'));
+    LS.set('churches', CHURCHES);
+    renderChurches();
+    api('updateRow',{tab:'Meetings', rowIndex:i+2, values:{Church:c.n.split('—')[0].trim(), Notes:val('m-notes')}});
+    toast('Church updated');
+    closeModal();
+  });
+}
+function esc(s){ return (s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+function val(id){ return document.getElementById(id).value; }
+
+/* ============ FINANCIAL ============ */
+function renderFinancial(){
+  document.getElementById('partner-list').innerHTML = PARTNERS.map(p=>`
+    <div class="partner-row"${p.hi?' style="border:2px solid var(--green)"':''}>
+      <span class="partner-amount">${p.amt?'$'+p.amt+'/mo':'TBD 🎉'}</span>
+      <div><div class="partner-name">${p.name}</div><div class="partner-detail">${p.det}</div></div>
+      <span class="status-pill ${p.status==='Active'?'pill-active':'pill-pending'}">${p.status==='PendingAmt'?'Pending Amt':p.status}</span>
+    </div>`).join('');
+  let tot=0;
+  document.getElementById('offering-tbody').innerHTML = OFFERINGS.map(([d,c,a])=>{
+    tot+=a; return `<tr><td>${d}</td><td>${c}</td><td style="color:var(--green);font-weight:600">$${a.toLocaleString()}.00</td></tr>`;
+  }).join('') + `<tr><td colspan="2"><strong>Total (minimum)</strong></td><td style="color:var(--green);font-weight:700">$${tot.toLocaleString()}.00</td></tr>`;
+  const sumMonthly = PARTNERS.reduce((s,p)=>s+p.amt,0);
+  const pct = (sumMonthly/6300*100).toFixed(1);
+  document.getElementById('fin-confirmed').textContent = '$'+sumMonthly+'/mo';
+  document.getElementById('fin-confirmed-lbl').textContent = `Confirmed (${pct}%)`;
+  document.getElementById('fin-needed').textContent = '$'+(6300-sumMonthly).toLocaleString()+'/mo';
+  document.getElementById('fin-offered').textContent = '$'+tot.toLocaleString()+'+';
+  document.getElementById('stat-raised').textContent = '$'+sumMonthly+'/mo';
+  document.getElementById('stat-raised-lbl').textContent = `Raised (${pct}%)`;
+  document.getElementById('prog-fill').style.width = Math.min(100, sumMonthly/6300*100)+'%';
+  document.getElementById('prog-text').textContent = `$${sumMonthly} of $6,300/mo`;
+  document.getElementById('stat-done').textContent = OFFERINGS.length;
+  document.getElementById('stat-up').textContent = CHURCHES.filter(c=>c.s==='scheduled').length;
+}
+
+/* ============ ACTIONS ============ */
+function getActions(){
+  return [...DEFAULT_ACTIONS, ...LS.get('custom_actions',[])];
+}
+function renderActions(){
+  const acts = getActions();
+  const ul=document.getElementById('urgent-list'), rl=document.getElementById('regular-list');
+  ul.innerHTML=''; rl.innerHTML='';
+  acts.forEach(a=>{
+    const done = LS.get('act_'+a.id, false);
+    const div=document.createElement('div');
+    div.className='action-item'+(a.urgent?' urgent':'')+(done?' done-item':'');
     div.innerHTML = `
-      <div class="action-cb ${done ? 'checked' : ''}" onclick="toggleAction('${a.id}',this.parentElement)">
-        ${done ? '<span style="color:white;font-size:12px">✓</span>' : ''}
-      </div>
-      <div>
-        <div class="action-text ${a.urgent ? 'urgent-t' : ''}" style="${done ? 'text-decoration:line-through;opacity:0.5' : ''}">${a.text}</div>
-        ${a.due ? `<div class="action-due">${a.due}</div>` : ''}
-      </div>`;
-    (a.urgent ? ul : rl).appendChild(div);
+      <div class="action-cb${done?' checked':''}" onclick="toggleAction('${a.id}')">${done?'<span style="color:white;font-size:13px">✓</span>':''}</div>
+      <div style="flex:1"><div class="action-text${a.urgent?' urgent-t':''}" style="${done?'text-decoration:line-through;opacity:.5':''}">${a.text}</div>${a.due?`<div class="action-due">${a.due}</div>`:''}</div>
+      ${a.id.startsWith('c')?`<button onclick="event.stopPropagation();delTask('${a.id}')" style="background:none;border:none;color:var(--lgray);cursor:pointer;font-size:18px">×</button>`:''}`;
+    (a.urgent?ul:rl).appendChild(div);
+  });
+}
+function toggleAction(id){
+  const cur = LS.get('act_'+id,false);
+  LS.set('act_'+id, !cur);
+  renderActions();
+  api('toggleCheck',{tab:'Actions', actionId:id, done:!cur});
+}
+function addTask(){
+  const text=val('new-task').trim(); if(!text)return;
+  const due=val('new-due').trim();
+  const cust = LS.get('custom_actions',[]);
+  const id = 'c'+Date.now();
+  cust.push({id,text,due});
+  LS.set('custom_actions', cust);
+  document.getElementById('new-task').value=''; document.getElementById('new-due').value='';
+  renderActions();
+  api('addRow',{tab:'Actions', values:{ID:id,Text:text,Urgent:false,Due:due,Done:false,AddedBy:settings.user}});
+  toast('Task added');
+}
+function delTask(id){
+  let cust = LS.get('custom_actions',[]);
+  cust = cust.filter(a=>a.id!==id);
+  LS.set('custom_actions',cust);
+  LS.del('act_'+id);
+  renderActions();
+}
+
+/* ============ TIMELINE CHECKBOXES ============ */
+function bindTimelineChecks(){
+  document.querySelectorAll('input[type=checkbox][data-tk]').forEach(cb=>{
+    const k=cb.dataset.tk;
+    cb.checked = LS.get('chk_'+k, false);
+    cb.parentElement.classList.toggle('done', cb.checked);
+    cb.addEventListener('change', ()=>{
+      LS.set('chk_'+k, cb.checked);
+      cb.parentElement.classList.toggle('done', cb.checked);
+      api('toggleCheck',{tab:'Actions', timelineKey:k, done:cb.checked});
+    });
   });
 }
 
-function toggleAction(id, el) {
-  const done = localStorage.getItem('act_' + id) === 'true';
-  localStorage.setItem('act_' + id, !done);
-  renderActions();
+/* ============ LEADS ============ */
+function renderLeads(){
+  document.getElementById('leads-list').innerHTML = LEADS.map(([loc,ic,t,d])=>`
+    <div class="event-row"><span class="event-date">${loc}</span><span class="event-icon">${ic}</span><div><div class="event-title">${t}</div><div class="event-detail">${d}</div></div></div>`).join('');
 }
 
-function addTask() {
-  const text = document.getElementById('new-task').value.trim();
-  if (!text) return;
-  const due = document.getElementById('new-due').value.trim();
-  const saved = localStorage.getItem('custom_actions');
-  const custom = saved ? JSON.parse(saved) : [];
-  custom.push({ id: 'c' + Date.now(), text, urgent: false, due });
-  localStorage.setItem('custom_actions', JSON.stringify(custom));
-  document.getElementById('new-task').value = '';
-  document.getElementById('new-due').value = '';
-  renderActions();
+/* ============ PHOTO CAPTURE (Adventure + Expense) ============ */
+function capturePhoto(kind){
+  const inp = kind==='adventure'?document.getElementById('adv-input'):document.getElementById('exp-input');
+  inp.click();
 }
-
-// INIT
-renderActions();
-
-// Restore task checkboxes
-document.querySelectorAll('input[type=checkbox]').forEach(cb => {
-  const key = cb.getAttribute('onchange')?.match(/'([^']+)'/)?.[1];
-  if (key && localStorage.getItem('chk_' + key) === 'true') {
-    cb.checked = true;
+async function onPhoto(ev, kind){
+  const f = ev.target.files[0]; if(!f) return;
+  ev.target.value=''; // allow re-pick
+  const dataUrl = await fileToDataUrl(f);
+  let lat=null, lon=null;
+  try {
+    const pos = await new Promise((res,rej)=>navigator.geolocation.getCurrentPosition(res, rej, {timeout:5000}));
+    lat=pos.coords.latitude; lon=pos.coords.longitude;
+  } catch(e){}
+  const id = 'p'+Date.now();
+  const entry = {id, ts:Date.now(), date:new Date().toISOString(), lat, lon, photo:dataUrl, kind, user:settings.user};
+  if(kind==='adventure'){
+    entry.title=''; entry.notes=''; entry.who='';
+    const adv = LS.get('adv',[]); adv.unshift(entry); LS.set('adv',adv);
+    renderAdventure(); openAdventureEdit(entry);
+  } else {
+    entry.vendor=''; entry.amount=''; entry.category='unset'; entry.purpose='';
+    const exp = LS.get('exp',[]); exp.unshift(entry); LS.set('exp',exp);
+    renderExpenses(); openExpenseEdit(entry);
   }
-});
+  // upload to Drive via Apps Script
+  if(settings.url && settings.driveFolderId){
+    api('uploadPhoto',{folderId:settings.driveFolderId, name:`${kind}-${id}.jpg`, dataUrl, meta:{lat,lon,date:entry.date,user:settings.user}}).then(r=>{
+      if(r && r.url){ entry.driveUrl=r.url; const arr=LS.get(kind==='adventure'?'adv':'exp',[]); const i=arr.findIndex(x=>x.id===id); if(i>=0){arr[i]=entry;LS.set(kind==='adventure'?'adv':'exp',arr);} toast('Photo uploaded to Drive'); }
+    });
+  }
+}
+function fileToDataUrl(f){
+  return new Promise(res=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.readAsDataURL(f); });
+}
+
+/* ============ ADVENTURE LOG ============ */
+let advFilter='all';
+function filterAdv(f, btn){
+  advFilter=f;
+  document.querySelectorAll('#page-adventure .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAdventure();
+}
+function renderAdventure(){
+  const adv = LS.get('adv',[]);
+  const now=Date.now(), DAY=86400000;
+  const filtered = adv.filter(e=>{
+    if(advFilter==='all')return true;
+    const age=now-e.ts;
+    if(advFilter==='week')return age<7*DAY;
+    if(advFilter==='month')return age<30*DAY;
+    if(advFilter==='year')return age<365*DAY;
+  });
+  const el=document.getElementById('adv-content');
+  if(!filtered.length){ el.innerHTML = '<div class="coming-soon"><h4>No memories yet</h4><p>Tap "Capture Memory" to start your road journal. Each photo auto-tags GPS &amp; date.</p></div>'; return; }
+  // group by month
+  const groups={};
+  filtered.forEach(e=>{
+    const d=new Date(e.date);
+    const k=d.toLocaleString('en-US',{month:'long',year:'numeric'});
+    (groups[k]=groups[k]||[]).push(e);
+  });
+  el.innerHTML = Object.entries(groups).map(([k,arr])=>`
+    <div class="adv-month"><h4>${k} · ${arr.length} ${arr.length===1?'memory':'memories'}</h4>
+      <div class="adv-grid">
+        ${arr.map(e=>`<div class="adv-thumb" onclick="openAdventureView('${e.id}')">
+          <img src="${e.photo}" loading="lazy">
+          <div class="adv-thumb-meta">${new Date(e.ts).toLocaleDateString()} ${e.title?' · '+esc(e.title):''}</div>
+        </div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+function openAdventureView(id){
+  const e = LS.get('adv',[]).find(x=>x.id===id); if(!e) return;
+  openAdventureEdit(e);
+}
+function openAdventureEdit(e){
+  openModal('Memory Details', `
+    <img src="${e.photo}" style="width:100%;border-radius:8px;margin-bottom:12px;max-height:300px;object-fit:cover">
+    <div class="modal-field"><label>Title</label><input id="m-title" value="${esc(e.title||'')}"></div>
+    <div class="modal-field"><label>Who was there</label><input id="m-who" value="${esc(e.who||'')}"></div>
+    <div class="modal-field"><label>Where</label><input id="m-where" value="${e.lat?e.lat.toFixed(4)+', '+e.lon.toFixed(4):'(no GPS)'}" readonly></div>
+    <div class="modal-field"><label>When</label><input value="${new Date(e.ts).toLocaleString()}" readonly></div>
+    <div class="modal-field"><label>Notes</label><textarea id="m-notes" placeholder="What happened? What was funny / sweet / God-moment?">${esc(e.notes||'')}</textarea></div>
+    ${e.driveUrl?`<div class="modal-field"><label>Drive</label><a href="${e.driveUrl}" target="_blank" style="color:var(--sage)">View original in Google Drive ↗</a></div>`:''}
+  `, ()=>{
+    e.title=val('m-title'); e.who=val('m-who'); e.notes=val('m-notes');
+    const adv=LS.get('adv',[]); const i=adv.findIndex(x=>x.id===e.id); if(i>=0){adv[i]=e; LS.set('adv',adv);}
+    renderAdventure(); closeModal(); toast('Memory saved');
+  }, ()=>{
+    if(!confirm('Delete this memory?')) return;
+    let adv=LS.get('adv',[]); adv=adv.filter(x=>x.id!==e.id); LS.set('adv',adv);
+    renderAdventure(); closeModal(); toast('Deleted');
+  });
+}
+
+/* ============ EXPENSES ============ */
+let expFilter='all';
+function filterExp(f, btn){
+  expFilter=f;
+  document.querySelectorAll('#page-expenses .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderExpenses();
+}
+function renderExpenses(){
+  const exp = LS.get('exp',[]);
+  const filtered = exp.filter(e=> expFilter==='all'||e.category===expFilter);
+  // summary
+  const now=new Date(), monthStart=new Date(now.getFullYear(),now.getMonth(),1).getTime();
+  let mTot=0, biz=0, per=0;
+  exp.forEach(e=>{
+    const a = parseFloat(e.amount)||0;
+    if(e.ts>=monthStart) mTot+=a;
+    if(e.category==='business') biz+=a;
+    if(e.category==='personal') per+=a;
+  });
+  document.getElementById('exp-month').textContent='$'+mTot.toFixed(2);
+  document.getElementById('exp-business').textContent='$'+biz.toFixed(2);
+  document.getElementById('exp-personal').textContent='$'+per.toFixed(2);
+  const el=document.getElementById('exp-list');
+  if(!filtered.length){ el.innerHTML = '<div style="padding:24px;text-align:center;color:var(--lgray);font-style:italic">No expenses yet. Snap a receipt to start logging.</div>'; return; }
+  el.innerHTML = filtered.map(e=>`
+    <div class="exp-row" onclick="openExpenseEdit(LS.get('exp',[]).find(x=>x.id==='${e.id}'))">
+      <div class="exp-thumb"><img src="${e.photo}"></div>
+      <div><div class="exp-vendor">${esc(e.vendor||'(tap to set vendor)')}</div><div class="exp-meta">${new Date(e.ts).toLocaleDateString()}${e.purpose?' · '+esc(e.purpose):''}</div></div>
+      <div class="exp-amount">${e.amount?'$'+parseFloat(e.amount).toFixed(2):'—'}</div>
+      <div class="exp-tag ${e.category}">${e.category==='unset'?'Set':e.category}</div>
+    </div>`).join('');
+}
+function openExpenseEdit(e){
+  openModal('Receipt Details', `
+    <img src="${e.photo}" style="width:100%;border-radius:8px;margin-bottom:12px;max-height:280px;object-fit:contain;background:var(--parch-pale)">
+    <div class="modal-field"><label>Vendor / Station</label><input id="m-vendor" value="${esc(e.vendor||'')}" placeholder="e.g. Shell, Walmart"></div>
+    <div class="modal-field"><label>Amount ($)</label><input id="m-amount" type="number" step="0.01" value="${esc(e.amount||'')}"></div>
+    <div class="modal-field"><label>Purpose</label><input id="m-purpose" value="${esc(e.purpose||'')}" placeholder="e.g. gas to Cody WY"></div>
+    <div class="modal-field"><label>Category</label><select id="m-cat">
+      <option value="unset"${e.category==='unset'?' selected':''}>(set later)</option>
+      <option value="business"${e.category==='business'?' selected':''}>Business / Ministry</option>
+      <option value="personal"${e.category==='personal'?' selected':''}>Personal</option>
+    </select></div>
+    <div class="modal-field"><label>Date</label><input value="${new Date(e.ts).toLocaleString()}" readonly></div>
+  `, ()=>{
+    e.vendor=val('m-vendor'); e.amount=val('m-amount'); e.purpose=val('m-purpose'); e.category=val('m-cat');
+    const exp=LS.get('exp',[]); const i=exp.findIndex(x=>x.id===e.id); if(i>=0){exp[i]=e;LS.set('exp',exp);}
+    renderExpenses(); closeModal(); toast('Receipt saved');
+  }, ()=>{
+    if(!confirm('Delete this receipt?')) return;
+    let exp=LS.get('exp',[]); exp=exp.filter(x=>x.id!==e.id); LS.set('exp',exp);
+    renderExpenses(); closeModal(); toast('Deleted');
+  });
+}
+function exportExpenses(){
+  const exp=LS.get('exp',[]);
+  const rows = [['Date','Vendor','Amount','Category','Purpose','User']];
+  exp.forEach(e=>rows.push([new Date(e.ts).toLocaleDateString(), e.vendor||'', e.amount||'', e.category, e.purpose||'', e.user||'']));
+  const csv = rows.map(r=>r.map(c=>`"${(''+c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv'}); const u=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=u; a.download='expenses-'+new Date().toISOString().slice(0,10)+'.csv'; a.click();
+  toast('Exported');
+}
+
+/* ============ DRIVE MODE ============ */
+function driveAction(kind){
+  if(kind==='arrived'){ toast('📍 Arrival logged'); LS.set('arrival_'+Date.now(), {ts:Date.now(),loc:document.getElementById('drive-dest').textContent}); }
+  if(kind==='offering'){
+    const v=prompt('Offering amount ($):'); if(!v) return;
+    const ch=document.getElementById('drive-dest').textContent;
+    OFFERINGS.unshift([new Date().toLocaleDateString(), ch, parseFloat(v)||0]);
+    LS.set('offerings_extra', LS.get('offerings_extra',[]).concat([[new Date().toLocaleDateString(),ch,parseFloat(v)||0]]));
+    renderFinancial(); toast('💵 Offering logged: $'+v);
+  }
+}
+
+/* ============ PRAYER ============ */
+let prayerFilter='open';
+function filterPrayer(f,btn){
+  prayerFilter=f;
+  document.querySelectorAll('#page-prayer .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPrayer();
+}
+function addPrayer(){
+  const text=val('new-prayer').trim(); if(!text)return;
+  const from=val('new-prayer-from').trim();
+  const arr=LS.get('prayers',[]);
+  arr.unshift({id:'pr'+Date.now(), ts:Date.now(), text, from, answered:false, user:settings.user});
+  LS.set('prayers',arr);
+  document.getElementById('new-prayer').value=''; document.getElementById('new-prayer-from').value='';
+  renderPrayer(); toast('Prayer added');
+  api('addRow',{tab:'Prayers', values:{Text:text, From:from, AddedBy:settings.user, Date:new Date().toISOString(), Answered:false}});
+}
+function togglePrayer(id){
+  const arr=LS.get('prayers',[]); const e=arr.find(x=>x.id===id); if(!e) return;
+  e.answered=!e.answered; if(e.answered) e.answeredTs=Date.now();
+  LS.set('prayers',arr); renderPrayer();
+}
+function delPrayer(id){
+  if(!confirm('Delete this prayer?')) return;
+  let arr=LS.get('prayers',[]); arr=arr.filter(x=>x.id!==id); LS.set('prayers',arr); renderPrayer();
+}
+function renderPrayer(){
+  const arr=LS.get('prayers',[]);
+  const filt = arr.filter(e=>prayerFilter==='all'||(prayerFilter==='answered'?e.answered:!e.answered));
+  const el=document.getElementById('prayer-list');
+  if(!filt.length){ el.innerHTML = '<div style="padding:20px;text-align:center;color:var(--lgray);font-style:italic">No prayers yet. Add one above.</div>'; return; }
+  el.innerHTML = filt.map(e=>`
+    <div class="entry-card${e.answered?' answered':''}" onclick="togglePrayer('${e.id}')">
+      <div class="entry-title">${e.answered?'✅ ':'🙏 '}${esc(e.text)}</div>
+      <div class="entry-meta">${e.from?esc(e.from)+' · ':''}${new Date(e.ts).toLocaleDateString()} · ${esc(e.user||'')} ${e.answered?'· Answered '+new Date(e.answeredTs||e.ts).toLocaleDateString():''}</div>
+      <button onclick="event.stopPropagation();delPrayer('${e.id}')" style="background:none;border:none;color:var(--lgray);cursor:pointer;float:right;margin-top:-30px">×</button>
+    </div>`).join('');
+}
+
+/* ============ SERMONS ============ */
+let sermonFilter='all';
+function filterSermon(f,btn){
+  sermonFilter=f;
+  document.querySelectorAll('#page-sermons .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderSermons();
+}
+function addSermon(){
+  const title=val('new-sermon-title').trim(); if(!title) return;
+  const where=val('new-sermon-where').trim();
+  const type=val('new-sermon-type');
+  const arr=LS.get('sermons',[]);
+  // dup check
+  const dup = arr.find(s=>s.title.toLowerCase()===title.toLowerCase() && s.where.toLowerCase()===where.toLowerCase());
+  if(dup){
+    if(!confirm(`⚠️ You already preached "${title}" at "${where}" on ${new Date(dup.ts).toLocaleDateString()}. Add anyway?`)) return;
+  }
+  arr.unshift({id:'sm'+Date.now(),ts:Date.now(),title,where,type,user:settings.user});
+  LS.set('sermons',arr);
+  ['new-sermon-title','new-sermon-where'].forEach(i=>document.getElementById(i).value='');
+  renderSermons(); toast('Sermon logged');
+  api('addRow',{tab:'Sermons', values:{Title:title, Where:where, Type:type, Date:new Date().toISOString(), AddedBy:settings.user}});
+}
+function delSermon(id){
+  if(!confirm('Delete?')) return;
+  let arr=LS.get('sermons',[]); arr=arr.filter(x=>x.id!==id); LS.set('sermons',arr); renderSermons();
+}
+function renderSermons(){
+  const arr=LS.get('sermons',[]);
+  const filt = sermonFilter==='all'?arr:arr.filter(s=>s.type===sermonFilter);
+  const el=document.getElementById('sermon-list');
+  if(!filt.length){ el.innerHTML = '<div style="padding:20px;text-align:center;color:var(--lgray);font-style:italic">No sermons logged yet. Track every message you preach to never repeat at the same church.</div>'; return; }
+  el.innerHTML = filt.map(e=>`
+    <div class="entry-card">
+      <div class="entry-title">📖 ${esc(e.title)}</div>
+      <div class="entry-meta">${esc(e.where||'(no church)')} · ${new Date(e.ts).toLocaleDateString()}</div>
+      <span class="entry-tag">${esc(e.type)}</span>
+      ${e.user?`<span class="entry-tag">${esc(e.user)}</span>`:''}
+      <button onclick="delSermon('${e.id}')" style="background:none;border:none;color:var(--lgray);cursor:pointer;float:right">×</button>
+    </div>`).join('');
+}
+
+/* ============ FOLLOW-UPS ============ */
+function renderFollowups(){
+  const fu = LS.get('followups',[]);
+  // auto-generate from completed church meetings + user-added
+  const auto = CHURCHES.filter(c=>c.s==='completed').map((c,i)=>{
+    const id='fu_auto_'+i;
+    const dismissed = LS.get('fu_done_'+id, false);
+    return {id, church:c.n, kind:'30-day check-in', dismissed};
+  }).filter(x=>!x.dismissed);
+  const list = [...auto, ...fu];
+  const el=document.getElementById('followup-list');
+  if(!list.length){ el.innerHTML = '<div style="padding:20px;text-align:center;color:var(--lgray);font-style:italic">All caught up! 🎉</div>'; return; }
+  el.innerHTML = list.map(f=>`
+    <div class="entry-card">
+      <div class="entry-title">📮 ${esc(f.church)}</div>
+      <div class="entry-meta">${esc(f.kind)}</div>
+      <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-secondary" style="padding:5px 12px;font-size:10px" onclick="dismissFu('${f.id}')">✓ Done</button>
+        <button class="btn btn-secondary" style="padding:5px 12px;font-size:10px" onclick="snoozeFu('${f.id}')">⏰ Snooze 7d</button>
+      </div>
+    </div>`).join('');
+}
+function dismissFu(id){ LS.set('fu_done_'+id, true); renderFollowups(); toast('Follow-up cleared'); }
+function snoozeFu(id){ LS.set('fu_snooze_'+id, Date.now()+7*86400000); toast('Snoozed 7 days'); renderFollowups(); }
+
+/* ============ PHILIPPINES ============ */
+function renderPhilippines(){
+  const learned = LS.get('ceb_done',{});
+  document.getElementById('ceb-list').innerHTML = CEB_DEFAULTS.map((p,i)=>`
+    <div class="ceb-row">
+      <div class="en">${p[0]}</div>
+      <div class="ceb">${p[1]}</div>
+      <div class="ck${learned[i]?' done':''}" onclick="toggleCeb(${i})">${learned[i]?'✓':''}</div>
+    </div>`).join('');
+  const notes = LS.get('phnotes',[]);
+  document.getElementById('ph-notes').innerHTML = notes.length ? notes.map((n,i)=>`
+    <div class="entry-card"><div class="entry-title">📝 ${esc(n.text)}</div><div class="entry-meta">${new Date(n.ts).toLocaleDateString()}</div>
+    <button onclick="delPhNote(${i})" style="background:none;border:none;color:var(--lgray);cursor:pointer;float:right;margin-top:-22px">×</button></div>`).join('')
+    : '<div style="padding:14px;text-align:center;color:var(--lgray);font-style:italic">No notes yet.</div>';
+}
+function toggleCeb(i){
+  const d=LS.get('ceb_done',{}); d[i]=!d[i]; LS.set('ceb_done',d); renderPhilippines();
+}
+function addPhNote(){
+  const t=val('new-ph-note').trim(); if(!t) return;
+  const arr=LS.get('phnotes',[]); arr.unshift({text:t, ts:Date.now()}); LS.set('phnotes',arr);
+  document.getElementById('new-ph-note').value='';
+  renderPhilippines();
+}
+function delPhNote(i){
+  let arr=LS.get('phnotes',[]); arr.splice(i,1); LS.set('phnotes',arr); renderPhilippines();
+}
+
+/* ============ SETTINGS ============ */
+function loadSettings(){
+  document.getElementById('setting-url').value=settings.url;
+  document.getElementById('setting-drive').value=settings.driveFolderId;
+  document.getElementById('setting-user').value=settings.user;
+}
+function saveSettings(){
+  settings.url = val('setting-url').trim();
+  settings.driveFolderId = val('setting-drive').trim();
+  settings.user = val('setting-user');
+  LS.set('s.url',settings.url); LS.set('s.drive',settings.driveFolderId); LS.set('s.user',settings.user);
+  toast('Saved · testing connection');
+  if(settings.url){
+    api('getAll').then(r=>{
+      if(r){ toast('✅ Connected to Sheets'); manualSync(); }
+      else { setSync('err','Failed'); toast('⚠️ Could not reach Apps Script'); }
+    });
+  } else setSync('','Local');
+}
+async function manualSync(){
+  if(!settings.url) return;
+  const r = await api('getAll');
+  if(!r) return;
+  // Merge actions: server is source of truth for shared actions, client adds local custom
+  if(r.actions && Array.isArray(r.actions)){
+    r.actions.forEach(a=>{ if(a.ID && a.Done!==undefined) LS.set('act_'+a.ID, a.Done===true); });
+  }
+  renderActions(); bindTimelineChecks();
+  toast('🔄 Synced from Sheets');
+}
+function exportAll(){
+  const dump = {};
+  ['adv','exp','prayers','sermons','followups','custom_actions','phnotes','ceb_done','offerings_extra'].forEach(k=>{ dump[k]=LS.get(k,null); });
+  Object.keys(localStorage).forEach(k=>{ if(k.startsWith('act_')||k.startsWith('chk_')||k.startsWith('fu_')||k.startsWith('chnotes_')) dump[k]=LS.get(k,null); });
+  const blob=new Blob([JSON.stringify(dump,null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='demoville-backup-'+new Date().toISOString().slice(0,10)+'.json'; a.click();
+  toast('Exported backup');
+}
+function clearLocal(){
+  if(!confirm('Clear ALL local data (photos, expenses, prayers, sermons)? This cannot be undone unless you exported a backup.')) return;
+  localStorage.clear();
+  location.reload();
+}
+
+/* ============ MODAL ============ */
+function openModal(title, html, saveFn, deleteFn){
+  document.getElementById('modal-title').textContent=title;
+  document.getElementById('modal-content').innerHTML=html;
+  document.getElementById('modal').style.display='flex';
+  document.getElementById('modal-delete').style.display = deleteFn?'inline-block':'none';
+  currentModal={save:saveFn, del:deleteFn};
+}
+function closeModal(){ document.getElementById('modal').style.display='none'; currentModal=null; }
+function modalSave(){ if(currentModal?.save) currentModal.save(); }
+function modalDelete(){ if(currentModal?.del) currentModal.del(); }
+
+/* ============ INIT ============ */
+function init(){
+  loadSettings();
+  bindTimelineChecks();
+  renderChurches();
+  renderFinancial();
+  renderActions();
+  renderLeads();
+  renderAdventure();
+  renderExpenses();
+  renderPrayer();
+  renderSermons();
+  renderFollowups();
+  renderPhilippines();
+  if(settings.url){ setSync('busy'); manualSync(); }
+}
+init();
 </script>
 </body>
 </html>
