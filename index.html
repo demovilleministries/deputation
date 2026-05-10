@@ -7,218 +7,308 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --navy: #1B3A6B; --navy-deep: #0F2347; --blue: #2E5FA3;
-  --gold: #C49A2A; --gold-light: #E8C35A; --gold-pale: #F5E9C8;
-  --cream: #FDF8EF; --cream-dark: #F2E8D4;
-  --white: #FFFFFF; --gray: #6B7280; --lgray: #9CA3AF;
-  --green: #1A6B3C; --lgreen: #E8F5EE;
-  --red: #B91C1C; --lred: #FEE8E8;
-  --text: #1a1a2e;
+  --parch: #D4B896;
+  --parch-light: #EDD9BC;
+  --parch-dark: #B89870;
+  --parch-bg: #F5ECD8;
+  --parch-pale: #FAF3E6;
+  --sage: #5C7A5C;
+  --sage-light: #7A9E7A;
+  --sage-pale: #E8F0E8;
+  --bamboo: #8B7355;
+  --brown: #4A3728;
+  --brown-light: #6B5040;
+  --cream: #FBF5E8;
+  --gold: #C49A2A;
+  --gold-light: #E8C35A;
+  --white: #FFFDF8;
+  --gray: #7A6A5A;
+  --lgray: #A89880;
+  --green: #2D5A2D;
+  --lgreen: #E8F0E8;
+  --red: #8B2020;
+  --lred: #F5E8E8;
+  --text: #2A1F14;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:var(--cream); font-family:'Crimson Pro',Georgia,serif; color:var(--text); }
 
+/* BAMBOO TEXTURE PATTERN */
+.bamboo-bg {
+  background-color: var(--parch-bg);
+  background-image:
+    linear-gradient(180deg, rgba(92,122,92,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139,115,85,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
 /* NAV */
-nav { background:var(--navy-deep); padding:0; position:sticky; top:0; z-index:100; border-bottom:2px solid var(--gold); }
-.nav-inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; gap:0; }
-.nav-brand { font-family:'Cinzel',serif; color:var(--gold); font-size:14px; letter-spacing:2px; padding:14px 20px; border-right:1px solid rgba(196,154,42,0.2); white-space:nowrap; }
-.nav-tabs { display:flex; overflow-x:auto; }
-.nav-tab { font-family:'Cinzel',serif; font-size:11px; letter-spacing:1.5px; color:rgba(255,255,255,0.6); padding:16px 18px; cursor:pointer; border-bottom:3px solid transparent; transition:all 0.2s; white-space:nowrap; text-transform:uppercase; border:none; background:none; }
-.nav-tab:hover { color:var(--gold-light); }
-.nav-tab.active { color:var(--gold-light); border-bottom:3px solid var(--gold); }
+nav {
+  background: linear-gradient(180deg, var(--brown) 0%, var(--brown-light) 100%);
+  position: sticky; top: 0; z-index: 100;
+  border-bottom: 3px solid var(--parch);
+  box-shadow: 0 2px 12px rgba(74,55,40,0.3);
+}
+.nav-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; }
+.nav-brand {
+  font-family: 'Cinzel', serif;
+  color: var(--parch-light);
+  font-size: 13px; letter-spacing: 2px;
+  padding: 14px 20px;
+  border-right: 1px solid rgba(212,184,150,0.25);
+  white-space: nowrap;
+}
+.nav-tabs { display: flex; overflow-x: auto; }
+.nav-tab {
+  font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 1.5px;
+  color: rgba(253,245,232,0.55); padding: 16px 16px;
+  cursor: pointer; border: none; background: none;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s; white-space: nowrap; text-transform: uppercase;
+}
+.nav-tab:hover { color: var(--parch-light); }
+.nav-tab.active { color: var(--parch-light); border-bottom: 3px solid var(--parch); }
 
 /* HERO */
-.hero { background:linear-gradient(160deg,var(--navy-deep) 0%,var(--navy) 60%,#2a4f8a 100%); padding:40px 20px 36px; text-align:center; }
-.hero h1 { font-family:'Cinzel',serif; color:var(--white); font-size:clamp(22px,4vw,42px); font-weight:600; letter-spacing:3px; }
-.hero p { font-family:'Playfair Display',serif; color:var(--gold-light); font-size:clamp(13px,2vw,18px); font-style:italic; margin-top:8px; }
-.hero-rule { width:100px; height:2px; background:linear-gradient(90deg,transparent,var(--gold),transparent); margin:16px auto; }
-.hero-motto { color:rgba(255,255,255,0.6); font-size:12px; letter-spacing:2px; text-transform:uppercase; }
+.hero {
+  background: var(--parch-bg);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cellipse cx='30' cy='100' rx='8' ry='80' fill='none' stroke='rgba(92,122,92,0.15)' stroke-width='16'/%3E%3Cellipse cx='170' cy='100' rx='8' ry='80' fill='none' stroke='rgba(92,122,92,0.15)' stroke-width='16'/%3E%3Cellipse cx='30' cy='30' rx='20' ry='12' fill='rgba(92,122,92,0.1)'/%3E%3Cellipse cx='30' cy='60' rx='22' ry='11' fill='rgba(92,122,92,0.1)'/%3E%3Cellipse cx='170' cy='140' rx='20' ry='12' fill='rgba(92,122,92,0.1)'/%3E%3Cellipse cx='170' cy='170' rx='22' ry='11' fill='rgba(92,122,92,0.1)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  padding: 50px 20px 40px; text-align: center;
+  border-bottom: 2px solid var(--parch-dark);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(212,184,150,0.3) 0%, transparent 70%);
+}
+.hero-ornament {
+  font-family: 'Cinzel', serif; color: var(--bamboo);
+  font-size: 11px; letter-spacing: 6px; text-transform: uppercase;
+  margin-bottom: 16px; opacity: 0.7; position: relative;
+}
+.hero-title {
+  font-family: 'Cinzel', serif; color: var(--brown);
+  font-size: clamp(24px,5vw,48px); font-weight: 600;
+  letter-spacing: 3px; line-height: 1.1; position: relative;
+}
+.hero-sub {
+  font-family: 'Playfair Display', serif; color: var(--sage);
+  font-size: clamp(13px,2.5vw,18px); font-style: italic;
+  margin: 10px 0 18px; position: relative;
+}
+.hero-rule {
+  width: 120px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--bamboo), transparent);
+  margin: 0 auto 16px; position: relative;
+}
+.hero-motto {
+  font-family: 'Crimson Pro', serif; color: var(--bamboo);
+  font-size: clamp(11px,2vw,14px); letter-spacing: 2px;
+  text-transform: uppercase; position: relative;
+}
 
-/* STATS */
-.stats { background:var(--navy); display:grid; grid-template-columns:repeat(4,1fr); border-bottom:3px solid var(--gold); }
-.stat { padding:16px; text-align:center; border-right:1px solid rgba(196,154,42,0.15); }
-.stat:last-child { border-right:none; }
-.stat-val { font-family:'Cinzel',serif; color:var(--gold-light); font-size:clamp(14px,2.5vw,22px); font-weight:600; display:block; }
-.stat-lbl { color:rgba(255,255,255,0.45); font-size:10px; text-transform:uppercase; letter-spacing:1.5px; margin-top:3px; display:block; }
+/* STATS BAR */
+.stats-bar {
+  background: var(--brown);
+  display: grid; grid-template-columns: repeat(4,1fr);
+  border-bottom: 3px solid var(--parch-dark);
+}
+.stat { padding: 16px 10px; text-align: center; border-right: 1px solid rgba(212,184,150,0.15); }
+.stat:last-child { border-right: none; }
+.stat-val { font-family: 'Cinzel', serif; color: var(--parch-light); font-size: clamp(14px,2.5vw,22px); font-weight: 600; display: block; }
+.stat-lbl { color: rgba(253,245,232,0.4); font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 3px; display: block; }
 
-/* PROGRESS BAR */
-.progress-wrap { background:var(--navy); padding:12px 20px 16px; }
-.progress-inner { max-width:1100px; margin:0 auto; }
-.progress-label { display:flex; justify-content:space-between; font-family:'Cinzel',serif; font-size:11px; color:rgba(255,255,255,0.5); letter-spacing:1px; margin-bottom:6px; }
-.progress-bar { background:rgba(255,255,255,0.1); border-radius:4px; height:8px; overflow:hidden; }
-.progress-fill { background:linear-gradient(90deg,var(--gold),var(--gold-light)); height:100%; border-radius:4px; transition:width 1s ease; }
+/* PROGRESS */
+.progress-wrap { background: var(--brown-light); padding: 10px 20px 14px; }
+.progress-inner { max-width: 1100px; margin: 0 auto; }
+.progress-label { display: flex; justify-content: space-between; color: rgba(253,245,232,0.45); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+.progress-bar { background: rgba(255,255,255,0.1); border-radius: 4px; height: 8px; overflow: hidden; }
+.progress-fill { background: linear-gradient(90deg, var(--parch-dark), var(--parch-light)); height: 100%; border-radius: 4px; }
+
+/* ALERT BANNER */
+.alert { padding: 12px 20px; text-align: center; font-size: 14px; border-bottom: 2px solid var(--parch-dark); }
+.alert-green { background: var(--green); color: var(--parch-pale); }
+.alert-red { background: var(--red); color: var(--parch-pale); }
 
 /* MAIN */
-.container { max-width:1100px; margin:0 auto; padding:0 16px 60px; }
-.page { display:none; }
-.page.active { display:block; }
+.container { max-width: 1100px; margin: 0 auto; padding: 0 16px 60px; }
+.page { display: none; }
+.page.active { display: block; }
 
 /* SECTION HEADERS */
-.section { margin-top:40px; }
-.section-header { display:flex; align-items:center; gap:14px; margin-bottom:20px; }
-.section-title { font-family:'Cinzel',serif; font-size:clamp(16px,2.5vw,22px); color:var(--navy); font-weight:600; letter-spacing:2px; white-space:nowrap; }
-.section-line { flex:1; height:1px; background:linear-gradient(90deg,var(--gold),transparent); }
-.section-year { font-family:'Cinzel',serif; font-size:11px; color:var(--gold); letter-spacing:2px; }
+.section { margin-top: 36px; }
+.section-head { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+.section-title { font-family: 'Cinzel', serif; font-size: clamp(15px,2.5vw,20px); color: var(--brown); font-weight: 600; letter-spacing: 2px; white-space: nowrap; }
+.section-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--parch-dark), transparent); }
+.section-year { font-family: 'Cinzel', serif; font-size: 11px; color: var(--bamboo); letter-spacing: 2px; }
 
 /* SPECIAL BANNERS */
-.banner { background:linear-gradient(135deg,var(--navy) 0%,var(--navy-deep) 100%); border:1px solid var(--gold); border-radius:6px; padding:18px 24px; text-align:center; margin-bottom:20px; }
-.banner h3 { font-family:'Cinzel',serif; color:var(--gold-light); font-size:clamp(13px,2vw,18px); letter-spacing:3px; text-transform:uppercase; }
-.banner p { color:rgba(255,255,255,0.55); font-size:13px; font-style:italic; margin-top:4px; }
+.banner { background: linear-gradient(135deg, var(--brown) 0%, var(--brown-light) 100%); border: 1px solid var(--parch); border-radius: 6px; padding: 18px 24px; text-align: center; margin-bottom: 18px; }
+.banner h3 { font-family: 'Cinzel', serif; color: var(--parch-light); font-size: clamp(13px,2vw,18px); letter-spacing: 3px; text-transform: uppercase; }
+.banner p { color: rgba(253,245,232,0.55); font-size: 13px; font-style: italic; margin-top: 4px; }
 
 /* WEDDING BLOCK */
-.wedding { background:linear-gradient(135deg,var(--navy-deep),#1a3060); border:2px solid var(--gold); border-radius:8px; padding:28px; text-align:center; margin:20px 0; }
-.wedding-date { font-family:'Cinzel',serif; color:var(--gold-light); font-size:clamp(20px,3.5vw,34px); font-weight:600; letter-spacing:3px; }
-.wedding-names { font-family:'Playfair Display',serif; color:var(--white); font-size:clamp(14px,2.5vw,24px); font-style:italic; margin:6px 0 4px; }
-.wedding-sub { color:rgba(255,255,255,0.45); font-size:13px; letter-spacing:2px; text-transform:uppercase; }
+.wedding { background: linear-gradient(135deg, var(--brown) 0%, #2A1408 100%); border: 2px solid var(--parch); border-radius: 8px; padding: 28px; text-align: center; margin: 20px 0; }
+.wedding-date { font-family: 'Cinzel', serif; color: var(--parch-light); font-size: clamp(20px,3.5vw,34px); font-weight: 600; letter-spacing: 3px; }
+.wedding-names { font-family: 'Playfair Display', serif; color: var(--cream); font-size: clamp(14px,2.5vw,24px); font-style: italic; margin: 6px 0 4px; }
+.wedding-sub { color: rgba(253,245,232,0.45); font-size: 13px; letter-spacing: 2px; text-transform: uppercase; }
 
 /* TASK BOX */
-.task-box { background:var(--cream-dark); border-left:4px solid var(--gold); border-radius:0 4px 4px 0; padding:14px 18px; margin-bottom:14px; }
-.task-box-title { font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px; color:var(--gold); text-transform:uppercase; margin-bottom:10px; }
-.task-item { display:flex; align-items:flex-start; gap:10px; padding:5px 0; font-size:15px; line-height:1.4; cursor:pointer; }
-.task-item input[type=checkbox] { margin-top:3px; flex-shrink:0; width:16px; height:16px; accent-color:var(--gold); cursor:pointer; }
-.task-item.urgent { color:var(--red); font-weight:600; }
-.task-item.done { text-decoration:line-through; opacity:0.5; }
+.task-box { background: var(--parch-pale); border-left: 4px solid var(--parch-dark); border-radius: 0 6px 6px 0; padding: 14px 18px; margin-bottom: 14px; border: 1px solid rgba(212,184,150,0.3); border-left: 4px solid var(--bamboo); }
+.task-box-title { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 2px; color: var(--bamboo); text-transform: uppercase; margin-bottom: 10px; }
+.task-item { display: flex; align-items: flex-start; gap: 10px; padding: 5px 0; font-size: 15px; line-height: 1.4; cursor: pointer; }
+.task-item input[type=checkbox] { margin-top: 3px; flex-shrink: 0; width: 16px; height: 16px; accent-color: var(--bamboo); cursor: pointer; }
+.task-item.urgent { color: var(--red); font-weight: 600; }
+.task-item.done label { text-decoration: line-through; opacity: 0.5; }
 
 /* EVENT ROWS */
-.event-list { border:1px solid rgba(196,154,42,0.15); border-radius:6px; overflow:hidden; background:var(--white); }
-.event-row { display:grid; grid-template-columns:100px 32px 1fr auto; gap:0 10px; align-items:center; padding:10px 14px; border-bottom:1px solid rgba(196,154,42,0.1); transition:background 0.15s; }
-.event-row:last-child { border-bottom:none; }
-.event-row:hover { background:rgba(196,154,42,0.04); }
-.event-row.confirmed { border-left:3px solid var(--green); }
-.event-row.urgent { border-left:3px solid var(--red); background:var(--lred); }
-.event-row.open { opacity:0.6; }
-.event-date { font-family:'Cinzel',serif; font-size:12px; color:var(--blue); font-weight:600; }
-.event-icon { font-size:16px; text-align:center; }
-.event-body { }
-.event-title { font-size:15px; font-weight:600; color:var(--navy); line-height:1.3; }
-.event-title.confirmed { color:var(--green); }
-.event-title.urgent { color:var(--red); }
-.event-title.open { color:var(--lgray); font-style:italic; }
-.event-detail { font-size:12.5px; color:var(--lgray); font-style:italic; margin-top:1px; }
-.badge { display:inline-block; font-size:9px; font-family:'Cinzel',serif; letter-spacing:1px; padding:2px 6px; border-radius:2px; margin-left:6px; vertical-align:middle; text-transform:uppercase; }
-.badge-confirmed { background:rgba(26,107,60,0.12); color:var(--green); border:1px solid rgba(26,107,60,0.3); }
-.badge-overdue { background:rgba(185,28,28,0.1); color:var(--red); border:1px solid rgba(185,28,28,0.3); }
-.badge-potential { background:rgba(196,154,42,0.12); color:#8a6a10; border:1px solid rgba(196,154,42,0.4); }
+.event-list { border: 1px solid rgba(212,184,150,0.3); border-radius: 6px; overflow: hidden; background: var(--white); box-shadow: 0 1px 4px rgba(74,55,40,0.06); }
+.event-row { display: grid; grid-template-columns: 100px 30px 1fr; gap: 0 10px; align-items: start; padding: 10px 14px; border-bottom: 1px solid rgba(212,184,150,0.15); transition: background 0.15s; }
+.event-row:last-child { border-bottom: none; }
+.event-row:hover { background: rgba(212,184,150,0.08); }
+.event-row.confirmed { border-left: 3px solid var(--green); }
+.event-row.urgent-row { border-left: 3px solid var(--red); background: var(--lred); }
+.event-row.open-row { opacity: 0.6; }
+.event-date { font-family: 'Cinzel', serif; font-size: 12px; color: var(--bamboo); font-weight: 600; padding-top: 2px; }
+.event-icon { font-size: 15px; text-align: center; padding-top: 2px; }
+.event-title { font-size: 15px; font-weight: 600; color: var(--brown); line-height: 1.3; }
+.event-title.confirmed { color: var(--green); }
+.event-title.urgent-t { color: var(--red); }
+.event-title.open-t { color: var(--lgray); font-style: italic; }
+.event-detail { font-size: 12.5px; color: var(--lgray); font-style: italic; margin-top: 2px; }
+.badge { display: inline-block; font-size: 9px; font-family: 'Cinzel', serif; letter-spacing: 1px; padding: 2px 6px; border-radius: 2px; margin-left: 6px; vertical-align: middle; text-transform: uppercase; }
+.badge-confirmed { background: rgba(45,90,45,0.1); color: var(--green); border: 1px solid rgba(45,90,45,0.3); }
+.badge-overdue { background: rgba(139,32,32,0.1); color: var(--red); border: 1px solid rgba(139,32,32,0.3); }
+.badge-potential { background: rgba(196,154,42,0.12); color: #8a6a10; border: 1px solid rgba(196,154,42,0.4); }
 
 /* HOME BREAK */
-.home-break { background:var(--gold-pale); border:1px solid rgba(196,154,42,0.3); border-radius:4px; padding:20px; text-align:center; margin:32px 0; }
-.home-break h3 { font-family:'Cinzel',serif; color:var(--navy); font-size:clamp(13px,2vw,18px); letter-spacing:2px; }
-.home-break p { color:var(--gold); font-size:13px; font-style:italic; margin-top:4px; }
+.home-break { background: var(--parch-pale); border: 1px solid rgba(212,184,150,0.4); border-radius: 6px; padding: 20px; text-align: center; margin: 32px 0; }
+.home-break h3 { font-family: 'Cinzel', serif; color: var(--brown); font-size: clamp(13px,2vw,18px); letter-spacing: 2px; }
+.home-break p { color: var(--bamboo); font-size: 13px; font-style: italic; margin-top: 4px; }
 
 /* CIRCUIT TABLE */
-.circuit { background:linear-gradient(135deg,var(--navy),var(--navy-deep)); border-radius:6px; padding:20px 24px; margin-top:14px; }
-.circuit h4 { font-family:'Cinzel',serif; color:var(--gold-light); font-size:13px; letter-spacing:2px; text-transform:uppercase; margin-bottom:14px; }
-.circuit-row { display:flex; align-items:baseline; gap:14px; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.06); }
-.circuit-row:last-child { border-bottom:none; }
-.circuit-region { font-family:'Cinzel',serif; color:var(--gold); font-size:12px; font-weight:600; min-width:100px; }
-.circuit-desc { color:rgba(255,255,255,0.7); font-size:14px; }
-.circuit-count { color:var(--gold-light); font-size:12px; font-style:italic; margin-left:auto; }
+.circuit { background: linear-gradient(135deg, var(--brown), #2A1408); border-radius: 6px; padding: 20px 24px; margin-top: 14px; border: 1px solid var(--parch-dark); }
+.circuit h4 { font-family: 'Cinzel', serif; color: var(--parch-light); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; }
+.circuit-row { display: flex; align-items: baseline; gap: 14px; padding: 6px 0; border-bottom: 1px solid rgba(212,184,150,0.1); }
+.circuit-row:last-child { border-bottom: none; }
+.circuit-region { font-family: 'Cinzel', serif; color: var(--parch); font-size: 12px; font-weight: 600; min-width: 100px; }
+.circuit-desc { color: rgba(253,245,232,0.7); font-size: 14px; }
+.circuit-count { color: var(--parch-light); font-size: 12px; font-style: italic; margin-left: auto; }
 
 /* CHURCH PIPELINE */
-.pipeline-filters { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
-.filter-btn { font-family:'Cinzel',serif; font-size:10px; letter-spacing:1px; padding:6px 12px; border-radius:20px; border:1px solid rgba(196,154,42,0.3); background:var(--white); color:var(--navy); cursor:pointer; transition:all 0.2s; text-transform:uppercase; }
-.filter-btn.active, .filter-btn:hover { background:var(--navy); color:var(--gold-light); border-color:var(--navy); }
-.church-card { background:var(--white); border:1px solid rgba(196,154,42,0.15); border-radius:6px; padding:14px 16px; margin-bottom:10px; display:flex; align-items:center; gap:14px; }
-.church-status { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
-.status-completed { background:var(--green); }
-.status-scheduled { background:var(--blue); }
-.status-pending { background:var(--gold); }
-.status-contacted { background:var(--lgray); }
-.church-info { flex:1; }
-.church-name { font-size:15px; font-weight:600; color:var(--navy); }
-.church-detail { font-size:12.5px; color:var(--lgray); font-style:italic; margin-top:2px; }
-.church-offering { font-family:'Cinzel',serif; font-size:12px; color:var(--green); font-weight:600; }
+.filter-wrap { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.filter-btn { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 1px; padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(212,184,150,0.4); background: var(--white); color: var(--brown); cursor: pointer; transition: all 0.2s; text-transform: uppercase; }
+.filter-btn.active, .filter-btn:hover { background: var(--brown); color: var(--parch-light); border-color: var(--brown); }
+.church-card { background: var(--white); border: 1px solid rgba(212,184,150,0.2); border-radius: 6px; padding: 14px 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: background 0.15s; }
+.church-card:hover { background: var(--parch-pale); }
+.church-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+.dot-completed { background: var(--green); }
+.dot-scheduled { background: var(--bamboo); }
+.dot-pending { background: var(--parch-dark); }
+.dot-contacted { background: var(--lgray); }
+.church-name { font-size: 15px; font-weight: 600; color: var(--brown); }
+.church-detail { font-size: 12.5px; color: var(--lgray); font-style: italic; margin-top: 2px; }
+.church-offering { font-family: 'Cinzel', serif; font-size: 12px; color: var(--green); font-weight: 600; margin-left: auto; white-space: nowrap; }
+
+/* MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(42,31,20,0.7); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.modal { background: var(--white); border-radius: 10px; padding: 24px; max-width: 500px; width: 100%; border: 2px solid var(--parch); max-height: 80vh; overflow-y: auto; }
+.modal h3 { font-family: 'Cinzel', serif; color: var(--brown); font-size: 16px; letter-spacing: 1.5px; margin-bottom: 16px; border-bottom: 1px solid var(--parch-pale); padding-bottom: 10px; }
+.modal-field { margin-bottom: 12px; }
+.modal-field label { display: block; font-family: 'Cinzel', serif; font-size: 10px; color: var(--bamboo); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
+.modal-field input, .modal-field select, .modal-field textarea { width: 100%; padding: 8px 10px; border: 1px solid rgba(212,184,150,0.4); border-radius: 4px; font-family: 'Crimson Pro', serif; font-size: 15px; color: var(--text); background: var(--parch-pale); outline: none; }
+.modal-field textarea { min-height: 70px; resize: vertical; }
+.modal-actions { display: flex; gap: 8px; margin-top: 16px; }
+.btn { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; padding: 9px 20px; border-radius: 4px; border: none; cursor: pointer; transition: all 0.2s; }
+.btn-primary { background: var(--brown); color: var(--parch-light); }
+.btn-primary:hover { background: #2A1408; }
+.btn-secondary { background: var(--parch-pale); color: var(--brown); border: 1px solid rgba(212,184,150,0.4); }
 
 /* FINANCIAL */
-.support-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-bottom:24px; }
-.support-card { background:var(--white); border:1px solid rgba(196,154,42,0.2); border-radius:6px; padding:16px; text-align:center; }
-.support-card-val { font-family:'Cinzel',serif; font-size:24px; color:var(--navy); font-weight:600; }
-.support-card-lbl { font-size:12px; color:var(--lgray); text-transform:uppercase; letter-spacing:1px; margin-top:4px; }
-.partner-row { display:flex; align-items:center; gap:12px; padding:10px 14px; background:var(--white); border:1px solid rgba(196,154,42,0.15); border-radius:6px; margin-bottom:8px; }
-.partner-amount { font-family:'Cinzel',serif; color:var(--green); font-weight:600; font-size:16px; min-width:70px; }
-.partner-info { flex:1; }
-.partner-name { font-size:15px; font-weight:600; color:var(--navy); }
-.partner-detail { font-size:12px; color:var(--lgray); font-style:italic; }
-.partner-status { font-size:10px; font-family:'Cinzel',serif; padding:3px 8px; border-radius:10px; }
-.partner-active { background:var(--lgreen); color:var(--green); }
-.partner-pending { background:var(--gold-pale); color:#8a6a10; }
-
-/* OFFERING TABLE */
-.offering-table { width:100%; border-collapse:collapse; background:var(--white); border-radius:6px; overflow:hidden; border:1px solid rgba(196,154,42,0.15); }
-.offering-table th { background:var(--navy); color:var(--gold-light); font-family:'Cinzel',serif; font-size:11px; letter-spacing:1px; padding:10px 14px; text-align:left; text-transform:uppercase; }
-.offering-table td { padding:10px 14px; border-bottom:1px solid rgba(196,154,42,0.08); font-size:14px; }
-.offering-table tr:last-child td { border-bottom:none; font-weight:600; background:var(--cream-dark); }
-
-/* ADD MEETING FORM */
-.form-card { background:var(--white); border:1px solid rgba(196,154,42,0.2); border-radius:8px; padding:24px; margin-top:20px; }
-.form-title { font-family:'Cinzel',serif; font-size:14px; color:var(--navy); letter-spacing:2px; text-transform:uppercase; margin-bottom:20px; border-bottom:1px solid var(--gold-pale); padding-bottom:10px; }
-.form-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; }
-.form-group { display:flex; flex-direction:column; gap:5px; }
-.form-group label { font-family:'Cinzel',serif; font-size:10px; letter-spacing:1.5px; color:var(--gold); text-transform:uppercase; }
-.form-group input, .form-group select, .form-group textarea { padding:9px 12px; border:1px solid rgba(196,154,42,0.25); border-radius:4px; font-family:'Crimson Pro',serif; font-size:15px; color:var(--text); background:var(--cream); outline:none; transition:border 0.2s; }
-.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--gold); }
-.form-group textarea { resize:vertical; min-height:80px; }
-.btn { font-family:'Cinzel',serif; font-size:11px; letter-spacing:2px; text-transform:uppercase; padding:11px 24px; border-radius:4px; border:none; cursor:pointer; transition:all 0.2s; }
-.btn-primary { background:var(--navy); color:var(--gold-light); }
-.btn-primary:hover { background:var(--navy-deep); }
-.btn-gold { background:var(--gold); color:var(--white); }
-.btn-gold:hover { background:#a8821f; }
-.form-actions { margin-top:18px; display:flex; gap:10px; }
+.fin-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 12px; margin-bottom: 20px; }
+.fin-card { background: var(--white); border: 1px solid rgba(212,184,150,0.2); border-radius: 8px; padding: 16px; text-align: center; }
+.fin-val { font-family: 'Cinzel', serif; font-size: 22px; color: var(--brown); font-weight: 600; }
+.fin-lbl { font-size: 10px; color: var(--lgray); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+.partner-row { display: flex; align-items: center; gap: 12px; background: var(--white); border: 1px solid rgba(212,184,150,0.2); border-radius: 6px; padding: 11px 14px; margin-bottom: 8px; }
+.partner-amount { font-family: 'Cinzel', serif; color: var(--green); font-weight: 600; font-size: 16px; min-width: 75px; }
+.partner-name { font-size: 14px; font-weight: 600; color: var(--brown); }
+.partner-detail { font-size: 11px; color: var(--lgray); font-style: italic; }
+.status-pill { font-size: 10px; padding: 3px 8px; border-radius: 10px; white-space: nowrap; }
+.pill-active { background: var(--lgreen); color: var(--green); }
+.pill-pending { background: var(--parch-pale); color: var(--bamboo); }
+.offering-table { width: 100%; border-collapse: collapse; background: var(--white); border-radius: 8px; overflow: hidden; border: 1px solid rgba(212,184,150,0.2); }
+.offering-table th { background: var(--brown); color: var(--parch-light); font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 1px; padding: 9px 12px; text-align: left; text-transform: uppercase; }
+.offering-table td { padding: 9px 12px; border-bottom: 1px solid rgba(212,184,150,0.1); font-size: 14px; }
+.offering-table tr:last-child td { border-bottom: none; font-weight: 600; background: var(--parch-pale); }
 
 /* ACTION ITEMS */
-.action-list { display:flex; flex-direction:column; gap:8px; }
-.action-item { display:flex; align-items:flex-start; gap:12px; background:var(--white); border:1px solid rgba(196,154,42,0.15); border-radius:6px; padding:12px 16px; }
-.action-item.urgent { border-left:4px solid var(--red); background:var(--lred); }
-.action-item input[type=checkbox] { margin-top:3px; width:16px; height:16px; accent-color:var(--gold); cursor:pointer; flex-shrink:0; }
-.action-text { flex:1; font-size:15px; line-height:1.4; }
-.action-text.urgent { color:var(--red); font-weight:600; }
-.action-due { font-size:11px; font-family:'Cinzel',serif; color:var(--lgray); letter-spacing:1px; margin-top:2px; }
+.action-item { display: flex; align-items: flex-start; gap: 12px; background: var(--white); border: 1px solid rgba(212,184,150,0.2); border-radius: 6px; padding: 11px 14px; margin-bottom: 8px; cursor: pointer; transition: background 0.15s; }
+.action-item.urgent { border-left: 4px solid var(--red); background: var(--lred); }
+.action-item.done-item { background: var(--sage-pale); opacity: 0.65; }
+.action-cb { flex-shrink: 0; width: 19px; height: 19px; border: 2px solid var(--bamboo); border-radius: 3px; display: flex; align-items: center; justify-content: center; margin-top: 2px; transition: all 0.2s; background: var(--white); }
+.action-cb.checked { background: var(--bamboo); border-color: var(--bamboo); }
+.action-text { flex: 1; font-size: 14px; line-height: 1.4; }
+.action-text.urgent-t { color: var(--red); font-weight: 600; }
+.action-due { font-size: 11px; color: var(--lgray); font-style: italic; margin-top: 2px; }
+.add-task-box { background: var(--white); border: 1px solid rgba(212,184,150,0.3); border-radius: 8px; padding: 14px; margin-bottom: 16px; }
+.add-task-box input, .add-task-box select { padding: 8px 10px; border: 1px solid rgba(212,184,150,0.3); border-radius: 4px; font-family: 'Crimson Pro', serif; font-size: 14px; background: var(--parch-pale); color: var(--text); width: 100%; margin-bottom: 8px; outline: none; }
 
 /* FOOTER */
-footer { background:var(--navy-deep); padding:30px 20px; text-align:center; margin-top:60px; }
-.footer-verse { font-family:'Playfair Display',serif; color:rgba(255,255,255,0.5); font-style:italic; font-size:14px; line-height:1.7; max-width:500px; margin:0 auto 12px; }
-.footer-contact { font-family:'Cinzel',serif; color:var(--gold); font-size:11px; letter-spacing:1.5px; }
+footer { background: linear-gradient(180deg, var(--brown-light), var(--brown)); padding: 30px 20px; text-align: center; margin-top: 60px; border-top: 2px solid var(--parch-dark); }
+.footer-verse { font-family: 'Playfair Display', serif; color: rgba(253,245,232,0.5); font-style: italic; font-size: 13px; line-height: 1.7; max-width: 500px; margin: 0 auto 10px; }
+.footer-contact { font-family: 'Cinzel', serif; color: var(--parch); font-size: 10px; letter-spacing: 1.5px; }
 
 /* RESPONSIVE */
 @media(max-width:600px) {
-  .stats { grid-template-columns:repeat(2,1fr); }
-  .event-row { grid-template-columns:72px 24px 1fr; }
-  .event-row > :last-child { display:none; }
-  .nav-brand { font-size:11px; padding:12px 12px; }
-  .nav-tab { padding:14px 12px; font-size:10px; }
+  .stats-bar { grid-template-columns: repeat(2,1fr); }
+  .stat { border-right: none; border-bottom: 1px solid rgba(212,184,150,0.1); }
+  .stat:nth-child(odd) { border-right: 1px solid rgba(212,184,150,0.1); }
+  .event-row { grid-template-columns: 72px 24px 1fr; }
+  .nav-brand { font-size: 10px; padding: 12px 10px; }
+  .nav-tab { padding: 13px 10px; font-size: 10px; }
 }
+
+/* ANIMATIONS */
+@keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+.page.active { animation: fadeIn 0.3s ease; }
+@keyframes unfurl { from { opacity:0; transform:scale(0.97); } to { opacity:1; transform:scale(1); } }
+.hero { animation: unfurl 0.6s ease; }
 </style>
 </head>
-<body>
+<body class="bamboo-bg">
 
 <!-- NAV -->
 <nav>
   <div class="nav-inner">
     <div class="nav-brand">DeMoville ✦ FBMI</div>
     <div class="nav-tabs">
-      <button class="nav-tab active" onclick="showPage('timeline')">Timeline</button>
-      <button class="nav-tab" onclick="showPage('pipeline')">Churches</button>
-      <button class="nav-tab" onclick="showPage('financial')">Financial</button>
-      <button class="nav-tab" onclick="showPage('actions')">Action Items</button>
-      <button class="nav-tab" onclick="showPage('add')">+ Add Meeting</button>
+      <button class="nav-tab active" onclick="showPage('timeline',this)">Timeline</button>
+      <button class="nav-tab" onclick="showPage('pipeline',this)">Churches</button>
+      <button class="nav-tab" onclick="showPage('financial',this)">Financial</button>
+      <button class="nav-tab" onclick="showPage('actions',this)">Actions</button>
+      <button class="nav-tab" onclick="showPage('leads',this)">Warm Leads</button>
     </div>
   </div>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
-  <h1>DeMoville Ministry</h1>
-  <p>Christian &amp; Leah &nbsp;&middot;&nbsp; Called to the Philippines</p>
+  <div class="hero-ornament">✦ &nbsp; F B M I &nbsp; M i s s i o n a r i e s &nbsp; ✦</div>
+  <div class="hero-title">DeMoville Ministry</div>
+  <div class="hero-sub">Christian &amp; Leah &nbsp;&middot;&nbsp; Called to the Philippines</div>
   <div class="hero-rule"></div>
   <div class="hero-motto">Reaching the Lost &nbsp;&middot;&nbsp; Reviving the Church &nbsp;&middot;&nbsp; Raising the Next Generation</div>
 </div>
 
 <!-- STATS -->
-<div class="stats">
+<div class="stats-bar">
   <div class="stat"><span class="stat-val">$6,300</span><span class="stat-lbl">Monthly Goal</span></div>
-  <div class="stat"><span class="stat-val">$225/mo</span><span class="stat-lbl">Raised (3.6%)</span></div>
+  <div class="stat"><span class="stat-val" id="stat-raised">$225/mo</span><span class="stat-lbl">Raised (3.6%)</span></div>
   <div class="stat"><span class="stat-val">9</span><span class="stat-lbl">Meetings Done</span></div>
-  <div class="stat"><span class="stat-val">7</span><span class="stat-lbl">Upcoming</span></div>
+  <div class="stat"><span class="stat-val">8</span><span class="stat-lbl">Upcoming</span></div>
 </div>
 <div class="progress-wrap">
   <div class="progress-inner">
@@ -227,166 +317,154 @@ footer { background:var(--navy-deep); padding:30px 20px; text-align:center; marg
   </div>
 </div>
 
-<!-- MAIN CONTAINER -->
+<!-- ALERTS -->
+<div class="alert alert-green">🎉 <strong>FBC Hammond officially confirmed monthly support!</strong> — Amount TBD &nbsp;&middot;&nbsp; Reply to Carissa &amp; record intro video</div>
+
+<!-- MAIN -->
 <div class="container">
 
-  <!-- ═══ TIMELINE PAGE ═══ -->
+  <!-- ═══ TIMELINE ═══ -->
   <div id="page-timeline" class="page active">
 
-    <!-- MAY 2026 -->
     <div class="section">
-      <div class="section-header"><span class="section-title">MAY</span><span class="section-year">2026</span><div class="section-line"></div></div>
+      <div class="section-head"><span class="section-title">MAY</span><span class="section-year">2026</span><div class="section-line"></div></div>
       <div class="task-box">
         <div class="task-box-title">⚠️ Urgent This Week</div>
-        <label class="task-item urgent"><input type="checkbox"> Book ORD → Manchester flights — DONE ✅ (Icelandair BBAOAI · $982.97)</label>
-        <label class="task-item urgent"><input type="checkbox"> Decide Leah's UK ticket — OVERDUE</label>
-        <label class="task-item urgent"><input type="checkbox"> Send Valley Baptist paperwork (prayer card + testimonials) — OVERDUE</label>
-        <label class="task-item"><input type="checkbox"> Confirm Cody WY details with Pastor Young — by May 15</label>
-        <label class="task-item"><input type="checkbox"> Call Pastor Anglea — Faith Baptist, Bourbonnais IL — Tue/Wed 8:30–12 · 815-933-9400</label>
+        <label class="task-item urgent"><input type="checkbox" onchange="saveCheck(this,'t1')"> Reply to Carissa Maskey — FBC Hammond support + ask monthly amount</label>
+        <label class="task-item urgent"><input type="checkbox" onchange="saveCheck(this,'t2')"> Record 1–3 min self-introduction video for FBC Hammond</label>
+        <label class="task-item urgent"><input type="checkbox" onchange="saveCheck(this,'t3')"> Send ministry presentation video link to Carissa Maskey</label>
+        <label class="task-item urgent"><input type="checkbox" onchange="saveCheck(this,'t4')"> Decide Leah's UK ticket with Daniel Solt — OVERDUE</label>
+        <label class="task-item urgent"><input type="checkbox" onchange="saveCheck(this,'t5')"> Send Valley Baptist paperwork (prayer card + testimonials) — OVERDUE</label>
+        <label class="task-item"><input type="checkbox" onchange="saveCheck(this,'t6')"> Call Pastor Anglea — Faith Baptist Bourbonnais IL — 815-933-9400</label>
+        <label class="task-item"><input type="checkbox" onchange="saveCheck(this,'t7')"> Confirm Cody WY details with Pastor Young — fbccody@gmail.com — by May 15</label>
       </div>
       <div class="event-list">
-        <div class="event-row"><span class="event-date">May 9–10</span><span class="event-icon">✈️</span><div class="event-body"><div class="event-title">Friend's Wedding — Kittanning, PA</div><div class="event-detail">Meet Pastor Lenze (Victory Baptist) · (417) 955-5055</div></div></div>
-        <div class="event-row"><span class="event-date">May 17</span><span class="event-icon">⛪</span><div class="event-body"><div class="event-title">Souls Harbor Baptist — Milwaukee, WI</div><div class="event-detail">Pastor Paul Hoover · Draft in Gmail</div></div></div>
-        <div class="event-row"><span class="event-date">May 24</span><span class="event-icon">⛪</span><div class="event-body"><div class="event-title">Faith Baptist — Oak Creek, WI</div><div class="event-detail">Pastor Dean Noonan · Draft in Gmail</div></div></div>
-        <div class="event-row"><span class="event-date">May 31</span><span class="event-icon">⛪</span><div class="event-body"><div class="event-title">Berean Baptist — Beloit, WI</div><div class="event-detail">Pastor Kelvin Swanson · Draft in Gmail</div></div></div>
+        <div class="event-row"><span class="event-date">May 9–10</span><span class="event-icon">✈️</span><div><div class="event-title">Friend's Wedding — Kittanning, PA</div><div class="event-detail">Meet Pastor Lenze (Victory Baptist) · (417) 955-5055 · warm lead!</div></div></div>
+        <div class="event-row"><span class="event-date">May 17</span><span class="event-icon">⛪</span><div><div class="event-title">Souls Harbor Baptist — Milwaukee, WI</div><div class="event-detail">Pastor Paul Hoover · Draft in Gmail</div></div></div>
+        <div class="event-row"><span class="event-date">May 24</span><span class="event-icon">⛪</span><div><div class="event-title">Faith Baptist — Oak Creek, WI</div><div class="event-detail">Pastor Dean Noonan · Draft in Gmail</div></div></div>
+        <div class="event-row"><span class="event-date">May 31</span><span class="event-icon">⛪</span><div><div class="event-title">Berean Baptist — Beloit, WI</div><div class="event-detail">Pastor Kelvin Swanson · Draft in Gmail</div></div></div>
       </div>
     </div>
 
-    <!-- JUNE 2026 -->
     <div class="section">
-      <div class="section-header"><span class="section-title">JUNE</span><span class="section-year">2026</span><div class="section-line"></div></div>
+      <div class="section-head"><span class="section-title">JUNE</span><span class="section-year">2026</span><div class="section-line"></div></div>
       <div class="task-box">
         <div class="task-box-title">📋 Tasks</div>
-        <label class="task-item"><input type="checkbox"> Write Prayer Letter #3</label>
-        <label class="task-item"><input type="checkbox"> Collect missing pastor emails for FBMI list</label>
-        <label class="task-item"><input type="checkbox"> Set up Gmail "Send mail as" FBMI (on computer)</label>
-        <label class="task-item"><input type="checkbox"> Set up Outlook → Gmail forwarding</label>
-        <label class="task-item"><input type="checkbox"> Follow up Pastor Ellis — Oct 4 details — by Jun 1</label>
-        <label class="task-item"><input type="checkbox"> Follow up Pastor Dominguez — Nov 13–15 details — by Jun 1</label>
+        <label class="task-item"><input type="checkbox" onchange="saveCheck(this,'t8')"> Write Prayer Letter #3</label>
+        <label class="task-item"><input type="checkbox" onchange="saveCheck(this,'t9')"> Collect missing pastor emails for FBMI subscriber list</label>
+        <label class="task-item"><input type="checkbox" onchange="saveCheck(this,'t10')"> Follow up Pastor Ellis — Oct 4 details — by Jun 1</label>
+        <label class="task-item"><input type="checkbox" onchange="saveCheck(this,'t11')"> Follow up Pastor Dominguez — Nov 13–15 details — by Jun 1</label>
       </div>
       <div class="event-list">
-        <div class="event-row"><span class="event-date">Jun 7</span><span class="event-icon">⛪</span><div class="event-body"><div class="event-title">Madison Baptist — Madison, WI</div><div class="event-detail">Pastor Mike Weiss · Draft in Gmail</div></div></div>
-        <div class="event-row"><span class="event-date">Jun 14</span><span class="event-icon">⛪</span><div class="event-body"><div class="event-title">Berean Baptist — Galesville, WI ⭐</div><div class="event-detail">Pastor Mark Stauffacher · Warm lead — met at conference</div></div></div>
-        <div class="event-row"><span class="event-date">Jun 21</span><span class="event-icon">⛪</span><div class="event-body"><div class="event-title">Hope Baptist — Bettendorf, IA</div><div class="event-detail">Pastor Mark Cannon · Draft in Gmail</div></div></div>
-        <div class="event-row"><span class="event-date">Jun 28</span><span class="event-icon">⛪</span><div class="event-body"><div class="event-title">Bible Baptist — Dubuque, IA</div><div class="event-detail">Pastor Tom Brennan · Draft in Gmail</div></div></div>
+        <div class="event-row"><span class="event-date">Jun 7</span><span class="event-icon">⛪</span><div><div class="event-title">Madison Baptist — Madison, WI</div><div class="event-detail">Pastor Mike Weiss · Draft in Gmail</div></div></div>
+        <div class="event-row"><span class="event-date">Jun 14</span><span class="event-icon">⛪</span><div><div class="event-title">Berean Baptist — Galesville, WI ⭐</div><div class="event-detail">Pastor Mark Stauffacher · Warm lead — met at conference · Draft in Gmail</div></div></div>
+        <div class="event-row"><span class="event-date">Jun 21</span><span class="event-icon">⛪</span><div><div class="event-title">Hope Baptist — Bettendorf, IA</div><div class="event-detail">Pastor Mark Cannon · Draft in Gmail</div></div></div>
+        <div class="event-row"><span class="event-date">Jun 28</span><span class="event-icon">⛪</span><div><div class="event-title">Bible Baptist — Dubuque, IA</div><div class="event-detail">Pastor Tom Brennan · Draft in Gmail</div></div></div>
       </div>
     </div>
 
-    <!-- JULY 2026 -->
     <div class="section">
-      <div class="section-header"><span class="section-title">JULY</span><span class="section-year">2026</span><div class="section-line"></div></div>
+      <div class="section-head"><span class="section-title">JULY</span><span class="section-year">2026</span><div class="section-line"></div></div>
       <div class="event-list">
-        <div class="event-row"><span class="event-date">Jul 5</span><span class="event-icon">⛪</span><div class="event-body"><div class="event-title">Bible Baptist — Terre Haute, IN</div><div class="event-detail">Pastor Kevin Szwarga · Referral</div></div></div>
-        <div class="event-row confirmed"><span class="event-date">Jul 12</span><span class="event-icon">⛪</span><div class="event-body"><div class="event-title confirmed">Liberty Baptist — Rochester, IN <span class="badge badge-confirmed">Confirmed</span></div><div class="event-detail">Pastor Bill McSpadden · (574) 223-8328</div></div></div>
-        <div class="event-row open"><span class="event-date">Jul 19</span><span class="event-icon">⛪</span><div class="event-body"><div class="event-title open">OPEN — to be scheduled</div></div></div>
-        <div class="event-row"><span class="event-date">Jul 27</span><span class="event-icon">✈️</span><div class="event-body"><div class="event-title">Depart ORD — 10:25 PM</div><div class="event-detail">Icelandair 856 → Reykjavik · 22h 30m layover</div></div></div>
-        <div class="event-row"><span class="event-date">Jul 29</span><span class="event-icon">✈️</span><div class="event-body"><div class="event-title">Reykjavik → Manchester</div><div class="event-detail">Icelandair 440 · Arrives 11:40 AM · MAN Terminal 2</div></div></div>
-        <div class="event-row confirmed"><span class="event-date">Jul 29</span><span class="event-icon">🇬🇧</span><div class="event-body"><div class="event-title confirmed">Arrive Preston, England — Ministry Begins <span class="badge badge-confirmed">Confirmed</span></div><div class="event-detail">Daniel Solt's Church · Preach + VBS week</div></div></div>
+        <div class="event-row"><span class="event-date">Jul 5</span><span class="event-icon">⛪</span><div><div class="event-title">Bible Baptist — Terre Haute, IN</div><div class="event-detail">Pastor Kevin Szwarga · Referral</div></div></div>
+        <div class="event-row confirmed"><span class="event-date">Jul 12</span><span class="event-icon">⛪</span><div><div class="event-title confirmed">Liberty Baptist — Rochester, IN <span class="badge badge-confirmed">Confirmed</span></div><div class="event-detail">Pastor Bill McSpadden · (574) 223-8328</div></div></div>
+        <div class="event-row open-row"><span class="event-date">Jul 19</span><span class="event-icon">⛪</span><div><div class="event-title open-t">OPEN — to be scheduled</div></div></div>
+        <div class="event-row"><span class="event-date">Jul 27</span><span class="event-icon">✈️</span><div><div class="event-title">Depart ORD — Terminal 5 at 10:25 PM</div><div class="event-detail">Icelandair 856 → Reykjavik (arrives Jul 28 9:30 AM) · 22h 30m layover</div></div></div>
+        <div class="event-row"><span class="event-date">Jul 29</span><span class="event-icon">✈️</span><div><div class="event-title">Reykjavik → Manchester</div><div class="event-detail">Icelandair 440 · Departs 8:00 AM · Arrives 11:40 AM MAN Terminal 2</div></div></div>
+        <div class="event-row confirmed"><span class="event-date">Jul 29</span><span class="event-icon">🇬🇧</span><div><div class="event-title confirmed">Arrive Preston, England — Ministry Begins <span class="badge badge-confirmed">Confirmed</span></div><div class="event-detail">Daniel Solt's Church · Preach + VBS week · Flight, lodging &amp; meals covered</div></div></div>
       </div>
     </div>
 
-    <!-- AUGUST 2026 -->
     <div class="section">
-      <div class="section-header"><span class="section-title">AUGUST</span><span class="section-year">2026</span><div class="section-line"></div></div>
+      <div class="section-head"><span class="section-title">AUGUST</span><span class="section-year">2026</span><div class="section-line"></div></div>
       <div class="event-list">
-        <div class="event-row confirmed"><span class="event-date">Aug 2</span><span class="event-icon">⛪</span><div class="event-body"><div class="event-title confirmed">Preach — Daniel Solt's Church <span class="badge badge-confirmed">Confirmed</span></div></div></div>
-        <div class="event-row"><span class="event-date">Aug 3</span><span class="event-icon">✈️</span><div class="event-body"><div class="event-title">Return to Chicago</div><div class="event-detail">MAN 1:05 PM → Reykjavik → ORD · Arrive 6:15 PM</div></div></div>
-        <div class="event-row"><span class="event-date">Aug 9–21</span><span class="event-icon">🏠</span><div class="event-body"><div class="event-title">Wedding Prep &amp; Final Details</div></div></div>
+        <div class="event-row confirmed"><span class="event-date">Aug 2</span><span class="event-icon">⛪</span><div><div class="event-title confirmed">Preach — Daniel Solt's Church, Preston England <span class="badge badge-confirmed">Confirmed</span></div></div></div>
+        <div class="event-row"><span class="event-date">Aug 3</span><span class="event-icon">✈️</span><div><div class="event-title">Return to Chicago</div><div class="event-detail">MAN 1:05 PM → Reykjavik → ORD · Arrive 6:15 PM · Icelandair 441 + 853</div></div></div>
+        <div class="event-row"><span class="event-date">Aug 9–21</span><span class="event-icon">🏠</span><div><div class="event-title">Wedding Prep &amp; Final Details</div></div></div>
       </div>
       <div class="wedding">
-        <div class="wedding-date">💍 &nbsp; August 22, 2026 &nbsp; 💍</div>
+        <div class="wedding-date">💍 &nbsp; August 21, 2026 &nbsp; 💍</div>
         <div class="wedding-names">Christian &amp; Leah DeMoville</div>
         <div class="wedding-sub">Wedding Day 🎉</div>
       </div>
       <div class="event-list">
-        <div class="event-row"><span class="event-date">Aug 23+</span><span class="event-icon">🌴</span><div class="event-body"><div class="event-title">Honeymoon</div></div></div>
+        <div class="event-row"><span class="event-date">Aug 22+</span><span class="event-icon">🌴</span><div><div class="event-title">Honeymoon</div></div></div>
       </div>
       <div class="task-box" style="margin-top:14px">
         <div class="task-box-title">📋 Tasks</div>
-        <label class="task-item"><input type="checkbox"> Leah: passport renewal</label>
-        <label class="task-item"><input type="checkbox"> Leah: UK ETA visa (after honeymoon, Aug 29+)</label>
+        <label class="task-item"><input type="checkbox" onchange="saveCheck(this,'t12')"> Leah: passport renewal</label>
+        <label class="task-item"><input type="checkbox" onchange="saveCheck(this,'t13')"> Leah: UK ETA visa (after honeymoon Aug 29+)</label>
       </div>
     </div>
 
-    <!-- SEPTEMBER 2026 -->
     <div class="section">
       <div class="banner">
         <h3>✦ &nbsp; September 2026 &nbsp; ✦</h3>
         <p>Full-Time Deputation Begins — Mr. &amp; Mrs. DeMoville on the Road</p>
       </div>
       <div class="event-list">
-        <div class="event-row"><span class="event-date">Sep 1</span><span class="event-icon">📞</span><div class="event-body"><div class="event-title">Call El Vista Baptist — Pastor Joey Watt</div><div class="event-detail">He asked to be called back in September</div></div></div>
-        <div class="event-row confirmed"><span class="event-date">Sep 6</span><span class="event-icon">⛪</span><div class="event-body"><div class="event-title confirmed">First Baptist — Cody, WY <span class="badge badge-confirmed">Confirmed</span></div><div class="event-detail">Pastor Jeremiah Young · fbccody@gmail.com · Missions house · Yellowstone possible!</div></div></div>
-        <div class="event-row"><span class="event-date">Sep 13+</span><span class="event-icon">🚗</span><div class="event-body"><div class="event-title">Wyoming + Montana + Wisconsin Circuit</div></div></div>
+        <div class="event-row"><span class="event-date">Sep 1</span><span class="event-icon">📞</span><div><div class="event-title">Call El Vista Baptist — Pastor Joey Watt</div><div class="event-detail">He asked to be called back in September</div></div></div>
+        <div class="event-row confirmed"><span class="event-date">Sep 6</span><span class="event-icon">⛪</span><div><div class="event-title confirmed">First Baptist — Cody, WY <span class="badge badge-confirmed">Confirmed</span></div><div class="event-detail">Pastor Jeremiah Young · fbccody@gmail.com · Missions house · Yellowstone possible!</div></div></div>
+        <div class="event-row"><span class="event-date">Sep 13+</span><span class="event-icon">🚗</span><div><div class="event-title">Wyoming + Montana + Wisconsin Circuit</div></div></div>
       </div>
     </div>
 
-    <!-- OCTOBER 2026 -->
     <div class="section">
-      <div class="section-header"><span class="section-title">OCTOBER</span><span class="section-year">2026</span><div class="section-line"></div></div>
+      <div class="section-head"><span class="section-title">OCTOBER</span><span class="section-year">2026</span><div class="section-line"></div></div>
       <div class="event-list">
-        <div class="event-row confirmed"><span class="event-date">Oct 4</span><span class="event-icon">⛪</span><div class="event-body"><div class="event-title confirmed">Jordan Baptist — Burbank, IL <span class="badge badge-confirmed">Confirmed</span></div><div class="event-detail">Pastor Keith Ellis · Good offering · No monthly support</div></div></div>
-        <div class="event-row"><span class="event-date">Oct 5–17</span><span class="event-icon">✈️</span><div class="event-body"><div class="event-title">Arizona Circuit — fly in</div><div class="event-detail">15 prospects in database</div></div></div>
-        <div class="event-row urgent"><span class="event-date">Oct 18–22</span><span class="event-icon">⛪</span><div class="event-body"><div class="event-title urgent">Valley Baptist Missions Conference <span class="badge badge-confirmed">Confirmed</span> <span class="badge badge-overdue">Send Paperwork!</span></div><div class="event-detail">Pastor Cowling · Arrive by 9 AM Oct 18</div></div></div>
-        <div class="event-row"><span class="event-date">Oct 23–31</span><span class="event-icon">🚗</span><div class="event-body"><div class="event-title">Back to Illinois — fill open Sundays</div></div></div>
+        <div class="event-row confirmed"><span class="event-date">Oct 4</span><span class="event-icon">⛪</span><div><div class="event-title confirmed">Jordan Baptist — Burbank, IL <span class="badge badge-confirmed">Confirmed</span></div><div class="event-detail">Pastor Keith Ellis · Good offering · No monthly support</div></div></div>
+        <div class="event-row"><span class="event-date">Oct 5–17</span><span class="event-icon">✈️</span><div><div class="event-title">Arizona Circuit — fly in</div><div class="event-detail">15 prospects in database</div></div></div>
+        <div class="event-row urgent-row"><span class="event-date">Oct 18–22</span><span class="event-icon">⛪</span><div><div class="event-title urgent-t">Valley Baptist Missions Conference <span class="badge badge-confirmed">Confirmed</span> <span class="badge badge-overdue">Send Paperwork!</span></div><div class="event-detail">Pastor Cowling · Arrive by 9 AM Oct 18 · Prayer card + testimonials still needed</div></div></div>
+        <div class="event-row"><span class="event-date">Oct 23–31</span><span class="event-icon">🚗</span><div><div class="event-title">Back to Illinois — fill open Sundays</div></div></div>
       </div>
     </div>
 
-    <!-- NOVEMBER 2026 -->
     <div class="section">
-      <div class="section-header"><span class="section-title">NOVEMBER</span><span class="section-year">2026</span><div class="section-line"></div></div>
+      <div class="section-head"><span class="section-title">NOVEMBER</span><span class="section-year">2026</span><div class="section-line"></div></div>
       <div class="event-list">
-        <div class="event-row confirmed"><span class="event-date">Nov 1–4</span><span class="event-icon">⛪</span><div class="event-body"><div class="event-title confirmed">First Baptist Missions Conference — Burbank, IL <span class="badge badge-confirmed">Confirmed</span></div><div class="event-detail">Pastor Bill Erickson · Christian preaches + Leah special music Mon–Wed</div></div></div>
-        <div class="event-row"><span class="event-date">Nov 2</span><span class="event-icon">📞</span><div class="event-body"><div class="event-title">Call Pastor DeMoss — lock in Feb 2027</div><div class="event-detail">(971) 269-4048 · Gateway Baptist, Chesterfield VA</div></div></div>
-        <div class="event-row"><span class="event-date">Nov 5–12</span><span class="event-icon">✈️</span><div class="event-body"><div class="event-title">Fly to Pacific Northwest</div></div></div>
-        <div class="event-row open"><span class="event-date">Nov 8</span><span class="event-icon">⛪</span><div class="event-body"><div class="event-title open">OPEN — WA/OR church</div></div></div>
-        <div class="event-row confirmed"><span class="event-date">Nov 13–15</span><span class="event-icon">⛪</span><div class="event-body"><div class="event-title confirmed">Pastor Dominguez's Church — Seattle, WA <span class="badge badge-confirmed">Confirmed</span></div><div class="event-detail">Missions Conference · Details being confirmed</div></div></div>
-        <div class="event-row"><span class="event-date">Nov 16–22</span><span class="event-icon">⛪</span><div class="event-body"><div class="event-title">Fill remaining WA/OR Sundays</div></div></div>
+        <div class="event-row confirmed"><span class="event-date">Nov 1–4</span><span class="event-icon">⛪</span><div><div class="event-title confirmed">First Baptist Missions Conference — Burbank, IL <span class="badge badge-confirmed">Confirmed</span></div><div class="event-detail">Pastor Bill Erickson · Christian preaches + Leah special music Mon–Wed</div></div></div>
+        <div class="event-row"><span class="event-date">Nov 2</span><span class="event-icon">📞</span><div><div class="event-title">Call Pastor DeMoss — lock in Feb 2027 conference</div><div class="event-detail">(971) 269-4048 · Gateway Baptist, Chesterfield VA</div></div></div>
+        <div class="event-row"><span class="event-date">Nov 5–12</span><span class="event-icon">✈️</span><div><div class="event-title">Fly to Pacific Northwest</div></div></div>
+        <div class="event-row open-row"><span class="event-date">Nov 8</span><span class="event-icon">⛪</span><div><div class="event-title open-t">OPEN — WA/OR church</div></div></div>
+        <div class="event-row confirmed"><span class="event-date">Nov 13–15</span><span class="event-icon">⛪</span><div><div class="event-title confirmed">Pastor Dominguez's Church — Seattle, WA <span class="badge badge-confirmed">Confirmed</span></div><div class="event-detail">Missions Conference · Details being confirmed · Follow up June 1</div></div></div>
+        <div class="event-row"><span class="event-date">Nov 16–22</span><span class="event-icon">⛪</span><div><div class="event-title">Fill remaining WA/OR Sundays</div></div></div>
       </div>
     </div>
 
-    <!-- CHRISTMAS -->
-    <div class="home-break">
-      <h3>🏠 &nbsp; Nov 23 – Dec 26, 2026 &nbsp; 🏠</h3>
-      <p>Home — Thanksgiving &amp; Christmas with Family</p>
-    </div>
+    <div class="home-break"><h3>🏠 &nbsp; Nov 23 – Dec 26, 2026 &nbsp; 🏠</h3><p>Home — Thanksgiving &amp; Christmas with Family</p></div>
 
-    <!-- DEC-JAN 2027 -->
     <div class="section">
-      <div class="section-header"><span class="section-title">DEC 27 – JAN</span><span class="section-year">2027</span><div class="section-line"></div></div>
+      <div class="section-head"><span class="section-title">DEC 27 – JAN</span><span class="section-year">2027</span><div class="section-line"></div></div>
       <div class="event-list">
-        <div class="event-row"><span class="event-date">Dec–Jan</span><span class="event-icon">🚗</span><div class="event-body"><div class="event-title">Wisconsin + Michigan Circuit</div><div class="event-detail">WI: 15 prospects · MI: 63 prospects · Anchor: Berean Baptist Galesville WI</div></div></div>
+        <div class="event-row"><span class="event-date">Dec–Jan</span><span class="event-icon">🚗</span><div><div class="event-title">Wisconsin + Michigan Circuit</div><div class="event-detail">WI: 15 prospects · MI: 63 prospects · Anchor: Berean Baptist Galesville WI (Stauffacher — warm lead!)</div></div></div>
       </div>
     </div>
 
-    <!-- FEB-APR 2027 -->
     <div class="section">
-      <div class="section-header"><span class="section-title">FEB – APRIL</span><span class="section-year">2027</span><div class="section-line"></div></div>
+      <div class="section-head"><span class="section-title">FEB – APRIL</span><span class="section-year">2027</span><div class="section-line"></div></div>
       <div class="event-list">
-        <div class="event-row"><span class="event-date">Feb–Apr</span><span class="event-icon">✈️</span><div class="event-body"><div class="event-title">East Coast Circuit</div><div class="event-detail">NC · VA · PA · NY · NJ · MD — 130+ prospects</div></div></div>
-        <div class="event-row"><span class="event-date">Feb 18–22</span><span class="event-icon">⛪</span><div class="event-body"><div class="event-title">Gateway Baptist — Chesterfield, VA <span class="badge badge-potential">Potential Hold</span></div><div class="event-detail">Pastor David DeMoss · Call Nov 2026 to confirm</div></div></div>
+        <div class="event-row"><span class="event-date">Feb–Apr</span><span class="event-icon">✈️</span><div><div class="event-title">East Coast Circuit</div><div class="event-detail">NC · VA · PA · NY · NJ · MD — 130+ prospects · LBC Revival network (John Early, 607-857-1668)</div></div></div>
+        <div class="event-row"><span class="event-date">Feb 18–22</span><span class="event-icon">⛪</span><div><div class="event-title">Gateway Baptist — Chesterfield, VA <span class="badge badge-potential">Potential Hold</span></div><div class="event-detail">Pastor David DeMoss · Call November 2026 to confirm</div></div></div>
       </div>
     </div>
 
-    <!-- MAY 2027 -->
     <div class="section">
-      <div class="section-header"><span class="section-title">MAY</span><span class="section-year">2027</span><div class="section-line"></div></div>
+      <div class="section-head"><span class="section-title">MAY</span><span class="section-year">2027</span><div class="section-line"></div></div>
       <div class="event-list">
-        <div class="event-row"><span class="event-date">May</span><span class="event-icon">✈️</span><div class="event-body"><div class="event-title">Alaska — Dedicated Trip</div><div class="event-detail">Fly into Anchorage · Best weather window</div></div></div>
+        <div class="event-row confirmed"><span class="event-date">May 2</span><span class="event-icon">⛪</span><div><div class="event-title confirmed">Berean Baptist — Greenwood, IN <span class="badge badge-confirmed">Confirmed</span></div><div class="event-detail">Pastor Bill Blakely · Sunday Night Service · (317) 888-4003 · office@bbcgreenwood.com · ~2hrs from Hammond</div></div></div>
+        <div class="event-row"><span class="event-date">May</span><span class="event-icon">✈️</span><div><div class="event-title">Alaska — Dedicated Trip</div><div class="event-detail">Fly into Anchorage · Best weather window · Maximize trip length</div></div></div>
       </div>
     </div>
 
-    <!-- JUN-JUL 2027 -->
     <div class="section">
-      <div class="section-header"><span class="section-title">JUN – JUL</span><span class="section-year">2027</span><div class="section-line"></div></div>
+      <div class="section-head"><span class="section-title">JUN – JUL</span><span class="section-year">2027</span><div class="section-line"></div></div>
       <div class="event-list">
-        <div class="event-row"><span class="event-date">Jun–Jul</span><span class="event-icon">✈️</span><div class="event-body"><div class="event-title">West Coast — California + Oregon</div><div class="event-detail">CA: 66 prospects · Fly LAX → work north → exit SFO</div></div></div>
+        <div class="event-row"><span class="event-date">Jun–Jul</span><span class="event-icon">✈️</span><div><div class="event-title">West Coast — California + Oregon</div><div class="event-detail">CA: 66 prospects · Fly LAX → work north → exit SFO</div></div></div>
       </div>
     </div>
 
-    <!-- AUG-DEC 2027 -->
     <div class="section">
-      <div class="section-header"><span class="section-title">AUG – DEC</span><span class="section-year">2027</span><div class="section-line"></div></div>
+      <div class="section-head"><span class="section-title">AUG – DEC</span><span class="section-year">2027</span><div class="section-line"></div></div>
       <div class="circuit">
         <h4>The Grand Circle — South Sweep</h4>
         <div class="circuit-row"><span class="circuit-region">Texas</span><span class="circuit-desc">Dallas · Houston · San Antonio</span><span class="circuit-count">61 prospects</span></div>
@@ -400,136 +478,116 @@ footer { background:var(--navy-deep); padding:30px 20px; text-align:center; marg
 
   </div><!-- /timeline -->
 
-  <!-- ═══ CHURCH PIPELINE PAGE ═══ -->
+  <!-- ═══ CHURCHES ═══ -->
   <div id="page-pipeline" class="page">
     <div class="section">
-      <div class="section-header"><span class="section-title">CHURCH PIPELINE</span><div class="section-line"></div></div>
-      <div class="pipeline-filters">
+      <div class="section-head"><span class="section-title">CHURCH PIPELINE</span><div class="section-line"></div></div>
+      <div class="filter-wrap">
         <button class="filter-btn active" onclick="filterChurches('all',this)">All</button>
-        <button class="filter-btn" onclick="filterChurches('completed',this)">Completed</button>
-        <button class="filter-btn" onclick="filterChurches('scheduled',this)">Scheduled</button>
-        <button class="filter-btn" onclick="filterChurches('pending',this)">Pending</button>
-        <button class="filter-btn" onclick="filterChurches('contacted',this)">Contacted</button>
+        <button class="filter-btn" onclick="filterChurches('completed',this)">✅ Completed</button>
+        <button class="filter-btn" onclick="filterChurches('scheduled',this)">📅 Scheduled</button>
+        <button class="filter-btn" onclick="filterChurches('pending',this)">⏳ Pending</button>
+        <button class="filter-btn" onclick="filterChurches('contacted',this)">📞 Contacted</button>
       </div>
       <div id="church-list">
-        <div class="church-card" data-status="completed"><div class="church-status status-completed"></div><div class="church-info"><div class="church-name">First Baptist — Urbandale, IA</div><div class="church-detail">Pastor Dan McCoy · Oct 12, 2025 · ⭐ First meeting ever!</div></div><div class="church-offering">$800 · $75/mo ✅</div></div>
-        <div class="church-card" data-status="completed"><div class="church-status status-completed"></div><div class="church-info"><div class="church-name">Bible Baptist — New Franklin, MO</div><div class="church-detail">Pastor Larry Markowski (Leah's dad) · Oct 25-26, 2025</div></div><div class="church-offering">$250</div></div>
-        <div class="church-card" data-status="completed"><div class="church-status status-completed"></div><div class="church-info"><div class="church-name">Heritage Baptist — Albany, GA</div><div class="church-detail">Pastor Glenn Robinson · Dec 28, 2025</div></div><div class="church-offering">$200</div></div>
-        <div class="church-card" data-status="completed"><div class="church-status status-completed"></div><div class="church-info"><div class="church-name">FBC Hammond — Hammond, IN</div><div class="church-detail">Pastor John Wilkerson · Jan 10-14, 2026 · Featured Missionary</div></div><div class="church-offering">$3,000+ · Support TBD</div></div>
-        <div class="church-card" data-status="completed"><div class="church-status status-completed"></div><div class="church-info"><div class="church-name">Beecher Fellowship Baptist — Beecher, IL</div><div class="church-detail">Pastor Brett Haynes · Jan 18, 2026</div></div><div class="church-offering">$360</div></div>
-        <div class="church-card" data-status="completed"><div class="church-status status-completed"></div><div class="church-info"><div class="church-name">Emmanuel Baptist — Valparaiso, IN</div><div class="church-detail">Pastor John Allen · Jan 25, 2026</div></div><div class="church-offering">$600</div></div>
-        <div class="church-card" data-status="completed"><div class="church-status status-completed"></div><div class="church-info"><div class="church-name">Roseville Baptist — Roseville, IL</div><div class="church-detail">Pastor Chris Cunningham · Feb 15, 2026</div></div><div class="church-offering">$403</div></div>
-        <div class="church-card" data-status="completed"><div class="church-status status-completed"></div><div class="church-info"><div class="church-name">Calvary Baptist — Akron, OH</div><div class="church-detail">Pastor Jeffrey Smale · Mar 15, 2026</div></div><div class="church-offering">$400</div></div>
-        <div class="church-card" data-status="completed"><div class="church-status status-completed"></div><div class="church-info"><div class="church-name">New Life Baptist — Galesburg, IL</div><div class="church-detail">Pastor Darrell Grimm · Apr 12, 2026</div></div><div class="church-offering">$803 · $125/mo ✅</div></div>
-        <div class="church-card" data-status="scheduled"><div class="church-status status-scheduled"></div><div class="church-info"><div class="church-name">Liberty Baptist — Rochester, IN</div><div class="church-detail">Pastor Bill McSpadden · Jul 12, 2026</div></div><div class="church-offering">Upcoming</div></div>
-        <div class="church-card" data-status="scheduled"><div class="church-status status-scheduled"></div><div class="church-info"><div class="church-name">Daniel Solt's Church — Preston, England</div><div class="church-detail">Daniel Solt · Jul 27–Aug 3, 2026</div></div><div class="church-offering">$25/mo ✅</div></div>
-        <div class="church-card" data-status="scheduled"><div class="church-status status-scheduled"></div><div class="church-info"><div class="church-name">First Baptist — Cody, WY</div><div class="church-detail">Pastor Jeremiah Young · Sep 6, 2026</div></div><div class="church-offering">Upcoming</div></div>
-        <div class="church-card" data-status="scheduled"><div class="church-status status-scheduled"></div><div class="church-info"><div class="church-name">Jordan Baptist — Burbank, IL</div><div class="church-detail">Pastor Keith Ellis · Oct 4, 2026</div></div><div class="church-offering">Offering only</div></div>
-        <div class="church-card" data-status="scheduled"><div class="church-status status-scheduled"></div><div class="church-info"><div class="church-name">Valley Baptist Missions Conference</div><div class="church-detail">Pastor Cowling · Oct 18-22, 2026 ⚠️ Send paperwork!</div></div><div class="church-offering">Upcoming</div></div>
-        <div class="church-card" data-status="scheduled"><div class="church-status status-scheduled"></div><div class="church-info"><div class="church-name">First Baptist — Burbank, IL</div><div class="church-detail">Pastor Bill Erickson · Nov 1-4, 2026</div></div><div class="church-offering">Upcoming</div></div>
-        <div class="church-card" data-status="scheduled"><div class="church-status status-scheduled"></div><div class="church-info"><div class="church-name">Pastor Dominguez's Church — Seattle, WA</div><div class="church-detail">Jesse Dominguez · Nov 13-15, 2026</div></div><div class="church-offering">Upcoming</div></div>
-        <div class="church-card" data-status="pending"><div class="church-status status-pending"></div><div class="church-info"><div class="church-name">Faith Baptist — Bourbonnais, IL</div><div class="church-detail">Pastor Terry Anglea · Call Mon-Wed 8:30-12 · 815-933-9400</div></div><div class="church-offering">Pending</div></div>
-        <div class="church-card" data-status="pending"><div class="church-status status-pending"></div><div class="church-info"><div class="church-name">Gateway Baptist — Chesterfield, VA</div><div class="church-detail">Pastor David DeMoss · Feb 2027 potential hold</div></div><div class="church-offering">Potential</div></div>
-        <div class="church-card" data-status="contacted"><div class="church-status status-contacted"></div><div class="church-info"><div class="church-name">Lakecrest Baptist — Waterford, MI</div><div class="church-detail">Pastor Kevin Dail · Called May 5 — left voicemail · (919) 616-3592</div></div><div class="church-offering">Warm lead</div></div>
-        <div class="church-card" data-status="contacted"><div class="church-status status-contacted"></div><div class="church-info"><div class="church-name">Berean Baptist — Galesville, WI</div><div class="church-detail">Pastor Mark Stauffacher · Met at conference · warm lead</div></div><div class="church-offering">Warm lead</div></div>
-        <div class="church-card" data-status="contacted"><div class="church-status status-contacted"></div><div class="church-info"><div class="church-name">Victory Baptist — Kittanning, PA</div><div class="church-detail">Pastor Lenze · Meet at wedding May 9-10</div></div><div class="church-offering">Warm lead</div></div>
+        <div class="church-card" data-status="completed" onclick="showChurch(this)"><div class="church-dot dot-completed"></div><div><div class="church-name">First Baptist — Urbandale, IA</div><div class="church-detail">Pastor Dan McCoy · Oct 12, 2025 · ⭐ First meeting ever!</div></div><div class="church-offering">$800 · $75/mo ✅</div></div>
+        <div class="church-card" data-status="completed" onclick="showChurch(this)"><div class="church-dot dot-completed"></div><div><div class="church-name">Bible Baptist — New Franklin, MO</div><div class="church-detail">Pastor Larry Markowski (Leah's dad) · Oct 25-26, 2025</div></div><div class="church-offering">$250</div></div>
+        <div class="church-card" data-status="completed" onclick="showChurch(this)"><div class="church-dot dot-completed"></div><div><div class="church-name">Heritage Baptist — Albany, GA</div><div class="church-detail">Pastor Glenn Robinson · Dec 28, 2025</div></div><div class="church-offering">$200</div></div>
+        <div class="church-card" data-status="completed" onclick="showChurch(this)"><div class="church-dot dot-completed"></div><div><div class="church-name">FBC Hammond — Hammond, IN</div><div class="church-detail">Pastor John Wilkerson · Jan 10-14, 2026 · Featured Missionary</div></div><div class="church-offering">$3,000+ · Support ✅</div></div>
+        <div class="church-card" data-status="completed" onclick="showChurch(this)"><div class="church-dot dot-completed"></div><div><div class="church-name">Beecher Fellowship — Beecher, IL</div><div class="church-detail">Pastor Brett Haynes · Jan 18, 2026</div></div><div class="church-offering">$360</div></div>
+        <div class="church-card" data-status="completed" onclick="showChurch(this)"><div class="church-dot dot-completed"></div><div><div class="church-name">Emmanuel Baptist — Valparaiso, IN</div><div class="church-detail">Pastor John Allen · Jan 25, 2026</div></div><div class="church-offering">$600</div></div>
+        <div class="church-card" data-status="completed" onclick="showChurch(this)"><div class="church-dot dot-completed"></div><div><div class="church-name">Roseville Baptist — Roseville, IL</div><div class="church-detail">Pastor Chris Cunningham · Feb 15, 2026</div></div><div class="church-offering">$403</div></div>
+        <div class="church-card" data-status="completed" onclick="showChurch(this)"><div class="church-dot dot-completed"></div><div><div class="church-name">Calvary Baptist — Akron, OH</div><div class="church-detail">Pastor Jeffrey Smale · Mar 15, 2026</div></div><div class="church-offering">$400</div></div>
+        <div class="church-card" data-status="completed" onclick="showChurch(this)"><div class="church-dot dot-completed"></div><div><div class="church-name">New Life Baptist — Galesburg, IL</div><div class="church-detail">Pastor Darrell Grimm · Apr 12, 2026</div></div><div class="church-offering">$803 · $125/mo ✅</div></div>
+        <div class="church-card" data-status="scheduled" onclick="showChurch(this)"><div class="church-dot dot-scheduled"></div><div><div class="church-name">Liberty Baptist — Rochester, IN</div><div class="church-detail">Pastor Bill McSpadden · Jul 12, 2026 · (574) 223-8328</div></div><div class="church-offering">Upcoming</div></div>
+        <div class="church-card" data-status="scheduled" onclick="showChurch(this)"><div class="church-dot dot-scheduled"></div><div><div class="church-name">Daniel Solt's Church — Preston, England</div><div class="church-detail">Daniel Solt · Jul 27–Aug 3, 2026</div></div><div class="church-offering">$25/mo ✅</div></div>
+        <div class="church-card" data-status="scheduled" onclick="showChurch(this)"><div class="church-dot dot-scheduled"></div><div><div class="church-name">First Baptist — Cody, WY</div><div class="church-detail">Pastor Jeremiah Young · Sep 6, 2026 · fbccody@gmail.com</div></div><div class="church-offering">Upcoming</div></div>
+        <div class="church-card" data-status="scheduled" onclick="showChurch(this)"><div class="church-dot dot-scheduled"></div><div><div class="church-name">Jordan Baptist — Burbank, IL</div><div class="church-detail">Pastor Keith Ellis · Oct 4, 2026 · pastor@jbcburbank.com</div></div><div class="church-offering">Offering only</div></div>
+        <div class="church-card" data-status="scheduled" onclick="showChurch(this)"><div class="church-dot dot-scheduled"></div><div><div class="church-name">Valley Baptist Missions Conference</div><div class="church-detail">Pastor Cowling · Oct 18-22, 2026 ⚠️ Send paperwork!</div></div><div class="church-offering">Upcoming</div></div>
+        <div class="church-card" data-status="scheduled" onclick="showChurch(this)"><div class="church-dot dot-scheduled"></div><div><div class="church-name">First Baptist — Burbank, IL</div><div class="church-detail">Pastor Bill Erickson · Nov 1-4, 2026</div></div><div class="church-offering">Upcoming</div></div>
+        <div class="church-card" data-status="scheduled" onclick="showChurch(this)"><div class="church-dot dot-scheduled"></div><div><div class="church-name">Pastor Dominguez's Church — Seattle, WA</div><div class="church-detail">Jesse Dominguez · Nov 13-15, 2026</div></div><div class="church-offering">Upcoming</div></div>
+        <div class="church-card" data-status="scheduled" onclick="showChurch(this)"><div class="church-dot dot-scheduled"></div><div><div class="church-name">Berean Baptist — Greenwood, IN</div><div class="church-detail">Pastor Bill Blakely · May 2, 2027 · (317) 888-4003</div></div><div class="church-offering">Upcoming</div></div>
+        <div class="church-card" data-status="pending" onclick="showChurch(this)"><div class="church-dot dot-pending"></div><div><div class="church-name">Faith Baptist — Bourbonnais, IL</div><div class="church-detail">Pastor Terry Anglea · Call Mon-Wed 8:30-12 · 815-933-9400</div></div><div class="church-offering">Pending</div></div>
+        <div class="church-card" data-status="pending" onclick="showChurch(this)"><div class="church-dot dot-pending"></div><div><div class="church-name">Gateway Baptist — Chesterfield, VA</div><div class="church-detail">Pastor David DeMoss · Feb 2027 potential hold</div></div><div class="church-offering">Potential</div></div>
+        <div class="church-card" data-status="contacted" onclick="showChurch(this)"><div class="church-dot dot-contacted"></div><div><div class="church-name">Lakecrest Baptist — Waterford, MI</div><div class="church-detail">Pastor Kevin Dail · Called May 5 — left voicemail · (919) 616-3592</div></div><div class="church-offering">Warm lead</div></div>
+        <div class="church-card" data-status="contacted" onclick="showChurch(this)"><div class="church-dot dot-contacted"></div><div><div class="church-name">Berean Baptist — Galesville, WI</div><div class="church-detail">Pastor Mark Stauffacher · (608) 582-2824 · Met at conference</div></div><div class="church-offering">Warm lead</div></div>
+        <div class="church-card" data-status="contacted" onclick="showChurch(this)"><div class="church-dot dot-contacted"></div><div><div class="church-name">Victory Baptist — Kittanning, PA</div><div class="church-detail">Pastor Lenze · (417) 955-5055 · Met at wedding May 9</div></div><div class="church-offering">Warm lead</div></div>
+        <div class="church-card" data-status="contacted" onclick="showChurch(this)"><div class="church-dot dot-contacted"></div><div><div class="church-name">Eastern Hills Baptist — Council Bluffs, IA</div><div class="church-detail">Pastor Brian Tatman · (712) 314-0693 · Referral from Levisit Scott</div></div><div class="church-offering">Warm lead</div></div>
+        <div class="church-card" data-status="contacted" onclick="showChurch(this)"><div class="church-dot dot-contacted"></div><div><div class="church-name">Gospel Light Baptist — Marion, IA</div><div class="church-detail">Pastor Joel Bible · (319) 373-2470 · Warm lead</div></div><div class="church-offering">Warm lead</div></div>
       </div>
     </div>
   </div>
 
-  <!-- ═══ FINANCIAL PAGE ═══ -->
+  <!-- ═══ FINANCIAL ═══ -->
   <div id="page-financial" class="page">
     <div class="section">
-      <div class="section-header"><span class="section-title">FINANCIAL TRACKER</span><div class="section-line"></div></div>
-      <div class="support-grid">
-        <div class="support-card"><div class="support-card-val">$6,300</div><div class="support-card-lbl">Monthly Goal</div></div>
-        <div class="support-card"><div class="support-card-val" style="color:var(--green)">$225</div><div class="support-card-lbl">Monthly Confirmed</div></div>
-        <div class="support-card"><div class="support-card-val" style="color:var(--red)">$6,075</div><div class="support-card-lbl">Still Needed/Month</div></div>
-        <div class="support-card"><div class="support-card-val">$6,816+</div><div class="support-card-lbl">Total Offerings</div></div>
+      <div class="section-head"><span class="section-title">FINANCIAL TRACKER</span><div class="section-line"></div></div>
+      <div class="fin-grid">
+        <div class="fin-card"><div class="fin-val">$6,300/mo</div><div class="fin-lbl">Monthly Goal</div></div>
+        <div class="fin-card"><div class="fin-val" style="color:var(--green)">$225/mo</div><div class="fin-lbl">Confirmed (3.6%)</div></div>
+        <div class="fin-card"><div class="fin-val" style="color:var(--red)">$6,075/mo</div><div class="fin-lbl">Still Needed</div></div>
+        <div class="fin-card"><div class="fin-val">$6,816+</div><div class="fin-lbl">Total Offerings</div></div>
       </div>
-      <h3 style="font-family:'Cinzel',serif;color:var(--navy);font-size:13px;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;">Monthly Partners</h3>
-      <div class="partner-row"><span class="partner-amount">$75/mo</span><div class="partner-info"><div class="partner-name">First Baptist — Urbandale, IA</div><div class="partner-detail">Pastor Dan McCoy</div></div><span class="partner-status partner-active">Active</span></div>
-      <div class="partner-row"><span class="partner-amount">$125/mo</span><div class="partner-info"><div class="partner-name">New Life Baptist — Galesburg, IL</div><div class="partner-detail">Pastor Darrell Grimm · Starts May 2026</div></div><span class="partner-status partner-active">Active</span></div>
-      <div class="partner-row"><span class="partner-amount">$25/mo</span><div class="partner-info"><div class="partner-name">Daniel Solt — Preston, England</div><div class="partner-detail">UK Ministry Partner</div></div><span class="partner-status partner-active">Active</span></div>
-      <div class="partner-row"><span class="partner-amount">TBD</span><div class="partner-info"><div class="partner-name">FBC Hammond — Hammond, IN</div><div class="partner-detail">Committed · not yet started · follow up!</div></div><span class="partner-status partner-pending">Pending</span></div>
-      <br>
-      <h3 style="font-family:'Cinzel',serif;color:var(--navy);font-size:13px;letter-spacing:2px;text-transform:uppercase;margin:20px 0 12px;">Love Offerings Received</h3>
+
+      <div class="section-head" style="margin-top:20px"><span class="section-title">Monthly Partners</span><div class="section-line"></div></div>
+      <div class="partner-row"><span class="partner-amount">$75/mo</span><div><div class="partner-name">First Baptist — Urbandale, IA</div><div class="partner-detail">Pastor Dan McCoy</div></div><span class="status-pill pill-active">Active</span></div>
+      <div class="partner-row"><span class="partner-amount">$125/mo</span><div><div class="partner-name">New Life Baptist — Galesburg, IL</div><div class="partner-detail">Pastor Darrell Grimm · Starts May 2026</div></div><span class="status-pill pill-active">Active</span></div>
+      <div class="partner-row"><span class="partner-amount">$25/mo</span><div><div class="partner-name">Daniel Solt — Preston, England</div><div class="partner-detail">UK Ministry Partner</div></div><span class="status-pill pill-active">Active</span></div>
+      <div class="partner-row" style="border:2px solid var(--green)"><span class="partner-amount">TBD 🎉</span><div><div class="partner-name">FBC Hammond — Hammond, IN</div><div class="partner-detail">Confirmed May 8, 2026 · Amount pending · Ask Carissa!</div></div><span class="status-pill pill-pending">Pending Amt</span></div>
+
+      <div class="section-head" style="margin-top:20px"><span class="section-title">Love Offerings</span><div class="section-line"></div></div>
       <table class="offering-table">
         <thead><tr><th>Date</th><th>Church</th><th>Amount</th></tr></thead>
         <tbody>
-          <tr><td>Oct 12, 2025</td><td>First Baptist — Urbandale, IA</td><td>$800.00</td></tr>
-          <tr><td>Oct 26, 2025</td><td>Bible Baptist — New Franklin, MO</td><td>$250.00</td></tr>
-          <tr><td>Dec 28, 2025</td><td>Heritage Baptist — Albany, GA</td><td>$200.00</td></tr>
-          <tr><td>Jan 2026</td><td>FBC Hammond — Hammond, IN</td><td>$3,000.00+</td></tr>
-          <tr><td>Jan 18, 2026</td><td>Beecher Fellowship — Beecher, IL</td><td>$360.00</td></tr>
-          <tr><td>Jan 25, 2026</td><td>Emmanuel Baptist — Valparaiso, IN</td><td>$600.00</td></tr>
-          <tr><td>Feb 15, 2026</td><td>Roseville Baptist — Roseville, IL</td><td>$403.00</td></tr>
-          <tr><td>Mar 15, 2026</td><td>Calvary Baptist — Akron, OH</td><td>$400.00</td></tr>
-          <tr><td>Apr 12, 2026</td><td>New Life Baptist — Galesburg, IL</td><td>$803.00</td></tr>
-          <tr><td colspan="2"><strong>Total (minimum)</strong></td><td><strong>$6,816.00</strong></td></tr>
+          <tr><td>Oct 12, 2025</td><td>First Baptist — Urbandale, IA</td><td style="color:var(--green);font-weight:600">$800.00</td></tr>
+          <tr><td>Oct 26, 2025</td><td>Bible Baptist — New Franklin, MO</td><td style="color:var(--green);font-weight:600">$250.00</td></tr>
+          <tr><td>Dec 28, 2025</td><td>Heritage Baptist — Albany, GA</td><td style="color:var(--green);font-weight:600">$200.00</td></tr>
+          <tr><td>Jan 2026</td><td>FBC Hammond — Hammond, IN</td><td style="color:var(--green);font-weight:600">$3,000.00+</td></tr>
+          <tr><td>Jan 18, 2026</td><td>Beecher Fellowship — Beecher, IL</td><td style="color:var(--green);font-weight:600">$360.00</td></tr>
+          <tr><td>Jan 25, 2026</td><td>Emmanuel Baptist — Valparaiso, IN</td><td style="color:var(--green);font-weight:600">$600.00</td></tr>
+          <tr><td>Feb 15, 2026</td><td>Roseville Baptist — Roseville, IL</td><td style="color:var(--green);font-weight:600">$403.00</td></tr>
+          <tr><td>Mar 15, 2026</td><td>Calvary Baptist — Akron, OH</td><td style="color:var(--green);font-weight:600">$400.00</td></tr>
+          <tr><td>Apr 12, 2026</td><td>New Life Baptist — Galesburg, IL</td><td style="color:var(--green);font-weight:600">$803.00</td></tr>
+          <tr><td colspan="2"><strong>Total (minimum)</strong></td><td style="color:var(--green);font-weight:700">$6,816.00</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- ═══ ACTION ITEMS PAGE ═══ -->
+  <!-- ═══ ACTIONS ═══ -->
   <div id="page-actions" class="page">
     <div class="section">
-      <div class="section-header"><span class="section-title">OPEN ACTION ITEMS</span><div class="section-line"></div></div>
-      <div class="action-list">
-        <div class="action-item urgent"><input type="checkbox"><div><div class="action-text urgent">Decide Leah's UK ticket with Daniel Solt</div><div class="action-due">OVERDUE — was May 1</div></div></div>
-        <div class="action-item urgent"><input type="checkbox"><div><div class="action-text urgent">Send Valley Baptist paperwork (prayer card + testimonials)</div><div class="action-due">OVERDUE</div></div></div>
-        <div class="action-item"><input type="checkbox"><div><div class="action-text">Call Pastor Anglea — Faith Baptist, Bourbonnais IL</div><div class="action-due">Tue/Wed 8:30–12 PM · 815-933-9400</div></div></div>
-        <div class="action-item"><input type="checkbox"><div><div class="action-text">Book ORD → Manchester flights</div><div class="action-due">by May 15 — DONE ✅</div></div></div>
-        <div class="action-item"><input type="checkbox"><div><div class="action-text">Confirm Cody WY details with Pastor Young</div><div class="action-due">by May 15 · fbccody@gmail.com</div></div></div>
-        <div class="action-item"><input type="checkbox"><div><div class="action-text">Follow up Pastor Ellis — Oct 4 details</div><div class="action-due">by June 1</div></div></div>
-        <div class="action-item"><input type="checkbox"><div><div class="action-text">Follow up Pastor Dominguez — Nov 13–15 details</div><div class="action-due">by June 1</div></div></div>
-        <div class="action-item"><input type="checkbox"><div><div class="action-text">Review and send 9 Gmail drafts (WI/IA churches)</div><div class="action-due">ASAP — drafts ready in Gmail</div></div></div>
-        <div class="action-item"><input type="checkbox"><div><div class="action-text">Get 8 missing pastor emails for Carissa Maskey</div><div class="action-due">For prayer letter subscriber list</div></div></div>
-        <div class="action-item"><input type="checkbox"><div><div class="action-text">Write Prayer Letter #3</div><div class="action-due">Due May/June 2026</div></div></div>
-        <div class="action-item"><input type="checkbox"><div><div class="action-text">Follow up FBC Hammond — monthly support amount + start date</div><div class="action-due">Contact Carissa Maskey</div></div></div>
-        <div class="action-item"><input type="checkbox"><div><div class="action-text">Follow up Pastor Dail — Lakecrest Baptist, Waterford MI</div><div class="action-due">Called May 5 — left voicemail · (919) 616-3592</div></div></div>
-        <div class="action-item"><input type="checkbox"><div><div class="action-text">Talk to Pastor Lenze at wedding May 9-10</div><div class="action-due">Victory Baptist, Kittanning PA · (417) 955-5055</div></div></div>
-        <div class="action-item"><input type="checkbox"><div><div class="action-text">Set up Gmail "Send mail as" FBMI + Outlook forwarding</div><div class="action-due">On computer when you have time</div></div></div>
-        <div class="action-item"><input type="checkbox"><div><div class="action-text">Find Pastor Tar's church — Fort Wayne, IN</div><div class="action-due">Referral — church name unknown</div></div></div>
-        <div class="action-item"><input type="checkbox"><div><div class="action-text">Leah: passport renewal + UK ETA visa</div><div class="action-due">After honeymoon Aug 29+</div></div></div>
-        <div class="action-item"><input type="checkbox"><div><div class="action-text">Call El Vista Baptist — Pastor Joey Watt</div><div class="action-due">September 1</div></div></div>
-        <div class="action-item"><input type="checkbox"><div><div class="action-text">Call Pastor DeMoss — lock in Feb 2027 conference</div><div class="action-due">November 2026 · (971) 269-4048</div></div></div>
+      <div class="section-head"><span class="section-title">ACTION ITEMS</span><div class="section-line"></div></div>
+
+      <div class="add-task-box">
+        <div style="font-family:'Cinzel',serif;font-size:10px;color:var(--bamboo);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">+ Add Task</div>
+        <input type="text" id="new-task" placeholder="Task description..." onkeydown="if(event.key==='Enter')addTask()">
+        <div style="display:flex;gap:8px">
+          <input type="text" id="new-due" placeholder="Due date / note..." style="flex:1">
+          <button onclick="addTask()" style="background:var(--brown);color:var(--parch-light);border:none;border-radius:4px;padding:8px 16px;cursor:pointer;font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;white-space:nowrap">ADD</button>
+        </div>
       </div>
+
+      <div style="font-family:'Cinzel',serif;font-size:10px;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">⚠️ Urgent</div>
+      <div id="urgent-list"></div>
+
+      <div style="font-family:'Cinzel',serif;font-size:10px;color:var(--bamboo);letter-spacing:2px;text-transform:uppercase;margin:16px 0 8px">📋 All Tasks</div>
+      <div id="regular-list"></div>
     </div>
   </div>
 
-  <!-- ═══ ADD MEETING PAGE ═══ -->
-  <div id="page-add" class="page">
+  <!-- ═══ WARM LEADS ═══ -->
+  <div id="page-leads" class="page">
     <div class="section">
-      <div class="section-header"><span class="section-title">ADD NEW MEETING</span><div class="section-line"></div></div>
-      <div class="form-card">
-        <div class="form-title">New Church Meeting</div>
-        <div class="form-grid">
-          <div class="form-group"><label>Church Name</label><input type="text" placeholder="e.g. First Baptist Church"></div>
-          <div class="form-group"><label>City &amp; State</label><input type="text" placeholder="e.g. Springfield, IL"></div>
-          <div class="form-group"><label>Pastor Name</label><input type="text" placeholder="e.g. Pastor John Smith"></div>
-          <div class="form-group"><label>Phone</label><input type="tel" placeholder="(xxx) xxx-xxxx"></div>
-          <div class="form-group"><label>Email</label><input type="email" placeholder="pastor@church.com"></div>
-          <div class="form-group"><label>Meeting Date</label><input type="date"></div>
-          <div class="form-group"><label>Status</label>
-            <select>
-              <option>Scheduled</option>
-              <option>Contacted</option>
-              <option>Pending Response</option>
-              <option>Completed</option>
-            </select>
-          </div>
-          <div class="form-group"><label>Format</label><input type="text" placeholder="e.g. Full Sunday AM + PM"></div>
-          <div class="form-group"><label>Offering Received</label><input type="text" placeholder="e.g. $400"></div>
-          <div class="form-group"><label>Monthly Support</label><input type="text" placeholder="e.g. $75/mo or None"></div>
-        </div>
-        <div class="form-group" style="margin-top:14px"><label>Notes</label><textarea placeholder="Special details, hospitality, lessons learned..."></textarea></div>
-        <div class="form-actions">
-          <button class="btn btn-primary" onclick="submitMeeting()">Add to Pipeline</button>
-          <button class="btn btn-gold" onclick="clearForm()">Clear</button>
-        </div>
-        <p id="form-msg" style="margin-top:12px;font-size:14px;color:var(--green);display:none;">✅ Meeting logged! Tell Claude to update the system.</p>
+      <div class="section-head"><span class="section-title">WARM LEADS</span><div class="section-line"></div></div>
+      <div class="event-list">
+        <div class="event-row"><span class="event-date">Kittanning PA</span><span class="event-icon">⭐</span><div><div class="event-title">Victory Baptist — Pastor Lenze</div><div class="event-detail">(417) 955-5055 · Met at Huckins/Lenze wedding May 9</div></div></div>
+        <div class="event-row"><span class="event-date">Waterford MI</span><span class="event-icon">📞</span><div><div class="event-title">Lakecrest Baptist — Pastor Kevin Dail</div><div class="event-detail">(919) 616-3592 · Called May 5 — left voicemail · ~4hrs from Hammond</div></div></div>
+        <div class="event-row"><span class="event-date">Galesville WI</span><span class="event-icon">⭐</span><div><div class="event-title">Berean Baptist — Pastor Mark Stauffacher</div><div class="event-detail">(608) 582-2824 · Met at conference · Very warm lead</div></div></div>
+        <div class="event-row"><span class="event-date">Terre Haute IN</span><span class="event-icon">📞</span><div><div class="event-title">Bible Baptist — Pastor Kevin Szwarga</div><div class="event-detail">(812) 238-2541 · info@thbiblebaptist.com · Referral</div></div></div>
+        <div class="event-row"><span class="event-date">Council Bluffs IA</span><span class="event-icon">📞</span><div><div class="event-title">Eastern Hills Baptist — Pastor Brian Tatman</div><div class="event-detail">(712) 314-0693 · info@easternhillsbaptistchurch.org · Referral from Levisit Scott · ~6.5hrs drive</div></div></div>
+        <div class="event-row"><span class="event-date">Marion IA</span><span class="event-icon">📞</span><div><div class="event-title">Gospel Light Baptist — Pastor Joel Bible</div><div class="event-detail">(319) 373-2470 · goslig@msn.com · Warm lead · ~5hrs drive · Near Council Bluffs on same Iowa trip</div></div></div>
+        <div class="event-row"><span class="event-date">Chesterfield VA</span><span class="event-icon">⏳</span><div><div class="event-title">Gateway Baptist — Pastor David DeMoss</div><div class="event-detail">(971) 269-4048 · Feb 2027 potential hold · Call November 2026</div></div></div>
       </div>
     </div>
   </div>
@@ -538,58 +596,139 @@ footer { background:var(--navy-deep); padding:30px 20px; text-align:center; marg
 
 <footer>
   <div class="footer-verse">"Being confident of this very thing, that he which hath begun a good work in you will perform it until the day of Jesus Christ." — Philippians 1:6</div>
-  <div class="footer-contact">Christian DeMoville &nbsp;·&nbsp; (219) 308-4198 &nbsp;·&nbsp; christian.demoville@fbmi.org &nbsp;·&nbsp; www.fbmi.org</div>
+  <div class="footer-contact">Christian DeMoville &nbsp;·&nbsp; (219) 308-4198 &nbsp;·&nbsp; christian.demoville@fbmi.org &nbsp;·&nbsp; demovilleministries.github.io/deputation</div>
 </footer>
 
+<!-- CHURCH MODAL -->
+<div id="modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <h3 id="modal-title">Church Info</h3>
+    <div id="modal-content"></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
 <script>
-// PAGE NAVIGATION
-function showPage(id) {
+// PAGE NAV
+function showPage(id, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
-  event.target.classList.add('active');
+  btn.classList.add('active');
 }
 
 // CHURCH FILTER
 function filterChurches(status, btn) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  document.querySelectorAll('.church-card').forEach(card => {
-    if (status === 'all' || card.dataset.status === status) {
-      card.style.display = 'flex';
-    } else {
-      card.style.display = 'none';
-    }
+  document.querySelectorAll('.church-card').forEach(c => {
+    c.style.display = (status === 'all' || c.dataset.status === status) ? 'flex' : 'none';
   });
 }
 
-// TASK CHECKBOXES — save state
-document.querySelectorAll('input[type=checkbox]').forEach((cb, i) => {
-  const key = 'task_' + i;
-  if (localStorage.getItem(key) === 'true') {
+// CHURCH MODAL
+function showChurch(card) {
+  const name = card.querySelector('.church-name').textContent;
+  const detail = card.querySelector('.church-detail').textContent;
+  const offering = card.querySelector('.church-offering').textContent;
+  document.getElementById('modal-title').textContent = name;
+  document.getElementById('modal-content').innerHTML = `
+    <div class="modal-field"><label>Details</label><input type="text" value="${detail}"></div>
+    <div class="modal-field"><label>Offering / Support</label><input type="text" value="${offering}"></div>
+    <div class="modal-field"><label>Notes</label><textarea placeholder="Add notes..."></textarea></div>
+  `;
+  document.getElementById('modal').style.display = 'flex';
+}
+function closeModal() { document.getElementById('modal').style.display = 'none'; }
+
+// CHECKBOX SAVE
+function saveCheck(cb, key) {
+  localStorage.setItem('chk_' + key, cb.checked);
+}
+
+// ACTION ITEMS
+const defaultActions = [
+  { id:'a1', text:'Reply to Carissa Maskey — FBC Hammond support + ask monthly amount', urgent:true, due:'Tonight' },
+  { id:'a2', text:'Record 1–3 min self-introduction video for FBC Hammond', urgent:true, due:'This week' },
+  { id:'a3', text:'Send ministry presentation video link to Carissa Maskey', urgent:true, due:'This week' },
+  { id:'a4', text:'Decide Leah\'s UK ticket with Daniel Solt', urgent:true, due:'OVERDUE' },
+  { id:'a5', text:'Send Valley Baptist paperwork (prayer card + testimonials)', urgent:true, due:'OVERDUE' },
+  { id:'a6', text:'Call Pastor Anglea — Faith Baptist Bourbonnais IL', urgent:false, due:'Mon-Wed 8:30-12 · 815-933-9400' },
+  { id:'a7', text:'Confirm Cody WY details with Pastor Young', urgent:false, due:'by May 15 · fbccody@gmail.com' },
+  { id:'a8', text:'Call Pastor Brian Tatman — Eastern Hills Baptist, Council Bluffs IA', urgent:false, due:'Monday · (712) 314-0693' },
+  { id:'a9', text:'Contact Pastor Joel Bible — Gospel Light Baptist, Marion IA', urgent:false, due:'Monday · (319) 373-2470' },
+  { id:'a10', text:'Review and send 9 Gmail drafts (WI/IA churches)', urgent:false, due:'ASAP' },
+  { id:'a11', text:'Follow up Pastor Ellis — Oct 4 details', urgent:false, due:'June 1' },
+  { id:'a12', text:'Follow up Pastor Dominguez — Nov 13-15 details', urgent:false, due:'June 1' },
+  { id:'a13', text:'Update financial tracker once FBC Hammond amount confirmed', urgent:false, due:'This week' },
+  { id:'a14', text:'Write Prayer Letter #3', urgent:false, due:'May/June 2026' },
+  { id:'a15', text:'Get 8 missing pastor emails for Carissa Maskey', urgent:false, due:'Ongoing' },
+  { id:'a16', text:'Follow up Pastor Dail — Lakecrest Baptist Waterford MI', urgent:false, due:'(919) 616-3592' },
+  { id:'a17', text:'Find Pastor Tar\'s church — Fort Wayne IN', urgent:false, due:'Ongoing' },
+  { id:'a18', text:'Set up Gmail Send mail as FBMI + Outlook forwarding', urgent:false, due:'On computer' },
+  { id:'a19', text:'Call El Vista Baptist — Pastor Joey Watt', urgent:false, due:'September 1' },
+  { id:'a20', text:'Call Pastor DeMoss — lock in Feb 2027 conference', urgent:false, due:'November 2026 · (971) 269-4048' },
+  { id:'a21', text:'Leah: passport renewal + UK ETA visa', urgent:false, due:'After honeymoon Aug 29+' },
+];
+
+function getActions() {
+  const saved = localStorage.getItem('custom_actions');
+  const custom = saved ? JSON.parse(saved) : [];
+  return [...defaultActions, ...custom];
+}
+
+function renderActions() {
+  const actions = getActions();
+  const ul = document.getElementById('urgent-list');
+  const rl = document.getElementById('regular-list');
+  ul.innerHTML = ''; rl.innerHTML = '';
+  actions.forEach(a => {
+    const done = localStorage.getItem('act_' + a.id) === 'true';
+    const div = document.createElement('div');
+    div.className = 'action-item' + (a.urgent ? ' urgent' : '') + (done ? ' done-item' : '');
+    div.innerHTML = `
+      <div class="action-cb ${done ? 'checked' : ''}" onclick="toggleAction('${a.id}',this.parentElement)">
+        ${done ? '<span style="color:white;font-size:12px">✓</span>' : ''}
+      </div>
+      <div>
+        <div class="action-text ${a.urgent ? 'urgent-t' : ''}" style="${done ? 'text-decoration:line-through;opacity:0.5' : ''}">${a.text}</div>
+        ${a.due ? `<div class="action-due">${a.due}</div>` : ''}
+      </div>`;
+    (a.urgent ? ul : rl).appendChild(div);
+  });
+}
+
+function toggleAction(id, el) {
+  const done = localStorage.getItem('act_' + id) === 'true';
+  localStorage.setItem('act_' + id, !done);
+  renderActions();
+}
+
+function addTask() {
+  const text = document.getElementById('new-task').value.trim();
+  if (!text) return;
+  const due = document.getElementById('new-due').value.trim();
+  const saved = localStorage.getItem('custom_actions');
+  const custom = saved ? JSON.parse(saved) : [];
+  custom.push({ id: 'c' + Date.now(), text, urgent: false, due });
+  localStorage.setItem('custom_actions', JSON.stringify(custom));
+  document.getElementById('new-task').value = '';
+  document.getElementById('new-due').value = '';
+  renderActions();
+}
+
+// INIT
+renderActions();
+
+// Restore task checkboxes
+document.querySelectorAll('input[type=checkbox]').forEach(cb => {
+  const key = cb.getAttribute('onchange')?.match(/'([^']+)'/)?.[1];
+  if (key && localStorage.getItem('chk_' + key) === 'true') {
     cb.checked = true;
-    cb.closest('.task-item, .action-item') && cb.closest('.task-item, .action-item').classList.add('done');
   }
-  cb.addEventListener('change', function() {
-    localStorage.setItem(key, this.checked);
-    const parent = this.closest('.task-item, .action-item');
-    if (parent) parent.classList.toggle('done', this.checked);
-  });
 });
-
-// FORM
-function submitMeeting() {
-  const inputs = document.querySelectorAll('#page-add input, #page-add select, #page-add textarea');
-  let data = {};
-  inputs.forEach(inp => { if(inp.value) data[inp.placeholder || inp.type] = inp.value; });
-  document.getElementById('form-msg').style.display = 'block';
-  setTimeout(() => document.getElementById('form-msg').style.display = 'none', 5000);
-}
-
-function clearForm() {
-  document.querySelectorAll('#page-add input, #page-add textarea').forEach(i => i.value = '');
-  document.querySelectorAll('#page-add select').forEach(s => s.selectedIndex = 0);
-}
 </script>
 </body>
 </html>
