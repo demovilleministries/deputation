@@ -337,20 +337,80 @@ html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 .ptr{position:fixed;top:0;left:50%;transform:translateX(-50%) translateY(-100%);background:var(--brown);color:var(--parch-light);padding:8px 16px;border-radius:0 0 12px 12px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;z-index:120;transition:transform .25s ease;box-shadow:0 4px 14px rgba(0,0,0,.2)}
 .ptr.show{transform:translateX(-50%) translateY(0)}
 
-/* Mobile responsive — hide top tabs, show bottom nav */
+/* ============ MOBILE / iPhone (portrait-first) ============ */
 @media(max-width:760px){
+  /* Top nav becomes compact — bottom nav handles primary nav */
   .nav-tabs{display:none}
-  .nav-inner{justify-content:space-between;padding:0 10px}
-  .sync-pill{margin-left:0;flex:1;justify-content:flex-end;padding-right:8px}
-  .mob-nav{display:block}
-  .container{padding-bottom:90px}
-  .fab{bottom:calc(82px + env(safe-area-inset-bottom));width:54px;height:54px;font-size:24px}
-  .modal-overlay{padding:0;align-items:flex-end}
-  .modal{max-height:92vh;border-radius:18px 18px 0 0;border-bottom:none;width:100%;max-width:100%;padding-bottom:calc(24px + env(safe-area-inset-bottom))}
-  .hero{padding:36px 20px 30px}
-  .stats-bar{grid-template-columns:repeat(2,1fr)}
-  .section{margin-top:24px}
-  .nav-brand{font-size:11px;padding:11px 12px;border-right:none}
+  .nav-inner{justify-content:space-between;padding:0 10px;min-height:44px}
+  .sync-pill{margin-left:0;flex:1;justify-content:flex-end;padding-right:8px;font-size:9px}
+  .nav-brand{font-size:11px;padding:10px 10px;border-right:none}
+
+  /* Slim hero so content shows above the fold */
+  .hero{padding:18px 16px 18px;animation:none}
+  .hero-ornament{font-size:9px;letter-spacing:4px;margin-bottom:8px}
+  .hero-title{font-size:22px;letter-spacing:2px;line-height:1.05}
+  .hero-sub{font-size:12px;margin:6px 0 10px}
+  .hero-rule{margin-bottom:10px;width:80px}
+  .hero-motto{font-size:10px;letter-spacing:1.5px}
+  .today-pill{margin-top:10px;padding:3px 10px;font-size:10px;letter-spacing:1px}
+
+  /* Compact stats / progress / alert */
+  .stats-bar{grid-template-columns:repeat(4,1fr);padding:0}
+  .stat{padding:8px 4px}
+  .stat-val{font-size:13px}
+  .stat-lbl{font-size:8px;letter-spacing:1px}
+  .progress-wrap{padding:6px 12px 8px}
+  .progress-label{font-size:8px}
+  .progress-bar{height:6px}
+  .countdown-strip{padding:6px 12px;font-size:10px}
+  .countdown-strip strong{font-size:12px;letter-spacing:1.5px}
+  .alert{padding:8px 12px;font-size:12px;line-height:1.4}
+
+  /* Section spacing tightened */
+  .container{padding:0 12px;padding-bottom:calc(100px + env(safe-area-inset-bottom)) !important}
+  .section{margin-top:20px}
+
+  /* Mobile bottom nav: enabled, with proper safe area & z-index */
+  .mob-nav{display:block;z-index:95;padding-bottom:max(env(safe-area-inset-bottom),4px)}
+  .mob-tab{min-height:52px;padding:8px 4px 6px}
+  .mob-tab .em{font-size:20px}
+
+  /* FAB sits above bottom nav and respects safe area */
+  .fab{bottom:calc(76px + env(safe-area-inset-bottom));right:14px;width:52px;height:52px;font-size:22px;z-index:96}
+
+  /* Bottom-sheet modals — give bottom room for the safe area; close button always reachable */
+  .modal-overlay{padding:0;align-items:flex-end;z-index:300}
+  .modal{max-height:88dvh;border-radius:18px 18px 0 0;border-bottom:none;width:100%;max-width:100%;padding:20px 18px;padding-bottom:calc(24px + env(safe-area-inset-bottom))}
+  .modal h3{font-size:14px;margin-bottom:12px;position:sticky;top:0;background:var(--white);padding-bottom:8px;z-index:1}
+  .modal-actions{position:sticky;bottom:0;background:var(--white);padding:10px 0 0;border-top:1px solid var(--parch-pale);margin-top:14px}
+  .btn{padding:11px 16px;font-size:11px;min-height:44px}
+
+  /* Hide mob-nav when a modal is showing — gives modal full bottom */
+  body.modal-open .mob-nav{display:none}
+  body.modal-open .fab{display:none}
+
+  /* Bigger tap targets, no accidental zoom */
+  input,select,textarea,button{font-size:16px !important;touch-action:manipulation}
+  .filter-btn{padding:8px 14px;font-size:11px;min-height:36px}
+  .nav-tab{min-height:44px}
+
+  /* Modal field labels stay small */
+  .modal-field label{font-size:10px !important}
+
+  /* Drive-mode big buttons not cramped */
+  .drive-actions{grid-template-columns:repeat(2,1fr);gap:8px}
+  .drive-btn{padding:18px 10px}
+  .drive-btn .em{font-size:28px}
+
+  /* Adventure / expense thumbnails responsive */
+  .adv-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+
+  /* Settings form inputs comfortable */
+  .set-row{padding:14px}
+  .set-row input{font-size:16px !important}
+
+  /* Stop horizontal scroll bleed */
+  html,body{overflow-x:hidden;overscroll-behavior-y:contain;width:100%}
 }
 
 /* Tablet & up — comfortable tap targets stay */
@@ -360,6 +420,8 @@ html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 
 /* Disable iOS double-tap zoom on buttons */
 button,input,select,textarea{touch-action:manipulation}
+/* Use dvh for full-height where supported (handles iOS URL-bar) */
+@supports(height:100dvh){.modal{max-height:88dvh}}
 </style>
 </head>
 <body class="bamboo-bg">
@@ -1669,9 +1731,10 @@ function openModal(title, html, saveFn, deleteFn){
   document.getElementById('modal-content').innerHTML=html;
   document.getElementById('modal').style.display='flex';
   document.getElementById('modal-delete').style.display = deleteFn?'inline-block':'none';
+  document.body.classList.add('modal-open');
   currentModal={save:saveFn, del:deleteFn};
 }
-function closeModal(){ document.getElementById('modal').style.display='none'; currentModal=null; }
+function closeModal(){ document.getElementById('modal').style.display='none'; document.body.classList.remove('modal-open'); currentModal=null; }
 function modalSave(){ if(currentModal?.save) currentModal.save(); }
 function modalDelete(){ if(currentModal?.del) currentModal.del(); }
 
@@ -1945,8 +2008,9 @@ function mobMore(btn){
   document.querySelectorAll('.mob-tab').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('more-menu').style.display='flex';
+  document.body.classList.add('modal-open');
 }
-function closeMore(){ document.getElementById('more-menu').style.display='none'; }
+function closeMore(){ document.getElementById('more-menu').style.display='none'; document.body.classList.remove('modal-open'); }
 function mobGoPage(page){
   closeMore();
   // sync mob nav active state if page is one of the 4 main mobile tabs
