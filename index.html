@@ -782,6 +782,10 @@ button,input,select,textarea{touch-action:manipulation}
   <div id="page-settings" class="page">
     <div class="section">
       <div class="section-head"><span class="section-title">SETTINGS &amp; SYNC</span><div class="section-line"></div></div>
+      <div class="set-row" id="setup-status" style="background:linear-gradient(135deg,var(--parch-bg),var(--parch-pale));border-left:4px solid var(--bamboo)">
+        <label>🔧 Setup Status</label>
+        <div id="setup-status-content" style="font-size:13px;line-height:1.7"></div>
+      </div>
       <div class="set-row">
         <label>Apps Script Web App URL</label>
         <input type="text" id="setting-url" placeholder="https://script.google.com/macros/s/.../exec">
@@ -1198,24 +1202,89 @@ async function onPhoto(ev, kind){
   } catch(e){}
   const id = 'p'+Date.now();
   const entry = {id, ts:Date.now(), date:new Date().toISOString(), lat, lon, photo:dataUrl, kind, user:settings.user};
+  const arrKey = kind==='adventure'?'adv':'exp';
   if(kind==='adventure'){
     entry.title=''; entry.notes=''; entry.who='';
-    const adv = LS.get('adv',[]); adv.unshift(entry); LS.set('adv',adv);
-    renderAdventure(); openAdventureEdit(entry);
   } else {
     entry.vendor=''; entry.amount=''; entry.category='unset'; entry.purpose='';
-    const exp = LS.get('exp',[]); exp.unshift(entry); LS.set('exp',exp);
-    renderExpenses(); openExpenseEdit(entry);
   }
-  // upload to Drive via Apps Script
+  const arr = LS.get(arrKey,[]); arr.unshift(entry); LS.set(arrKey,arr);
+  if(kind==='adventure'){ renderAdventure(); openAdventureEdit(entry); }
+  else { renderExpenses(); openExpenseEdit(entry); }
+  // Async: upload photo to Drive + push metadata to Sheets
+  syncPhotoEntry(entry, dataUrl, kind);
+}
+
+async function syncPhotoEntry(entry, dataUrl, kind){
+  const arrKey = kind==='adventure'?'adv':'exp';
+  let driveUrl = '';
+  // 1) Upload photo to Drive if folder configured
   if(settings.url && settings.driveFolderId){
-    api('uploadPhoto',{folderId:settings.driveFolderId, name:`${kind}-${id}.jpg`, dataUrl, meta:{lat,lon,date:entry.date,user:settings.user}}).then(r=>{
-      if(r && r.url){ entry.driveUrl=r.url; const arr=LS.get(kind==='adventure'?'adv':'exp',[]); const i=arr.findIndex(x=>x.id===id); if(i>=0){arr[i]=entry;LS.set(kind==='adventure'?'adv':'exp',arr);} toast('Photo uploaded to Drive'); }
-    });
+    const r = await api('uploadPhoto',{folderId:settings.driveFolderId, name:`${kind}-${entry.id}.jpg`, dataUrl, meta:{lat:entry.lat,lon:entry.lon,date:entry.date,user:settings.user}});
+    if(r && r.url){
+      driveUrl = r.url;
+      entry.driveUrl = r.url; entry.driveFileId = r.id;
+      const a = LS.get(arrKey,[]); const i = a.findIndex(x=>x.id===entry.id);
+      if(i>=0){ a[i]=entry; LS.set(arrKey,a); }
+      toast('📁 Photo uploaded to Drive');
+    }
   }
+  // 2) Push metadata row to Sheets so the other device sees it
+  if(settings.url){
+    const tab = kind==='adventure'?'Adventures':'Expenses';
+    const values = kind==='adventure'
+      ? {ID:entry.id, Date:entry.date, Title:entry.title||'', Who:entry.who||'', Notes:entry.notes||'', Lat:entry.lat||'', Lon:entry.lon||'', PhotoUrl:driveUrl, AddedBy:entry.user}
+      : {ID:entry.id, Date:entry.date, Vendor:entry.vendor||'', Amount:entry.amount||'', Category:entry.category||'unset', Purpose:entry.purpose||'', PhotoUrl:driveUrl, AddedBy:entry.user};
+    const r = await api('addRow',{tab, values});
+    if(r && r.rowIndex){
+      entry._rowIndex = r.rowIndex;
+      const a = LS.get(arrKey,[]); const i = a.findIndex(x=>x.id===entry.id);
+      if(i>=0){ a[i]=entry; LS.set(arrKey,a); }
+    }
+  }
+}
+
+/* Push update for edited adventure/expense row */
+async function pushEntryUpdate(entry, kind){
+  if(!settings.url) return;
+  const tab = kind==='adventure'?'Adventures':'Expenses';
+  const values = kind==='adventure'
+    ? {Title:entry.title||'', Who:entry.who||'', Notes:entry.notes||'', PhotoUrl:entry.driveUrl||''}
+    : {Vendor:entry.vendor||'', Amount:entry.amount||'', Category:entry.category||'unset', Purpose:entry.purpose||''};
+  if(entry._rowIndex){
+    await api('updateRow',{tab, rowIndex:entry._rowIndex, values});
+  } else {
+    // never synced — add it now
+    const full = kind==='adventure'
+      ? {ID:entry.id, Date:entry.date, ...values, Lat:entry.lat||'', Lon:entry.lon||'', AddedBy:entry.user}
+      : {ID:entry.id, Date:entry.date, ...values, AddedBy:entry.user};
+    const r = await api('addRow',{tab, values:full});
+    if(r && r.rowIndex){
+      entry._rowIndex = r.rowIndex;
+      const arrKey = kind==='adventure'?'adv':'exp';
+      const a = LS.get(arrKey,[]); const i = a.findIndex(x=>x.id===entry.id);
+      if(i>=0){ a[i]=entry; LS.set(arrKey,a); }
+    }
+  }
+}
+
+async function pushEntryDelete(entry, kind){
+  if(!settings.url || !entry._rowIndex) return;
+  const tab = kind==='adventure'?'Adventures':'Expenses';
+  await api('deleteRow',{tab, rowIndex:entry._rowIndex});
 }
 function fileToDataUrl(f){
   return new Promise(res=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.readAsDataURL(f); });
+}
+
+/* Convert any photo reference to something <img> can render.
+   Data URLs pass through. Drive view URLs (/file/d/ID/view) become uc?id=ID. */
+function photoSrc(s){
+  if(!s) return '';
+  if(s.startsWith('data:')) return s;
+  const m = s.match(/\/file\/d\/([^/]+)/) || s.match(/[?&]id=([^&]+)/);
+  if(m) return `https://drive.google.com/uc?export=view&id=${m[1]}`;
+  return s;
 }
 
 /* ============ ADVENTURE LOG ============ */
@@ -1249,8 +1318,9 @@ function renderAdventure(){
     <div class="adv-month"><h4>${k} · ${arr.length} ${arr.length===1?'memory':'memories'}</h4>
       <div class="adv-grid">
         ${arr.map(e=>`<div class="adv-thumb" onclick="openAdventureView('${e.id}')">
-          <img src="${e.photo}" loading="lazy">
-          <div class="adv-thumb-meta">${new Date(e.ts).toLocaleDateString()} ${e.title?' · '+esc(e.title):''}</div>
+          ${e.photo?`<img src="${photoSrc(e.photo)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`:''}
+          <div class="adv-thumb-empty" style="${e.photo?'display:none':''}">📸<br>${e.user?esc(e.user)+"'s":'photo'}<br>memory</div>
+          <div class="adv-thumb-meta">${new Date(e.ts).toLocaleDateString()}${e.title?' · '+esc(e.title):''}${e._remote?' · '+esc(e.user||''):''}</div>
         </div>`).join('')}
       </div>
     </div>`).join('');
@@ -1261,7 +1331,7 @@ function openAdventureView(id){
 }
 function openAdventureEdit(e){
   openModal('Memory Details', `
-    <img src="${e.photo}" style="width:100%;border-radius:8px;margin-bottom:12px;max-height:300px;object-fit:cover">
+    ${e.photo?`<img src="${photoSrc(e.photo)}" style="width:100%;border-radius:8px;margin-bottom:12px;max-height:300px;object-fit:cover" onerror="this.outerHTML='<div style=\\'padding:30px;background:var(--parch-pale);border-radius:8px;text-align:center;margin-bottom:12px\\'>📸<br><a href=\\''+photoSrc(e.driveUrl||e.photo)+'\\' target=_blank style=color:var(--sage)>View photo in Drive ↗</a></div>'">`:''}
     <div class="modal-field"><label>Title</label><input id="m-title" value="${esc(e.title||'')}"></div>
     <div class="modal-field"><label>Who was there</label><input id="m-who" value="${esc(e.who||'')}"></div>
     <div class="modal-field"><label>Where</label><input id="m-where" value="${e.lat?e.lat.toFixed(4)+', '+e.lon.toFixed(4):'(no GPS)'}" readonly></div>
@@ -1272,8 +1342,10 @@ function openAdventureEdit(e){
     e.title=val('m-title'); e.who=val('m-who'); e.notes=val('m-notes');
     const adv=LS.get('adv',[]); const i=adv.findIndex(x=>x.id===e.id); if(i>=0){adv[i]=e; LS.set('adv',adv);}
     renderAdventure(); closeModal(); toast('Memory saved');
+    pushEntryUpdate(e,'adventure');
   }, ()=>{
     if(!confirm('Delete this memory?')) return;
+    pushEntryDelete(e,'adventure');
     let adv=LS.get('adv',[]); adv=adv.filter(x=>x.id!==e.id); LS.set('adv',adv);
     renderAdventure(); closeModal(); toast('Deleted');
   });
@@ -1306,8 +1378,8 @@ function renderExpenses(){
   if(!filtered.length){ el.innerHTML = '<div style="padding:24px;text-align:center;color:var(--lgray);font-style:italic">No expenses yet. Snap a receipt to start logging.</div>'; return; }
   el.innerHTML = filtered.map(e=>`
     <div class="exp-row" onclick="openExpenseEdit(LS.get('exp',[]).find(x=>x.id==='${e.id}'))">
-      <div class="exp-thumb"><img src="${e.photo}"></div>
-      <div><div class="exp-vendor">${esc(e.vendor||'(tap to set vendor)')}</div><div class="exp-meta">${new Date(e.ts).toLocaleDateString()}${e.purpose?' · '+esc(e.purpose):''}</div></div>
+      <div class="exp-thumb">${e.photo?`<img src="${photoSrc(e.photo)}" onerror="this.style.display='none'">`:'🧾'}</div>
+      <div><div class="exp-vendor">${esc(e.vendor||'(tap to set vendor)')}</div><div class="exp-meta">${new Date(e.ts).toLocaleDateString()}${e.purpose?' · '+esc(e.purpose):''}${e._remote?' · '+esc(e.user||''):''}</div></div>
       <div class="exp-amount">${e.amount?'$'+parseFloat(e.amount).toFixed(2):'—'}</div>
       <div class="exp-tag ${e.category}">${e.category==='unset'?'Set':e.category}</div>
     </div>`).join('');
@@ -1328,8 +1400,10 @@ function openExpenseEdit(e){
     e.vendor=val('m-vendor'); e.amount=val('m-amount'); e.purpose=val('m-purpose'); e.category=val('m-cat');
     const exp=LS.get('exp',[]); const i=exp.findIndex(x=>x.id===e.id); if(i>=0){exp[i]=e;LS.set('exp',exp);}
     renderExpenses(); closeModal(); toast('Receipt saved');
+    pushEntryUpdate(e,'expense');
   }, ()=>{
     if(!confirm('Delete this receipt?')) return;
+    pushEntryDelete(e,'expense');
     let exp=LS.get('exp',[]); exp=exp.filter(x=>x.id!==e.id); LS.set('exp',exp);
     renderExpenses(); closeModal(); toast('Deleted');
   });
@@ -1368,20 +1442,33 @@ function addPrayer(){
   const text=val('new-prayer').trim(); if(!text)return;
   const from=val('new-prayer-from').trim();
   const arr=LS.get('prayers',[]);
-  arr.unshift({id:'pr'+Date.now(), ts:Date.now(), text, from, answered:false, user:settings.user});
+  const entry = {id:'pr'+Date.now(), ts:Date.now(), text, from, answered:false, user:settings.user};
+  arr.unshift(entry);
   LS.set('prayers',arr);
   document.getElementById('new-prayer').value=''; document.getElementById('new-prayer-from').value='';
   renderPrayer(); toast('Prayer added');
-  api('addRow',{tab:'Prayers', values:{Text:text, From:from, AddedBy:settings.user, Date:new Date().toISOString(), Answered:false}});
+  if(settings.url){
+    api('addRow',{tab:'Prayers', values:{ID:entry.id, Date:new Date().toISOString(), Text:text, From:from, Answered:false, AnsweredDate:'', AddedBy:settings.user}}).then(r=>{
+      if(r && r.rowIndex){
+        entry._rowIndex=r.rowIndex;
+        const a=LS.get('prayers',[]); const i=a.findIndex(x=>x.id===entry.id); if(i>=0){a[i]=entry;LS.set('prayers',a);}
+      }
+    });
+  }
 }
 function togglePrayer(id){
   const arr=LS.get('prayers',[]); const e=arr.find(x=>x.id===id); if(!e) return;
   e.answered=!e.answered; if(e.answered) e.answeredTs=Date.now();
   LS.set('prayers',arr); renderPrayer();
+  if(settings.url && e._rowIndex){
+    api('updateRow',{tab:'Prayers', rowIndex:e._rowIndex, values:{Answered:e.answered, AnsweredDate:e.answered?new Date().toISOString():''}});
+  }
 }
 function delPrayer(id){
   if(!confirm('Delete this prayer?')) return;
-  let arr=LS.get('prayers',[]); arr=arr.filter(x=>x.id!==id); LS.set('prayers',arr); renderPrayer();
+  const arr=LS.get('prayers',[]); const e=arr.find(x=>x.id===id);
+  if(settings.url && e && e._rowIndex) api('deleteRow',{tab:'Prayers', rowIndex:e._rowIndex});
+  let after=arr.filter(x=>x.id!==id); LS.set('prayers',after); renderPrayer();
 }
 function renderPrayer(){
   const arr=LS.get('prayers',[]);
@@ -1414,15 +1501,25 @@ function addSermon(){
   if(dup){
     if(!confirm(`⚠️ You already preached "${title}" at "${where}" on ${new Date(dup.ts).toLocaleDateString()}. Add anyway?`)) return;
   }
-  arr.unshift({id:'sm'+Date.now(),ts:Date.now(),title,where,type,user:settings.user});
+  const entry = {id:'sm'+Date.now(),ts:Date.now(),title,where,type,user:settings.user};
+  arr.unshift(entry);
   LS.set('sermons',arr);
   ['new-sermon-title','new-sermon-where'].forEach(i=>document.getElementById(i).value='');
   renderSermons(); toast('Sermon logged');
-  api('addRow',{tab:'Sermons', values:{Title:title, Where:where, Type:type, Date:new Date().toISOString(), AddedBy:settings.user}});
+  if(settings.url){
+    api('addRow',{tab:'Sermons', values:{ID:entry.id, Date:new Date().toISOString(), Title:title, Where:where, Type:type, Notes:'', AddedBy:settings.user}}).then(r=>{
+      if(r && r.rowIndex){
+        entry._rowIndex=r.rowIndex;
+        const a=LS.get('sermons',[]); const i=a.findIndex(x=>x.id===entry.id); if(i>=0){a[i]=entry;LS.set('sermons',a);}
+      }
+    });
+  }
 }
 function delSermon(id){
   if(!confirm('Delete?')) return;
-  let arr=LS.get('sermons',[]); arr=arr.filter(x=>x.id!==id); LS.set('sermons',arr); renderSermons();
+  const arr=LS.get('sermons',[]); const e=arr.find(x=>x.id===id);
+  if(settings.url && e && e._rowIndex) api('deleteRow',{tab:'Sermons', rowIndex:e._rowIndex});
+  let after=arr.filter(x=>x.id!==id); LS.set('sermons',after); renderSermons();
 }
 function renderSermons(){
   const arr=LS.get('sermons',[]);
@@ -1497,6 +1594,36 @@ function loadSettings(){
   document.getElementById('setting-url').value=settings.url;
   document.getElementById('setting-drive').value=settings.driveFolderId;
   document.getElementById('setting-user').value=settings.user;
+  renderSetupStatus();
+}
+function renderSetupStatus(){
+  const el = document.getElementById('setup-status-content');
+  if(!el) return;
+  const url = !!settings.url;
+  const drive = !!settings.driveFolderId;
+  const synced = !!lastSyncTs;
+  const advCount = (LS.get('adv',[])||[]).length;
+  const remoteCount = (LS.get('adv',[])||[]).filter(e=>e._remote).length;
+  const check = (b)=> b?'<span style="color:var(--green)">✅</span>':'<span style="color:var(--lgray)">⬜</span>';
+  el.innerHTML = `
+    ${check(url)} <strong>Apps Script URL</strong> ${url?'configured':'<em style="color:var(--red)">not set — entries save locally only, Leah cannot see them</em>'}<br>
+    ${check(drive)} <strong>Drive Folder ID</strong> ${drive?'configured (photos auto-upload)':'<em style="color:var(--bamboo)">not set — text/GPS syncs to Sheets but photos stay local</em>'}<br>
+    ${check(synced)} <strong>Last sync</strong> ${synced?new Date(lastSyncTs).toLocaleString():'never'}<br>
+    <span style="opacity:.7">${advCount} memories total · ${remoteCount} from other devices</span>
+    ${!url ? `<div style="margin-top:10px;padding:10px;background:var(--lred);border-radius:5px;color:var(--red);font-size:12px">
+      <strong>To enable sharing with Leah:</strong><br>
+      1. Open the Apps Script editor → click <strong>Deploy → New deployment</strong><br>
+      2. Type: <strong>Web app</strong> · Execute as: <strong>Me</strong> · Who has access: <strong>Anyone</strong><br>
+      3. Copy the Web App URL → paste it below → Save &amp; Test
+    </div>`:''}
+    ${url && !drive ? `<div style="margin-top:10px;padding:10px;background:var(--parch-pale);border-radius:5px;color:var(--bamboo);font-size:12px">
+      <strong>To enable photo sync:</strong><br>
+      1. In Apps Script, run <strong>createDriveFolder</strong> once (top function dropdown → Run)<br>
+      2. View → Logs to see the Folder ID it prints<br>
+      3. Open that folder in Drive → Share → Add Leah's email → Editor<br>
+      4. Paste the Folder ID below
+    </div>`:''}
+  `;
 }
 function saveSettings(){
   settings.url = val('setting-url').trim();
@@ -1657,11 +1784,120 @@ async function backgroundSync(){
   if(!settings.url) return;
   const r = await api('getAll');
   if(!r) return;
+  // 1) Action completion state
   if(r.actions && Array.isArray(r.actions)){
     r.actions.forEach(a=>{ if(a.ID && a.Done!==undefined) LS.set('act_'+a.ID, a.Done===true); });
   }
+  // 2) Merge ADVENTURES from Sheets (so Leah sees Christian's memories and vice versa)
+  if(r.adventures && Array.isArray(r.adventures)){
+    const local = LS.get('adv',[]);
+    const byId = {}; local.forEach(e=>byId[e.id]=e);
+    r.adventures.forEach(row=>{
+      if(!row.ID) return;
+      const existing = byId[row.ID];
+      if(existing){
+        // update missing fields from server
+        existing._rowIndex = row._rowIndex;
+        if(!existing.title && row.Title) existing.title = row.Title;
+        if(!existing.notes && row.Notes) existing.notes = row.Notes;
+        if(!existing.who && row.Who) existing.who = row.Who;
+        if(!existing.driveUrl && row.PhotoUrl) existing.driveUrl = row.PhotoUrl;
+      } else {
+        // brand new from other device — add it (photo will be Drive URL, not data URL)
+        local.unshift({
+          id: row.ID,
+          ts: row.Date ? new Date(row.Date).getTime() : Date.now(),
+          date: row.Date || new Date().toISOString(),
+          title: row.Title||'', who: row.Who||'', notes: row.Notes||'',
+          lat: row.Lat||null, lon: row.Lon||null,
+          photo: row.PhotoUrl || '', // Drive URL (will not render inline in <img> directly without auth; we'll show link)
+          driveUrl: row.PhotoUrl||'',
+          user: row.AddedBy||'',
+          _rowIndex: row._rowIndex,
+          _remote: true
+        });
+      }
+    });
+    LS.set('adv', local);
+  }
+  // 3) Merge EXPENSES
+  if(r.expenses && Array.isArray(r.expenses)){
+    const local = LS.get('exp',[]);
+    const byId = {}; local.forEach(e=>byId[e.id]=e);
+    r.expenses.forEach(row=>{
+      if(!row.ID) return;
+      const existing = byId[row.ID];
+      if(existing){
+        existing._rowIndex = row._rowIndex;
+        if(!existing.vendor && row.Vendor) existing.vendor = row.Vendor;
+        if(!existing.amount && row.Amount) existing.amount = row.Amount;
+        if(existing.category==='unset' && row.Category && row.Category!=='unset') existing.category = row.Category;
+        if(!existing.purpose && row.Purpose) existing.purpose = row.Purpose;
+        if(!existing.driveUrl && row.PhotoUrl) existing.driveUrl = row.PhotoUrl;
+      } else {
+        local.unshift({
+          id: row.ID,
+          ts: row.Date ? new Date(row.Date).getTime() : Date.now(),
+          date: row.Date || new Date().toISOString(),
+          vendor: row.Vendor||'', amount: row.Amount||'',
+          category: row.Category||'unset', purpose: row.Purpose||'',
+          photo: row.PhotoUrl||'', driveUrl: row.PhotoUrl||'',
+          user: row.AddedBy||'',
+          _rowIndex: row._rowIndex, _remote:true
+        });
+      }
+    });
+    LS.set('exp', local);
+  }
+  // 4) Merge PRAYERS
+  if(r.prayers && Array.isArray(r.prayers)){
+    const local = LS.get('prayers',[]);
+    const byId = {}; local.forEach(e=>byId[e.id]=e);
+    r.prayers.forEach(row=>{
+      if(!row.ID) return;
+      const existing = byId[row.ID];
+      if(existing){
+        existing._rowIndex = row._rowIndex;
+        existing.answered = row.Answered===true || row.Answered==='true';
+        if(row.AnsweredDate) existing.answeredTs = new Date(row.AnsweredDate).getTime();
+      } else {
+        local.unshift({
+          id: row.ID,
+          ts: row.Date ? new Date(row.Date).getTime() : Date.now(),
+          text: row.Text||'', from: row.From||'',
+          answered: row.Answered===true || row.Answered==='true',
+          answeredTs: row.AnsweredDate?new Date(row.AnsweredDate).getTime():null,
+          user: row.AddedBy||'',
+          _rowIndex: row._rowIndex, _remote:true
+        });
+      }
+    });
+    LS.set('prayers', local);
+  }
+  // 5) Merge SERMONS
+  if(r.sermons && Array.isArray(r.sermons)){
+    const local = LS.get('sermons',[]);
+    const byId = {}; local.forEach(e=>byId[e.id]=e);
+    r.sermons.forEach(row=>{
+      if(!row.ID) return;
+      const existing = byId[row.ID];
+      if(existing){
+        existing._rowIndex = row._rowIndex;
+      } else {
+        local.unshift({
+          id: row.ID,
+          ts: row.Date ? new Date(row.Date).getTime() : Date.now(),
+          title: row.Title||'', where: row.Where||'', type: row.Type||'Other',
+          user: row.AddedBy||'',
+          _rowIndex: row._rowIndex, _remote:true
+        });
+      }
+    });
+    LS.set('sermons', local);
+  }
   lastSyncTs = Date.now();
   renderActions(); bindTimelineChecks(); updateBadges();
+  renderAdventure(); renderExpenses(); renderPrayer(); renderSermons();
   setSync('ok','Synced just now');
 }
 
