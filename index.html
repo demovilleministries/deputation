@@ -285,143 +285,63 @@ footer{background:linear-gradient(180deg,var(--brown-light),var(--brown));paddin
 @keyframes unfurl{from{opacity:0;transform:scale(0.97)}to{opacity:1;transform:scale(1)}}
 .hero{animation:unfurl .6s ease}
 
-/* ====== v2.1 WORKFLOW POLISH ====== */
-
-/* Safe areas (iPhone notch/home bar) */
-body{padding-bottom:env(safe-area-inset-bottom);padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
-.fab{bottom:calc(20px + env(safe-area-inset-bottom))}
+/* ====== v2.4 — Cosmetic-only extras (no layout changes) ====== */
 
 /* Today pill */
-.today-pill{display:inline-block;background:rgba(255,255,255,0.18);color:var(--brown);padding:5px 16px;border-radius:20px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;margin-top:18px;border:1px solid rgba(74,55,40,0.25);position:relative;text-transform:uppercase}
+.today-pill{display:inline-block;background:rgba(255,255,255,0.18);color:var(--brown);padding:5px 16px;border-radius:20px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;margin-top:18px;border:1px solid rgba(74,55,40,0.25);text-transform:uppercase}
 
 /* Countdown strip */
 .countdown-strip{background:linear-gradient(135deg,var(--sage),#3F5A3F);color:#fff;padding:9px 16px;text-align:center;font-family:'Cinzel',serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;border-bottom:2px solid var(--parch-dark)}
 .countdown-strip strong{font-size:14px;letter-spacing:2px;color:var(--parch-light)}
 .countdown-strip .cd-sep{opacity:.4;margin:0 12px}
 
-/* Mobile bottom tab bar */
-.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:linear-gradient(0deg,var(--brown) 0%,var(--brown-light) 100%);border-top:2px solid var(--parch-dark);padding:0 0 env(safe-area-inset-bottom);z-index:99;box-shadow:0 -4px 16px rgba(74,55,40,0.3)}
-.mob-nav-inner{display:flex;justify-content:space-around;max-width:600px;margin:0 auto}
-.mob-tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 4px 7px;background:none;border:none;color:rgba(253,245,232,0.55);cursor:pointer;font-family:'Cinzel',serif;font-size:9px;letter-spacing:1px;text-transform:uppercase;min-height:54px;position:relative;transition:color .15s}
-.mob-tab.active{color:var(--parch-light)}
-.mob-tab.active::before{content:'';position:absolute;top:0;left:25%;right:25%;height:2px;background:var(--parch)}
-.mob-tab .em{font-size:22px;line-height:1}
-.mob-tab .bc{position:absolute;top:4px;right:18%;background:var(--red);color:#fff;font-size:9px;padding:1px 5px;border-radius:8px;min-width:16px;text-align:center;line-height:1.3;font-family:'Cinzel',serif}
-
-/* Tab badges (top desktop nav) */
-.tab-badge{display:inline-block;background:var(--red);color:#fff;font-size:9px;padding:1px 5px;border-radius:7px;margin-left:4px;font-family:'Cinzel',serif;min-width:14px;text-align:center;vertical-align:middle}
-
 /* Completion animations */
 @keyframes celebrate{0%{transform:scale(1)}40%{transform:scale(1.15)}100%{transform:scale(1)}}
-@keyframes slide-done{0%{background:var(--white)}50%{background:var(--lgreen)}100%{background:var(--sage-pale)}}
 .action-cb.checked{animation:celebrate .35s ease}
-.action-item.done-item{animation:slide-done .5s ease;transition:opacity .3s}
 .task-item input[type=checkbox]:checked{animation:celebrate .35s ease}
-.task-item.done span{transition:all .3s ease}
 
 /* Past events fade automatically */
 .event-row.past-event{opacity:.45}
 .event-row.today-event{border-left:3px solid var(--gold) !important;background:rgba(232,195,90,0.07)}
 .event-row.today-event .event-date{color:var(--gold)}
 
-/* Bigger tap targets — iOS comfort */
-.task-item,.action-item,.church-card,.event-row,.entry-card,.partner-row,.exp-row,.ceb-row{min-height:48px}
-.nav-tab,.mob-tab,.filter-btn,.btn,.fab,.action-cb,.task-item input[type=checkbox]{user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+/* Tab badges */
+.tab-badge{display:inline-block;background:var(--red);color:#fff;font-size:9px;padding:1px 5px;border-radius:7px;margin-left:4px;font-family:'Cinzel',serif;min-width:14px;text-align:center;vertical-align:middle}
 
-/* Sync indicator improvements */
-.sync-pill{cursor:pointer}
-.sync-pill .last-sync{font-size:9px;opacity:.7}
+/* No-select on UI controls */
+.nav-tab,.filter-btn,.btn,.fab,.action-cb{user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
 
 /* Pull-to-refresh hint */
 .ptr{position:fixed;top:0;left:50%;transform:translateX(-50%) translateY(-100%);background:var(--brown);color:var(--parch-light);padding:8px 16px;border-radius:0 0 12px 12px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;z-index:120;transition:transform .25s ease;box-shadow:0 4px 14px rgba(0,0,0,.2)}
 .ptr.show{transform:translateX(-50%) translateY(0)}
 
-/* ============ MOBILE / iPhone (portrait-first) ============ */
-@media(max-width:760px){
-  /* Top nav becomes compact — bottom nav handles primary nav */
-  .nav-tabs{display:none}
-  .nav-inner{justify-content:space-between;padding:0 10px;min-height:44px}
-  .sync-pill{margin-left:0;flex:1;justify-content:flex-end;padding-right:8px;font-size:9px}
-  .nav-brand{font-size:11px;padding:10px 10px;border-right:none}
-
-  /* Slim hero so content shows above the fold */
-  .hero{padding:18px 16px 18px;animation:none}
-  .hero-ornament{font-size:9px;letter-spacing:4px;margin-bottom:8px}
-  .hero-title{font-size:22px;letter-spacing:2px;line-height:1.05}
-  .hero-sub{font-size:12px;margin:6px 0 10px}
-  .hero-rule{margin-bottom:10px;width:80px}
-  .hero-motto{font-size:10px;letter-spacing:1.5px}
-  .today-pill{margin-top:10px;padding:3px 10px;font-size:10px;letter-spacing:1px}
-
-  /* Compact stats / progress / alert */
-  .stats-bar{grid-template-columns:repeat(4,1fr);padding:0}
-  .stat{padding:8px 4px}
-  .stat-val{font-size:13px}
-  .stat-lbl{font-size:8px;letter-spacing:1px}
-  .progress-wrap{padding:6px 12px 8px}
-  .progress-label{font-size:8px}
-  .progress-bar{height:6px}
-  .countdown-strip{padding:6px 12px;font-size:10px}
-  .countdown-strip strong{font-size:12px;letter-spacing:1.5px}
-  .alert{padding:8px 12px;font-size:12px;line-height:1.4}
-
-  /* Section spacing tightened */
-  .container{padding:0 12px;padding-bottom:calc(100px + env(safe-area-inset-bottom)) !important}
-  .section{margin-top:20px}
-
-  /* Mobile bottom nav: enabled, with proper safe area & z-index */
-  .mob-nav{display:block;z-index:95;padding-bottom:max(env(safe-area-inset-bottom),4px)}
-  .mob-tab{min-height:52px;padding:8px 4px 6px}
-  .mob-tab .em{font-size:20px}
-
-  /* FAB sits above bottom nav and respects safe area */
-  .fab{bottom:calc(76px + env(safe-area-inset-bottom));right:14px;width:52px;height:52px;font-size:22px;z-index:96}
-
-  /* Bottom-sheet modals — give bottom room for the safe area; close button always reachable */
-  .modal-overlay{padding:0;align-items:flex-end;z-index:300}
-  .modal{max-height:88dvh;border-radius:18px 18px 0 0;border-bottom:none;width:100%;max-width:100%;padding:20px 18px;padding-bottom:calc(24px + env(safe-area-inset-bottom))}
-  .modal h3{font-size:14px;margin-bottom:12px;position:sticky;top:0;background:var(--white);padding-bottom:8px;z-index:1}
-  .modal-actions{position:sticky;bottom:0;background:var(--white);padding:10px 0 0;border-top:1px solid var(--parch-pale);margin-top:14px}
-  .btn{padding:11px 16px;font-size:11px;min-height:44px}
-
-  /* Hide mob-nav when a modal is showing — gives modal full bottom */
-  body.modal-open .mob-nav{display:none}
-  body.modal-open .fab{display:none}
-
-  /* Bigger tap targets, no accidental zoom */
-  input,select,textarea,button{font-size:16px !important;touch-action:manipulation}
-  .filter-btn{padding:8px 14px;font-size:11px;min-height:36px}
-  .nav-tab{min-height:44px}
-
-  /* Modal field labels stay small */
-  .modal-field label{font-size:10px !important}
-
-  /* Drive-mode big buttons not cramped */
-  .drive-actions{grid-template-columns:repeat(2,1fr);gap:8px}
-  .drive-btn{padding:18px 10px}
-  .drive-btn .em{font-size:28px}
-
-  /* Adventure / expense thumbnails responsive */
-  .adv-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
-
-  /* Settings form inputs comfortable */
-  .set-row{padding:14px}
-  .set-row input{font-size:16px !important}
-
-  /* Stop horizontal scroll bleed */
-  html,body{overflow-x:hidden;overscroll-behavior-y:contain;width:100%}
+/* iOS: 16px font on inputs to stop auto-zoom on tap */
+@media(max-width:600px){
+  input,select,textarea{font-size:16px}
 }
 
-/* Tablet & up — comfortable tap targets stay */
-@media(min-width:761px){
-  .mob-nav{display:none !important}
+/* Hide bottom mobile nav entirely — reverting to top-nav-only */
+.mob-nav{display:none !important}
+
+/* ====== Simple mobile responsive (original behavior that worked) ====== */
+@media(max-width:600px){
+  .stats-bar{grid-template-columns:repeat(2,1fr)}
+  .stat{border-right:none;border-bottom:1px solid rgba(212,184,150,0.1)}
+  .stat:nth-child(odd){border-right:1px solid rgba(212,184,150,0.1)}
+  .event-row{grid-template-columns:72px 24px 1fr}
+  .nav-brand{font-size:10px;padding:12px 10px}
+  .nav-tab{padding:13px 10px;font-size:10px}
+  input,select,textarea{font-size:16px !important}
+  .container{padding:0 14px 60px}
+  .hero{padding:32px 16px 28px}
 }
 
-/* Disable iOS double-tap zoom on buttons */
-button,input,select,textarea{touch-action:manipulation}
-/* Use dvh for full-height where supported (handles iOS URL-bar) */
-@supports(height:100dvh){.modal{max-height:88dvh}}
+/* Share-setup row with Copy buttons */
+.share-row{display:flex;gap:8px;align-items:center;margin-top:6px}
+.share-row input{flex:1;font-family:'Cinzel',serif;font-size:11px;padding:8px 10px;border:1px solid rgba(212,184,150,0.4);border-radius:5px;background:var(--white);color:var(--brown);overflow:hidden;text-overflow:ellipsis}
+.copy-btn{background:var(--brown);color:var(--parch-light);border:none;border-radius:5px;padding:8px 12px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:1.5px;cursor:pointer;white-space:nowrap}
+.copy-btn:active{background:#2A1408}
+.copy-btn.ok{background:var(--green)}
 </style>
 </head>
 <body class="bamboo-bg">
@@ -861,6 +781,25 @@ button,input,select,textarea{touch-action:manipulation}
         <label>Drive Photo Folder ID (optional)</label>
         <input type="text" id="setting-drive" placeholder="Drive folder ID for photos">
         <div class="help">When set, all Adventure + Receipt photos auto-upload to this Drive folder. Long-term storage, syncs to phone via Drive app, viewable in this site forever. Leave blank to use local-only.</div>
+      </div>
+
+      <div class="set-row" id="share-panel" style="display:none;background:linear-gradient(135deg,var(--sage-pale),var(--parch-pale));border-left:4px solid var(--sage)">
+        <label>📤 Share Setup with Leah</label>
+        <div class="help" style="margin-bottom:10px">Tap Copy and text these to Leah, or tap Share to send via Messages. She pastes each into her Settings on her phone.</div>
+        <div style="font-family:'Cinzel',serif;font-size:10px;color:var(--bamboo);letter-spacing:1.5px;margin-top:8px">APPS SCRIPT URL</div>
+        <div class="share-row">
+          <input type="text" id="share-url" readonly>
+          <button class="copy-btn" onclick="copyText(settings.url,this)">COPY</button>
+        </div>
+        <div style="font-family:'Cinzel',serif;font-size:10px;color:var(--bamboo);letter-spacing:1.5px;margin-top:10px">DRIVE FOLDER ID</div>
+        <div class="share-row">
+          <input type="text" id="share-drive" readonly>
+          <button class="copy-btn" onclick="copyText(settings.driveFolderId,this)">COPY</button>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="shareSetup()">📲 Share to Leah</button>
+          <button class="btn btn-secondary" onclick="copyText('Apps Script URL: '+settings.url+'\\nDrive Folder ID: '+settings.driveFolderId, this)">📋 Copy Both</button>
+        </div>
       </div>
       <div class="set-row">
         <label>User</label>
@@ -1340,13 +1279,52 @@ function fileToDataUrl(f){
 }
 
 /* Convert any photo reference to something <img> can render.
-   Data URLs pass through. Drive view URLs (/file/d/ID/view) become uc?id=ID. */
-function photoSrc(s){
+   Data URLs pass through. Drive view URLs (/file/d/ID/view) become thumbnail URLs
+   which render directly in <img> tags for publicly-viewable files. */
+function driveFileId(s){
+  if(!s) return null;
+  const m = s.match(/\/file\/d\/([^/]+)/) || s.match(/[?&]id=([^&]+)/);
+  return m ? m[1] : null;
+}
+function photoSrc(s, size){
   if(!s) return '';
   if(s.startsWith('data:')) return s;
-  const m = s.match(/\/file\/d\/([^/]+)/) || s.match(/[?&]id=([^&]+)/);
-  if(m) return `https://drive.google.com/uc?export=view&id=${m[1]}`;
+  const id = driveFileId(s);
+  if(id) return `https://drive.google.com/thumbnail?id=${id}&sz=w${size||800}`;
   return s;
+}
+function photoFullSrc(s){
+  if(!s) return '';
+  if(s.startsWith('data:')) return s;
+  const id = driveFileId(s);
+  if(id) return `https://drive.google.com/thumbnail?id=${id}&sz=w1600`;
+  return s;
+}
+
+/* Copy-to-clipboard helper used by the Settings share panel */
+function copyText(text, btn){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>{
+      if(btn){ const orig=btn.textContent; btn.textContent='✓ Copied'; btn.classList.add('ok'); setTimeout(()=>{btn.textContent=orig;btn.classList.remove('ok')},1400); }
+      toast('Copied');
+    });
+  } else {
+    // Fallback
+    const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select();
+    try{document.execCommand('copy');toast('Copied');}catch(e){}
+    ta.remove();
+  }
+}
+
+/* Native share — works on iPhone Safari */
+function shareSetup(){
+  const text = `DeMoville Deputation App — paste these into Settings:\n\nApps Script URL:\n${settings.url}\n\nDrive Folder ID:\n${settings.driveFolderId}`;
+  if(navigator.share){
+    navigator.share({title:'Deputation App Setup', text}).catch(()=>{});
+  } else {
+    copyText(text);
+    toast('Setup info copied to clipboard');
+  }
 }
 
 /* ============ ADVENTURE LOG ============ */
@@ -1393,7 +1371,7 @@ function openAdventureView(id){
 }
 function openAdventureEdit(e){
   openModal('Memory Details', `
-    ${e.photo?`<img src="${photoSrc(e.photo)}" style="width:100%;border-radius:8px;margin-bottom:12px;max-height:300px;object-fit:cover" onerror="this.outerHTML='<div style=\\'padding:30px;background:var(--parch-pale);border-radius:8px;text-align:center;margin-bottom:12px\\'>📸<br><a href=\\''+photoSrc(e.driveUrl||e.photo)+'\\' target=_blank style=color:var(--sage)>View photo in Drive ↗</a></div>'">`:''}
+    ${e.photo?`<img src="${photoFullSrc(e.photo)}" style="width:100%;border-radius:8px;margin-bottom:12px;max-height:360px;object-fit:cover" onerror="this.src=photoSrc(e.driveUrl||e.photo,400);this.onerror=null">`:''}
     <div class="modal-field"><label>Title</label><input id="m-title" value="${esc(e.title||'')}"></div>
     <div class="modal-field"><label>Who was there</label><input id="m-who" value="${esc(e.who||'')}"></div>
     <div class="modal-field"><label>Where</label><input id="m-where" value="${e.lat?e.lat.toFixed(4)+', '+e.lon.toFixed(4):'(no GPS)'}" readonly></div>
@@ -1656,6 +1634,15 @@ function loadSettings(){
   document.getElementById('setting-url').value=settings.url;
   document.getElementById('setting-drive').value=settings.driveFolderId;
   document.getElementById('setting-user').value=settings.user;
+  // Populate share panel + show only when at least URL is set
+  const sp = document.getElementById('share-panel');
+  if(sp){
+    if(settings.url || settings.driveFolderId){
+      document.getElementById('share-url').value = settings.url || '(not set)';
+      document.getElementById('share-drive').value = settings.driveFolderId || '(not set)';
+      sp.style.display='block';
+    } else sp.style.display='none';
+  }
   renderSetupStatus();
 }
 function renderSetupStatus(){
