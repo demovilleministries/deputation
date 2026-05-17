@@ -137,6 +137,7 @@ nav{background:linear-gradient(180deg,var(--brown) 0%,var(--brown-light) 100%);p
 .church-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
 .dot-completed{background:var(--green)}
 .dot-scheduled{background:var(--bamboo)}
+.dot-supporting{background:var(--gold);box-shadow:0 0 0 2px rgba(196,154,42,0.3)}
 .dot-pending{background:var(--parch-dark)}
 .dot-contacted{background:var(--lgray)}
 .church-name{font-size:15px;font-weight:600;color:var(--brown)}
@@ -618,6 +619,7 @@ body.compact-page .stats-bar,body.compact-page .progress-wrap{display:none}
       </div>
       <div class="filter-wrap">
         <button class="filter-btn active" onclick="filterChurches('all',this)">All <span id="cnt-all"></span></button>
+        <button class="filter-btn" onclick="filterChurches('supporting',this)">💚 Supporting</button>
         <button class="filter-btn" onclick="filterChurches('completed',this)">✅ Completed</button>
         <button class="filter-btn" onclick="filterChurches('scheduled',this)">📅 Scheduled</button>
         <button class="filter-btn" onclick="filterChurches('pending',this)">⏳ Pending</button>
@@ -1152,12 +1154,18 @@ async function api(action, data){
 /* ============ CHURCHES ============ */
 function renderChurches(){
   const list = document.getElementById('church-list');
-  list.innerHTML = CHURCHES.map((c,i)=>`
-    <div class="church-card" data-status="${c.s}" onclick="editChurch(${i})">
-      <div class="church-dot dot-${c.s}"></div>
-      <div><div class="church-name">${c.n}</div><div class="church-detail">${c.d}</div></div>
-      <div class="church-offering">${c.o}</div>
-    </div>`).join('');
+  if(!CHURCHES.length){
+    list.innerHTML = '<div style="padding:30px;text-align:center;color:var(--lgray);font-style:italic">No churches yet. Tap <strong>+ Log Meeting</strong> to add one or <strong>⬆ Import CSV</strong> to bulk-load your master list.</div>';
+  } else {
+    list.innerHTML = CHURCHES.map((c,i)=>`
+      <div class="church-card" data-status="${c.s}" onclick="editChurch(${i})">
+        <div class="church-dot dot-${c.s}"></div>
+        <div style="flex:1;min-width:0"><div class="church-name">${c.n}</div><div class="church-detail">${c.d}</div></div>
+        <div class="church-offering">${c.o}${c.m?' · $'+c.m+'/mo':''}</div>
+      </div>`).join('');
+  }
+  const ct=document.getElementById('cnt-all');
+  if(ct) ct.textContent='('+CHURCHES.length+')';
 }
 function filterChurches(status, btn){
   document.querySelectorAll('#page-pipeline .filter-btn').forEach(b=>b.classList.remove('active'));
@@ -1170,21 +1178,37 @@ function editChurch(i){
   const c = CHURCHES[i];
   openModal('Edit Church', `
     <div class="modal-field"><label>Church</label><input id="m-name" value="${esc(c.n)}"></div>
-    <div class="modal-field"><label>Details</label><input id="m-det" value="${esc(c.d)}"></div>
-    <div class="modal-field"><label>Offering / Status</label><input id="m-off" value="${esc(c.o)}"></div>
-    <div class="modal-field"><label>Status</label><select id="m-stat">
-      <option value="completed"${c.s==='completed'?' selected':''}>Completed</option>
-      <option value="scheduled"${c.s==='scheduled'?' selected':''}>Scheduled</option>
-      <option value="pending"${c.s==='pending'?' selected':''}>Pending</option>
-      <option value="contacted"${c.s==='contacted'?' selected':''}>Contacted (warm lead)</option>
+    <div class="modal-field"><label>Pastor / Details</label><input id="m-det" value="${esc(c.d)}"></div>
+    <div class="modal-field"><label>Status</label><select id="m-stat" onchange="document.getElementById('m-supp-wrap').style.display=this.value==='supporting'?'block':'none'">
+      <option value="completed"${c.s==='completed'?' selected':''}>✅ Completed (meeting done)</option>
+      <option value="scheduled"${c.s==='scheduled'?' selected':''}>📅 Scheduled</option>
+      <option value="supporting"${c.s==='supporting'?' selected':''}>💚 Supporting (monthly partner)</option>
+      <option value="pending"${c.s==='pending'?' selected':''}>⏳ Pending</option>
+      <option value="contacted"${c.s==='contacted'?' selected':''}>📞 Contacted (warm lead)</option>
     </select></div>
-    <div class="modal-field"><label>Notes</label><textarea id="m-notes" placeholder="Add notes...">${esc(LS.get('chnotes_'+i,''))}</textarea></div>
+    <div class="modal-field" id="m-supp-wrap" style="display:${c.s==='supporting'?'block':'none'}">
+      <label>Monthly Support Amount ($)</label>
+      <input id="m-monthly" type="number" step="5" value="${c.m||''}" placeholder="e.g. 75">
+    </div>
+    <div class="modal-field"><label>Offering Note (shown in list)</label><input id="m-off" value="${esc(c.o)}" placeholder="e.g. $800 · $75/mo ✅"></div>
+    <div class="modal-field"><label>Notes</label><textarea id="m-notes" placeholder="Phone, email, address, prayer requests...">${esc(LS.get('chnotes_'+i,''))}</textarea></div>
   `, ()=>{
     c.n=val('m-name'); c.d=val('m-det'); c.o=val('m-off'); c.s=val('m-stat');
+    c.m = parseFloat(val('m-monthly'))||0;
+    if(c.s==='supporting'){
+      if(c.m>0 && !c.o.includes('/mo')) c.o = (c.o?c.o+' · ':'') + '$'+c.m+'/mo ✅';
+      const pname = c.n;
+      const idx = PARTNERS.findIndex(p=>p.name===pname);
+      if(idx>=0){ PARTNERS[idx].amt = c.m; PARTNERS[idx].status='Active'; PARTNERS[idx].det = c.d; }
+      else if(c.m>0) PARTNERS.unshift({amt:c.m, name:pname, det:c.d, status:'Active'});
+      LS.set('partners', PARTNERS);
+    }
     LS.set('chnotes_'+i, val('m-notes'));
     LS.set('churches', CHURCHES);
     renderChurches();
-    api('updateRow',{tab:'Meetings', rowIndex:i+2, values:{Church:c.n.split('—')[0].trim(), Notes:val('m-notes')}});
+    renderFinancial();
+    addAutoPrayer(c.n, c.s);
+    if(settings.url) api('updateRow',{tab:'Meetings', rowIndex:i+2, values:{Church:c.n.split('—')[0].trim(), Status:c.s, Support:c.m?'$'+c.m+'/mo':'', Notes:val('m-notes')}});
     toast('Church updated');
     closeModal();
   });
@@ -2179,6 +2203,19 @@ function getCalEvents(){
   Object.entries(LS.get('cal_entries',{})).forEach(([k,arr])=>{
     arr.forEach(e=>(evs[k]=evs[k]||[]).push(e));
   });
+  // Also pull tasks with parseable due dates into the calendar
+  getActions().forEach(a=>{
+    if(LS.get('act_'+a.id,false)) return; // skip done
+    const due = a.due || '';
+    const m = due.match(/(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember|t)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+(\d+)/i);
+    if(!m) return;
+    const monthIdx=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'].indexOf(m[1].slice(0,3).toLowerCase());
+    const day=parseInt(m[2]); let year=TODAY.getFullYear();
+    const candidate=new Date(year,monthIdx,day);
+    if(daysFromToday(candidate)<-60) year++;
+    const k=calKey(new Date(year,monthIdx,day));
+    (evs[k]=evs[k]||[]).push({type:a.urgent?'unavailable':'scheduled', label:'📋 '+a.text.slice(0,28)});
+  });
   return evs;
 }
 
@@ -2492,6 +2529,11 @@ function init(){
   const savedCh = LS.get('churches', null);
   if(savedCh && Array.isArray(savedCh) && savedCh.length >= CHURCHES.length){
     CHURCHES.length = 0; savedCh.forEach(c=>CHURCHES.push(c));
+  }
+  // restore saved supporting partners
+  const savedP = LS.get('partners', null);
+  if(savedP && Array.isArray(savedP) && savedP.length){
+    PARTNERS.length = 0; savedP.forEach(p=>PARTNERS.push(p));
   }
   renderChurches();
   renderFinancial();
