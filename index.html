@@ -323,6 +323,62 @@ footer{background:linear-gradient(180deg,var(--brown-light),var(--brown));paddin
 /* Hide bottom mobile nav entirely — reverting to top-nav-only */
 .mob-nav{display:none !important}
 
+/* ====== v2.6 ====== */
+/* Compact hero on non-home pages */
+body.compact-page .hero{padding:14px 16px 12px;animation:none}
+body.compact-page .hero-ornament,body.compact-page .hero-sub,body.compact-page .hero-rule,body.compact-page .hero-motto,body.compact-page .today-pill,body.compact-page .countdown-strip,body.compact-page .alert{display:none}
+body.compact-page .hero-title{font-size:clamp(16px,3.5vw,22px);letter-spacing:2px}
+body.compact-page .stats-bar,body.compact-page .progress-wrap{display:none}
+
+/* Mobile nav: wrap to multiple rows instead of horizontal scroll */
+@media(max-width:760px){
+  .nav-tabs{flex-wrap:wrap;overflow:visible}
+  .nav-tab{flex:1 1 auto;min-width:23%;text-align:center;padding:10px 6px;font-size:9px;letter-spacing:1px}
+  .nav-inner{flex-wrap:wrap;padding:4px 6px}
+  .nav-brand{flex:0 0 100%;text-align:center;padding:6px;border-right:none;font-size:11px}
+  .sync-pill{flex:0 0 auto;margin-left:auto;padding:6px 8px}
+}
+
+/* Archive section */
+.archive-toggle{font-family:'Cinzel',serif;font-size:11px;color:var(--bamboo);letter-spacing:2px;cursor:pointer;padding:10px 0;border-top:1px solid var(--parch-dark);margin-top:20px;text-transform:uppercase;display:flex;align-items:center;gap:8px;background:none;border-bottom:none;border-left:none;border-right:none;width:100%;text-align:left}
+.archive-toggle .ct{margin-left:auto;background:var(--bamboo);color:var(--parch-light);padding:2px 8px;border-radius:10px;font-size:10px}
+.archive-list{display:none;margin-top:10px}
+.archive-list.open{display:block}
+.archive-item{display:flex;align-items:center;gap:10px;background:var(--sage-pale);border:1px solid rgba(125,154,122,0.3);border-radius:5px;padding:8px 12px;margin-bottom:6px;font-size:13px;color:var(--brown);opacity:.8}
+.restore-btn{background:var(--sage);color:#fff;border:none;border-radius:4px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:'Cinzel',serif;letter-spacing:1px;margin-left:auto}
+
+/* Calendar */
+.cal-controls{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px}
+.cal-controls h3{font-family:'Cinzel',serif;color:var(--brown);font-size:clamp(14px,2.5vw,18px);letter-spacing:2px;text-align:center;flex:1}
+.cal-controls .btn{padding:8px 16px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;background:var(--parch-pale);padding:6px;border-radius:8px;border:1px solid rgba(212,184,150,0.3)}
+.cal-dow{font-family:'Cinzel',serif;font-size:9px;color:var(--bamboo);text-align:center;letter-spacing:1px;padding:6px 0 4px;text-transform:uppercase}
+.cal-day{aspect-ratio:1;background:var(--white);border-radius:5px;padding:4px 5px;font-size:11px;font-weight:600;color:var(--brown);cursor:pointer;border:2px solid transparent;display:flex;flex-direction:column;gap:1px;overflow:hidden;min-height:48px;transition:all .15s}
+.cal-day:hover{border-color:var(--bamboo)}
+.cal-day.other-month{opacity:.3}
+.cal-day.today{background:var(--gold-light);border-color:var(--gold)}
+.cal-day.scheduled{background:var(--sage-pale)}
+.cal-day.unavailable{background:var(--lred);color:var(--red)}
+.cal-day.open{background:rgba(125,216,125,0.18)}
+.cal-day .ev{font-size:8.5px;font-weight:400;color:var(--lgray);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.2}
+.cal-day .ev-tag{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:3px}
+.cal-day-detail{margin-top:18px;background:var(--white);border:1px solid rgba(212,184,150,0.3);border-radius:8px;padding:16px}
+.cal-day-detail h4{font-family:'Cinzel',serif;color:var(--brown);font-size:14px;letter-spacing:2px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--parch-pale)}
+.cal-mark{display:flex;gap:6px;margin:10px 0;flex-wrap:wrap}
+.cal-mark button{padding:6px 10px;font-size:10px}
+.cal-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;font-size:10px;color:var(--lgray);font-style:italic}
+.cal-legend span{display:flex;align-items:center;gap:4px}
+.cal-legend i{display:inline-block;width:10px;height:10px;border-radius:3px}
+@media(max-width:600px){
+  .cal-day{font-size:10px;min-height:38px}
+  .cal-day .ev{font-size:7.5px}
+}
+
+/* Setup help: URL prominent above paste field when configured */
+.setup-hint{background:var(--parch-pale);border:1px dashed var(--parch-dark);border-radius:5px;padding:8px 10px;margin-bottom:6px;font-size:11px;color:var(--brown);display:flex;align-items:center;gap:6px;overflow:hidden}
+.setup-hint code{flex:1;font-family:monospace;font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--bamboo)}
+.setup-hint .copy-btn{padding:4px 8px;font-size:9px}
+
 /* ====== Simple mobile responsive (original behavior that worked) ====== */
 @media(max-width:600px){
   .stats-bar{grid-template-columns:repeat(2,1fr)}
@@ -357,6 +413,7 @@ footer{background:linear-gradient(180deg,var(--brown-light),var(--brown));paddin
       <button class="nav-tab" onclick="showPage('leads',this)">Leads</button>
       <button class="nav-tab" onclick="showPage('adventure',this)">Adventure</button>
       <button class="nav-tab" onclick="showPage('expenses',this)">Expenses</button>
+      <button class="nav-tab" onclick="showPage('calendar',this)">Calendar</button>
       <button class="nav-tab" onclick="showPage('drive',this)">Drive</button>
       <button class="nav-tab" onclick="showPage('prayer',this)">Prayer</button>
       <button class="nav-tab" onclick="showPage('sermons',this)">Sermons</button>
@@ -550,14 +607,40 @@ footer{background:linear-gradient(180deg,var(--brown-light),var(--brown));paddin
   <div id="page-pipeline" class="page">
     <div class="section">
       <div class="section-head"><span class="section-title">CHURCH PIPELINE</span><div class="section-line"></div></div>
+      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="openLogMeeting()">+ Log Meeting</button>
+        <button class="btn btn-secondary" onclick="exportChurchesCSV()">⬇ Export CSV</button>
+        <label class="btn btn-secondary" style="cursor:pointer">⬆ Import CSV<input type="file" accept=".csv" style="display:none" onchange="importChurchesCSV(event)"></label>
+        <input type="search" id="church-search" placeholder="Search churches..." oninput="filterSearch()" style="flex:1;min-width:160px;padding:8px 12px;border:1px solid rgba(212,184,150,0.4);border-radius:5px;background:var(--white);font-family:'Crimson Pro',serif;font-size:14px">
+      </div>
       <div class="filter-wrap">
-        <button class="filter-btn active" onclick="filterChurches('all',this)">All</button>
+        <button class="filter-btn active" onclick="filterChurches('all',this)">All <span id="cnt-all"></span></button>
         <button class="filter-btn" onclick="filterChurches('completed',this)">✅ Completed</button>
         <button class="filter-btn" onclick="filterChurches('scheduled',this)">📅 Scheduled</button>
         <button class="filter-btn" onclick="filterChurches('pending',this)">⏳ Pending</button>
         <button class="filter-btn" onclick="filterChurches('contacted',this)">📞 Contacted</button>
       </div>
       <div id="church-list"></div>
+    </div>
+  </div>
+
+  <!-- CALENDAR -->
+  <div id="page-calendar" class="page">
+    <div class="section">
+      <div class="section-head"><span class="section-title">TRAVEL CALENDAR</span><div class="section-line"></div></div>
+      <div class="cal-controls">
+        <button class="btn btn-secondary" onclick="calNav(-1)">‹ Prev</button>
+        <h3 id="cal-month">—</h3>
+        <button class="btn btn-secondary" onclick="calNav(1)">Next ›</button>
+      </div>
+      <div id="cal-grid" class="cal-grid"></div>
+      <div class="cal-legend">
+        <span><i style="background:var(--sage-pale)"></i> Scheduled</span>
+        <span><i style="background:rgba(125,216,125,0.4)"></i> Open</span>
+        <span><i style="background:var(--lred)"></i> Unavailable</span>
+        <span><i style="background:var(--gold-light)"></i> Today</span>
+      </div>
+      <div id="cal-day-detail" class="cal-day-detail" style="display:none"></div>
     </div>
   </div>
 
@@ -594,6 +677,8 @@ footer{background:linear-gradient(180deg,var(--brown-light),var(--brown));paddin
       <div id="urgent-list"></div>
       <div style="font-family:'Cinzel',serif;font-size:10px;color:var(--bamboo);letter-spacing:2px;text-transform:uppercase;margin:16px 0 8px">📋 All Tasks</div>
       <div id="regular-list"></div>
+      <button class="archive-toggle" onclick="document.getElementById('archive-list').classList.toggle('open');this.querySelector('.arrow').textContent=document.getElementById('archive-list').classList.contains('open')?'▾':'▸'"><span class="arrow">▸</span> Archive (completed)<span class="ct" id="archive-count">0</span></button>
+      <div id="archive-list" class="archive-list"></div>
     </div>
   </div>
 
@@ -1006,6 +1091,12 @@ function showPage(id, btn){
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
   if(btn)btn.classList.add('active');
+  // v2.6: compact hero on non-home pages
+  document.body.classList.toggle('compact-page', id !== 'timeline');
+  if(id==='calendar') renderCalendar();
+  if(id==='prayer') renderPrayer();
+  if(id==='followups') renderFollowups();
+  if(id==='actions') renderActions();
   updateFab(id);
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -1129,17 +1220,39 @@ function getActions(){
 function renderActions(){
   const acts = getActions();
   const ul=document.getElementById('urgent-list'), rl=document.getElementById('regular-list');
-  ul.innerHTML=''; rl.innerHTML='';
+  const arch=document.getElementById('archive-list');
+  ul.innerHTML=''; rl.innerHTML=''; if(arch)arch.innerHTML='';
+  let archCount=0;
   acts.forEach(a=>{
     const done = LS.get('act_'+a.id, false);
+    if(done){
+      // v2.6: done tasks go to archive, not crossed-out in main list
+      if(arch){
+        const div=document.createElement('div');
+        div.className='archive-item';
+        div.innerHTML=`<span style="flex:1">${a.text}</span><button class="restore-btn" onclick="restoreAction('${a.id}')">↩ Restore</button>${a.id.startsWith('c')?`<button onclick="delTask('${a.id}')" style="background:none;border:none;color:var(--lgray);cursor:pointer;font-size:16px;margin-left:6px">×</button>`:''}`;
+        arch.appendChild(div); archCount++;
+      }
+      return;
+    }
     const div=document.createElement('div');
-    div.className='action-item'+(a.urgent?' urgent':'')+(done?' done-item':'');
+    div.className='action-item'+(a.urgent?' urgent':'');
     div.innerHTML = `
-      <div class="action-cb${done?' checked':''}" onclick="toggleAction('${a.id}')">${done?'<span style="color:white;font-size:13px">✓</span>':''}</div>
-      <div style="flex:1"><div class="action-text${a.urgent?' urgent-t':''}" style="${done?'text-decoration:line-through;opacity:.5':''}">${a.text}</div>${a.due?`<div class="action-due">${a.due}</div>`:''}</div>
+      <div class="action-cb" onclick="toggleAction('${a.id}')"></div>
+      <div style="flex:1"><div class="action-text${a.urgent?' urgent-t':''}">${a.text}</div>${a.due?`<div class="action-due">${a.due}</div>`:''}</div>
       ${a.id.startsWith('c')?`<button onclick="event.stopPropagation();delTask('${a.id}')" style="background:none;border:none;color:var(--lgray);cursor:pointer;font-size:18px">×</button>`:''}`;
     (a.urgent?ul:rl).appendChild(div);
   });
+  const ct=document.getElementById('archive-count');
+  if(ct)ct.textContent=archCount;
+  if(!ul.children.length) ul.innerHTML='<div style="padding:10px;color:var(--lgray);font-style:italic;font-size:13px">🎉 All urgent tasks cleared</div>';
+  if(!rl.children.length) rl.innerHTML='<div style="padding:10px;color:var(--lgray);font-style:italic;font-size:13px">No open tasks</div>';
+}
+function restoreAction(id){
+  LS.set('act_'+id, false);
+  renderActions(); updateBadges();
+  if(settings.url) api('toggleCheck',{tab:'Actions', actionId:id, done:false});
+  toast('↩ Restored');
 }
 function toggleAction(id){
   const cur = LS.get('act_'+id,false);
@@ -2025,6 +2138,257 @@ toggleAction = function(id){
   }
 };
 
+/* ============ v2.6: CALENDAR ============ */
+let calCursor = new Date(TODAY.getFullYear(), TODAY.getMonth(), 1);
+function calNav(d){ calCursor=new Date(calCursor.getFullYear(),calCursor.getMonth()+d,1); renderCalendar(); }
+function calKey(d){ return d.toISOString().slice(0,10); }
+function getCalEvents(){
+  // Combine scheduled meetings (CHURCHES + LS) + custom calendar entries
+  const evs = {};
+  CHURCHES.forEach(c=>{
+    const m = c.d.match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d+)(?:[-–](\d+))?,?\s*(\d{4})?/i);
+    if(!m) return;
+    const monthIdx=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'].indexOf(m[1].toLowerCase());
+    const startDay=parseInt(m[2]), endDay=parseInt(m[3]||m[2]), year=parseInt(m[4]||TODAY.getFullYear());
+    for(let day=startDay; day<=endDay; day++){
+      const k = calKey(new Date(year, monthIdx, day));
+      (evs[k]=evs[k]||[]).push({type:c.s, label:c.n.split('—')[0].trim()});
+    }
+  });
+  // user-added calendar items
+  Object.entries(LS.get('cal_entries',{})).forEach(([k,arr])=>{
+    arr.forEach(e=>(evs[k]=evs[k]||[]).push(e));
+  });
+  return evs;
+}
+function renderCalendar(){
+  const grid=document.getElementById('cal-grid'); if(!grid) return;
+  const y=calCursor.getFullYear(), m=calCursor.getMonth();
+  document.getElementById('cal-month').textContent = calCursor.toLocaleString('en-US',{month:'long',year:'numeric'});
+  const first = new Date(y,m,1), startDow=first.getDay(), daysInMonth=new Date(y,m+1,0).getDate();
+  const events = getCalEvents();
+  let html='';
+  ['S','M','T','W','T','F','S'].forEach(d=>html+=`<div class="cal-dow">${d}</div>`);
+  // prev-month padding
+  const prevDays = new Date(y,m,0).getDate();
+  for(let i=startDow-1;i>=0;i--){ html+=`<div class="cal-day other-month">${prevDays-i}</div>`; }
+  for(let d=1; d<=daysInMonth; d++){
+    const date=new Date(y,m,d), k=calKey(date), evs=events[k]||[];
+    const isToday = date.toDateString()===TODAY.toDateString();
+    const marks = LS.get('cal_marks',{})[k] || (evs.length?'scheduled':'');
+    const cls = ['cal-day', isToday?'today':'', marks].filter(Boolean).join(' ');
+    const evHtml = evs.slice(0,2).map(e=>`<div class="ev ${e.type||''}">${e.label||e.note||''}</div>`).join('');
+    html+=`<div class="${cls}" onclick="openCalDay('${k}')">${d}${evHtml}${evs.length>2?`<div class="ev">+${evs.length-2}</div>`:''}</div>`;
+  }
+  grid.innerHTML=html;
+  document.getElementById('cal-day-detail').style.display='none';
+}
+function openCalDay(k){
+  const d=new Date(k); const events=getCalEvents()[k]||[];
+  const marks = LS.get('cal_marks',{});
+  const entries = LS.get('cal_entries',{})[k] || [];
+  const detail=document.getElementById('cal-day-detail');
+  detail.style.display='block';
+  detail.innerHTML=`
+    <h4>${d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})}</h4>
+    <div class="cal-mark">
+      <button class="btn ${marks[k]==='open'?'btn-primary':'btn-secondary'}" onclick="markCal('${k}','open')">🟢 Open</button>
+      <button class="btn ${marks[k]==='unavailable'?'btn-primary':'btn-secondary'}" onclick="markCal('${k}','unavailable')">🚫 Unavailable</button>
+      <button class="btn btn-secondary" onclick="markCal('${k}','')">Clear</button>
+    </div>
+    ${events.length?`<div style="margin:10px 0"><strong style="font-size:12px;color:var(--bamboo);font-family:'Cinzel',serif;letter-spacing:1px">SCHEDULED:</strong>${events.map(e=>`<div style="padding:6px 0;font-size:14px">• ${e.label||e.note||''}</div>`).join('')}</div>`:''}
+    <div style="margin:14px 0 6px;font-size:11px;color:var(--bamboo);font-family:'Cinzel',serif;letter-spacing:1.5px">ADD ITINERARY / NOTE</div>
+    <input id="cal-add-note" placeholder="e.g. Lodging at Holiday Inn, 1234 Main St" style="width:100%;padding:8px 10px;border:1px solid rgba(212,184,150,0.4);border-radius:4px;font-size:14px;background:var(--parch-pale);margin-bottom:8px">
+    <button class="btn btn-primary" onclick="addCalNote('${k}')">+ Add</button>
+    ${entries.length?`<div style="margin-top:12px"><strong style="font-size:12px;color:var(--bamboo);font-family:'Cinzel',serif;letter-spacing:1px">YOUR NOTES:</strong>${entries.map((e,i)=>`<div style="padding:8px;background:var(--parch-pale);border-radius:5px;margin-top:6px;font-size:13px;display:flex;align-items:center;gap:8px"><span style="flex:1">📝 ${esc(e.note)}</span><button onclick="delCalNote('${k}',${i})" style="background:none;border:none;color:var(--lgray);cursor:pointer">×</button></div>`).join('')}</div>`:''}
+  `;
+}
+function markCal(k, m){
+  const all=LS.get('cal_marks',{});
+  if(!m) delete all[k]; else all[k]=m;
+  LS.set('cal_marks',all);
+  renderCalendar(); openCalDay(k);
+}
+function addCalNote(k){
+  const note=document.getElementById('cal-add-note').value.trim(); if(!note) return;
+  const all=LS.get('cal_entries',{});
+  (all[k]=all[k]||[]).push({note, ts:Date.now(), user:settings.user});
+  LS.set('cal_entries',all);
+  renderCalendar(); openCalDay(k);
+}
+function delCalNote(k,i){
+  const all=LS.get('cal_entries',{}); if(!all[k])return;
+  all[k].splice(i,1); if(!all[k].length) delete all[k];
+  LS.set('cal_entries',all); openCalDay(k);
+}
+
+/* ============ v2.6: LOG MEETING ============ */
+function openLogMeeting(){
+  openModal('Log a Meeting', `
+    <div class="modal-field"><label>Church / Pastor</label><input id="lm-church" placeholder="e.g. First Baptist — Pastor Smith"></div>
+    <div class="modal-field"><label>City, State</label><input id="lm-loc" placeholder="e.g. Cody, WY"></div>
+    <div class="modal-field"><label>Date</label><input id="lm-date" type="date" value="${new Date().toISOString().slice(0,10)}"></div>
+    <div class="modal-field"><label>Format</label><select id="lm-format">
+      <option>Sunday AM</option><option>Sunday PM</option><option>Full Sunday</option><option>Full Weekend</option><option>Conference</option><option>Mid-week</option><option>Other</option>
+    </select></div>
+    <div class="modal-field"><label>Status</label><select id="lm-status">
+      <option value="contacted">Contacted (warm lead)</option>
+      <option value="pending">Pending</option>
+      <option value="scheduled" selected>Scheduled</option>
+      <option value="completed">Completed</option>
+    </select></div>
+    <div class="modal-field"><label>Offering (if completed)</label><input id="lm-offering" placeholder="$0 or blank"></div>
+    <div class="modal-field"><label>Notes</label><textarea id="lm-notes" placeholder="Pastor's phone, address, key contacts"></textarea></div>
+  `, ()=>{
+    const ch=val('lm-church').trim(); if(!ch){alert('Church name required');return;}
+    const loc=val('lm-loc').trim(), dt=val('lm-date'), fmt=val('lm-format'), st=val('lm-status'), off=val('lm-offering').trim(), notes=val('lm-notes').trim();
+    const dateStr = new Date(dt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    const entry={s:st, n:ch+(loc?', '+loc:''), d:`${dateStr}${notes?' · '+notes:''}`, o:off||(st==='completed'?'$0':'Upcoming'), _logged:true, _ts:Date.now()};
+    CHURCHES.unshift(entry);
+    LS.set('churches', CHURCHES);
+    renderChurches();
+    // also push to Sheets meetings
+    if(settings.url){
+      api('addRow',{tab:'Meetings', values:{ID:'m'+Date.now(), Church:ch, City:loc, Date:dateStr, Format:fmt, Status:st, Offering:off, Notes:notes, AddedBy:settings.user}});
+    }
+    // auto-add to prayer list
+    addAutoPrayer(ch, st);
+    // auto-create 30-day follow-up if completed
+    if(st==='completed'){
+      const fu=LS.get('followups',[]);
+      fu.push({id:'fu'+Date.now(), church:ch, kind:'30-day thank-you / follow-up', addedTs:Date.now()});
+      LS.set('followups',fu);
+    }
+    closeModal(); toast('Meeting logged'); renderPrayer(); renderFollowups();
+  });
+}
+
+/* ============ v2.6: CSV EXPORT/IMPORT for CHURCHES ============ */
+function exportChurchesCSV(){
+  const rows=[['Status','Church','Details','Offering/Support']];
+  CHURCHES.forEach(c=>rows.push([c.s,c.n,c.d,c.o]));
+  const csv=rows.map(r=>r.map(c=>`"${(''+c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv'}); const u=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=u; a.download='churches-'+new Date().toISOString().slice(0,10)+'.csv'; a.click();
+  toast('Exported '+CHURCHES.length+' churches');
+}
+function importChurchesCSV(ev){
+  const f=ev.target.files[0]; if(!f) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const text=e.target.result;
+    const lines=text.split(/\r?\n/).filter(l=>l.trim());
+    let added=0;
+    lines.slice(1).forEach(line=>{
+      const cells=line.match(/("([^"]|"")*"|[^,]*)(,|$)/g)||[];
+      const parts=cells.map(c=>c.replace(/,$/,'').replace(/^"|"$/g,'').replace(/""/g,'"').trim());
+      if(parts.length<2||!parts[1]) return;
+      CHURCHES.push({s:(parts[0]||'contacted').toLowerCase(), n:parts[1], d:parts[2]||'', o:parts[3]||'New'});
+      added++;
+    });
+    LS.set('churches',CHURCHES);
+    renderChurches();
+    toast('+'+added+' churches imported');
+  };
+  reader.readAsText(f);
+}
+function filterSearch(){
+  const q=document.getElementById('church-search').value.toLowerCase();
+  document.querySelectorAll('#church-list .church-card').forEach(c=>{
+    const t=c.textContent.toLowerCase();
+    c.style.display = t.includes(q)?'flex':'none';
+  });
+}
+
+/* ============ v2.6: AUTO-PRAYER from CHURCHES ============ */
+function addAutoPrayer(churchName, status){
+  if(!['contacted','scheduled','completed'].includes(status)) return;
+  const id='ap_'+churchName.replace(/\W/g,'_').slice(0,40);
+  // already exists?
+  if(LS.get('prayers',[]).some(p=>p.id===id)) return;
+  const arr=LS.get('prayers',[]);
+  arr.unshift({id, ts:Date.now(), text:`Pray for ${churchName} (${status})`, from:'Auto-added from Churches', answered:false, user:settings.user, _auto:true});
+  LS.set('prayers',arr);
+}
+function ensureAutoPrayers(){
+  CHURCHES.forEach(c=>{
+    if(['contacted','scheduled','completed'].includes(c.s)) addAutoPrayer(c.n, c.s);
+  });
+}
+
+/* ============ v2.6: ANNUAL ANNIVERSARY REMINDERS ============ */
+function getAnniversaryReminders(){
+  const today=new Date(); const t={m:today.getMonth(),d:today.getDate()};
+  const reminders=[];
+  CHURCHES.forEach((c,i)=>{
+    const m=c.d.match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d+)/i);
+    if(!m) return;
+    const monthIdx=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'].indexOf(m[1].toLowerCase());
+    const day=parseInt(m[2]);
+    // within ±14 days of anniversary
+    const annivThis = new Date(today.getFullYear(), monthIdx, day);
+    let diff = Math.round((annivThis-today)/86400000);
+    if(diff<-180) diff += 365;
+    if(diff>=0 && diff<=14){
+      const id='anniv_'+i;
+      if(!LS.get('fu_done_'+id, false)){
+        reminders.push({id, church:c.n, kind:`📮 Annual contact — anniversary in ${diff} day${diff===1?'':'s'}`});
+      }
+    }
+  });
+  return reminders;
+}
+
+/* Wrap renderFollowups to include anniversary reminders */
+const _origRenderFollowups = renderFollowups;
+renderFollowups = function(){
+  // build merged list, render
+  const fu = LS.get('followups',[]);
+  const auto = CHURCHES.filter(c=>c.s==='completed').map((c,i)=>{
+    const id='fu_auto_'+i;
+    const dismissed = LS.get('fu_done_'+id, false);
+    return {id, church:c.n, kind:'30-day check-in', dismissed};
+  }).filter(x=>!x.dismissed);
+  const annivs = getAnniversaryReminders();
+  const list = [...annivs, ...auto, ...fu];
+  const el=document.getElementById('followup-list');
+  if(!list.length){ el.innerHTML = '<div style="padding:20px;text-align:center;color:var(--lgray);font-style:italic">All caught up! 🎉</div>'; return; }
+  el.innerHTML = list.map(f=>`
+    <div class="entry-card">
+      <div class="entry-title">📮 ${esc(f.church)}</div>
+      <div class="entry-meta">${esc(f.kind)}</div>
+      <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-secondary" style="padding:5px 12px;font-size:10px" onclick="dismissFu('${f.id}')">✓ Done</button>
+        <button class="btn btn-secondary" style="padding:5px 12px;font-size:10px" onclick="snoozeFu('${f.id}')">⏰ Snooze 7d</button>
+      </div>
+    </div>`).join('');
+};
+
+/* Wrap renderPrayer to ensure auto-prayers exist before render */
+const _origRenderPrayer = renderPrayer;
+renderPrayer = function(){
+  ensureAutoPrayers();
+  _origRenderPrayer();
+};
+
+/* Settings: add URL hint above paste field */
+function addSetupHints(){
+  const urlInput=document.getElementById('setting-url');
+  if(urlInput && settings.url && !urlInput.previousElementSibling.classList.contains('setup-hint')){
+    const hint=document.createElement('div');
+    hint.className='setup-hint';
+    hint.innerHTML=`<span style="font-size:9px;color:var(--bamboo);font-family:'Cinzel',serif;letter-spacing:1px">CURRENT:</span><code id="hint-url">${settings.url}</code><button class="copy-btn" onclick="copyText(settings.url,this)">COPY</button>`;
+    urlInput.parentElement.insertBefore(hint, urlInput);
+  }
+  const drvInput=document.getElementById('setting-drive');
+  if(drvInput && settings.driveFolderId && !drvInput.previousElementSibling.classList.contains('setup-hint')){
+    const hint=document.createElement('div');
+    hint.className='setup-hint';
+    hint.innerHTML=`<span style="font-size:9px;color:var(--bamboo);font-family:'Cinzel',serif;letter-spacing:1px">CURRENT:</span><code>${settings.driveFolderId}</code><button class="copy-btn" onclick="copyText(settings.driveFolderId,this)">COPY</button>`;
+    drvInput.parentElement.insertBefore(hint, drvInput);
+  }
+}
+
 /* ============ INIT ============ */
 function init(){
   loadSettings();
@@ -2032,17 +2396,24 @@ function init(){
   updateCountdown();
   bindTimelineChecks();
   markPastEvents();
+  // restore custom churches saved from log-meeting/import
+  const savedCh = LS.get('churches', null);
+  if(savedCh && Array.isArray(savedCh) && savedCh.length >= CHURCHES.length){
+    CHURCHES.length = 0; savedCh.forEach(c=>CHURCHES.push(c));
+  }
   renderChurches();
   renderFinancial();
   renderActions();
   renderLeads();
   renderAdventure();
   renderExpenses();
+  ensureAutoPrayers();
   renderPrayer();
   renderSermons();
   renderFollowups();
   renderPhilippines();
   updateBadges();
+  addSetupHints();
   setupAutoSync();
   if(settings.url){ setSync('busy','Syncing'); backgroundSync(); }
   else setSync('','Local only');
