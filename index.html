@@ -359,7 +359,10 @@ body.compact-page .stats-bar,body.compact-page .progress-wrap{display:none}
 .cal-day.today{background:var(--gold-light);border-color:var(--gold)}
 .cal-day.scheduled{background:var(--sage-pale)}
 .cal-day.unavailable{background:var(--lred);color:var(--red)}
-.cal-day.open{background:rgba(125,216,125,0.18)}
+.cal-day.open{background:rgba(125,216,125,0.22)}
+.cal-day.travel{background:rgba(196,154,42,0.18);color:#8a6a10}
+.cal-day.range-start{border:2px solid var(--gold);box-shadow:0 0 0 2px rgba(196,154,42,0.3) inset}
+.day-title{display:inline-block;background:var(--brown);color:var(--parch-light);font-size:8px;font-family:'Cinzel',serif;letter-spacing:.5px;padding:1px 4px;border-radius:3px;text-transform:uppercase;line-height:1.3;overflow:hidden;text-overflow:ellipsis;max-width:70%}
 .cal-day .ev{font-size:8.5px;font-weight:400;color:var(--lgray);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.2}
 .cal-day .ev-tag{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:3px}
 .cal-day-detail{margin-top:18px;background:var(--white);border:1px solid rgba(212,184,150,0.3);border-radius:8px;padding:16px}
@@ -637,9 +640,11 @@ body.compact-page .stats-bar,body.compact-page .progress-wrap{display:none}
       <div class="cal-legend">
         <span><i style="background:var(--sage-pale)"></i> Scheduled</span>
         <span><i style="background:rgba(125,216,125,0.4)"></i> Open</span>
+        <span><i style="background:rgba(196,154,42,0.4)"></i> Travel</span>
         <span><i style="background:var(--lred)"></i> Unavailable</span>
         <span><i style="background:var(--gold-light)"></i> Today</span>
       </div>
+      <div style="font-size:11px;color:var(--lgray);font-style:italic;margin-top:6px">Sundays &amp; Wednesdays from Sep 6, 2026 auto-marked Open unless you have a meeting or override.</div>
       <div id="cal-day-detail" class="cal-day-detail" style="display:none"></div>
     </div>
   </div>
@@ -2138,12 +2143,28 @@ toggleAction = function(id){
   }
 };
 
-/* ============ v2.6: CALENDAR ============ */
+/* ============ v2.7: CALENDAR ============ */
 let calCursor = new Date(TODAY.getFullYear(), TODAY.getMonth(), 1);
+let calRangeStart = null; // ISO date string when user is selecting a range
+const DEPUTATION_START = new Date(2026, 8, 6); // Sep 6, 2026 — full-time deputation begins
+
 function calNav(d){ calCursor=new Date(calCursor.getFullYear(),calCursor.getMonth()+d,1); renderCalendar(); }
-function calKey(d){ return d.toISOString().slice(0,10); }
+function calKey(d){ const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),da=String(d.getDate()).padStart(2,'0'); return `${y}-${m}-${da}`; }
+
+/* mark stored as {s: status, t: title}.  Backward compat with old string-only format. */
+function getMark(k){
+  let m = LS.get('cal_marks',{})[k];
+  if(!m) return {s:'',t:''};
+  if(typeof m === 'string') return {s:m, t:''};
+  return {s:m.s||'', t:m.t||''};
+}
+function setMark(k, m){
+  const all = LS.get('cal_marks',{});
+  if(!m.s && !m.t) delete all[k]; else all[k] = m;
+  LS.set('cal_marks', all);
+}
+
 function getCalEvents(){
-  // Combine scheduled meetings (CHURCHES + LS) + custom calendar entries
   const evs = {};
   CHURCHES.forEach(c=>{
     const m = c.d.match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d+)(?:[-–](\d+))?,?\s*(\d{4})?/i);
@@ -2155,12 +2176,21 @@ function getCalEvents(){
       (evs[k]=evs[k]||[]).push({type:c.s, label:c.n.split('—')[0].trim()});
     }
   });
-  // user-added calendar items
   Object.entries(LS.get('cal_entries',{})).forEach(([k,arr])=>{
     arr.forEach(e=>(evs[k]=evs[k]||[]).push(e));
   });
   return evs;
 }
+
+/* Effective status for any day: manual mark > scheduled event > auto-Sun/Wed-open from Sep 6 */
+function effectiveStatus(date, events){
+  const mark = getMark(calKey(date));
+  if(mark.s) return mark.s;
+  if(events.length) return 'scheduled';
+  if(date >= DEPUTATION_START && (date.getDay()===0 || date.getDay()===3)) return 'open';
+  return '';
+}
+
 function renderCalendar(){
   const grid=document.getElementById('cal-grid'); if(!grid) return;
   const y=calCursor.getFullYear(), m=calCursor.getMonth();
@@ -2169,44 +2199,106 @@ function renderCalendar(){
   const events = getCalEvents();
   let html='';
   ['S','M','T','W','T','F','S'].forEach(d=>html+=`<div class="cal-dow">${d}</div>`);
-  // prev-month padding
   const prevDays = new Date(y,m,0).getDate();
   for(let i=startDow-1;i>=0;i--){ html+=`<div class="cal-day other-month">${prevDays-i}</div>`; }
   for(let d=1; d<=daysInMonth; d++){
     const date=new Date(y,m,d), k=calKey(date), evs=events[k]||[];
     const isToday = date.toDateString()===TODAY.toDateString();
-    const marks = LS.get('cal_marks',{})[k] || (evs.length?'scheduled':'');
-    const cls = ['cal-day', isToday?'today':'', marks].filter(Boolean).join(' ');
-    const evHtml = evs.slice(0,2).map(e=>`<div class="ev ${e.type||''}">${e.label||e.note||''}</div>`).join('');
-    html+=`<div class="${cls}" onclick="openCalDay('${k}')">${d}${evHtml}${evs.length>2?`<div class="ev">+${evs.length-2}</div>`:''}</div>`;
+    const status = effectiveStatus(date, evs);
+    const mark = getMark(k);
+    const title = mark.t || '';
+    const isRangeStart = calRangeStart===k;
+    const cls = ['cal-day', isToday?'today':'', status, isRangeStart?'range-start':''].filter(Boolean).join(' ');
+    let inner = `<div style="display:flex;align-items:center;gap:3px"><span>${d}</span>${title?`<span class="day-title">${esc(title.slice(0,8))}</span>`:''}</div>`;
+    const showEvs = evs.slice(0,2).map(e=>`<div class="ev ${e.type||''}">${e.label||e.note||''}</div>`).join('');
+    inner += showEvs;
+    if(evs.length>2) inner += `<div class="ev">+${evs.length-2}</div>`;
+    html+=`<div class="${cls}" onclick="openCalDay('${k}')">${inner}</div>`;
   }
   grid.innerHTML=html;
-  document.getElementById('cal-day-detail').style.display='none';
 }
+
 function openCalDay(k){
-  const d=new Date(k); const events=getCalEvents()[k]||[];
-  const marks = LS.get('cal_marks',{});
+  const d=new Date(k+'T12:00:00'); const events=getCalEvents()[k]||[];
+  const mark = getMark(k);
   const entries = LS.get('cal_entries',{})[k] || [];
   const detail=document.getElementById('cal-day-detail');
   detail.style.display='block';
+  const rangeNotice = calRangeStart && calRangeStart!==k
+    ? `<div style="background:var(--gold-light);color:var(--brown);padding:8px 12px;border-radius:6px;font-size:12px;margin-bottom:10px">📍 Range start: ${new Date(calRangeStart+'T12:00:00').toLocaleDateString()} — pick a status below to apply to this whole range, or <a href="#" onclick="calRangeStart=null;openCalDay('${k}');return false">cancel</a></div>`
+    : '';
   detail.innerHTML=`
     <h4>${d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})}</h4>
+    ${rangeNotice}
+    <div style="font-size:11px;color:var(--bamboo);font-family:'Cinzel',serif;letter-spacing:1.5px;margin-bottom:6px">STATUS${mark.s?` — currently: ${mark.s}`:''}</div>
     <div class="cal-mark">
-      <button class="btn ${marks[k]==='open'?'btn-primary':'btn-secondary'}" onclick="markCal('${k}','open')">🟢 Open</button>
-      <button class="btn ${marks[k]==='unavailable'?'btn-primary':'btn-secondary'}" onclick="markCal('${k}','unavailable')">🚫 Unavailable</button>
+      <button class="btn ${mark.s==='open'?'btn-primary':'btn-secondary'}" onclick="markCal('${k}','open')">🟢 Open</button>
+      <button class="btn ${mark.s==='scheduled'?'btn-primary':'btn-secondary'}" onclick="markCal('${k}','scheduled')">📅 Scheduled</button>
+      <button class="btn ${mark.s==='travel'?'btn-primary':'btn-secondary'}" style="${mark.s==='travel'?'':'background:#7A6A5A;color:#fff'}" onclick="markCal('${k}','travel')">✈️ Travel</button>
+      <button class="btn ${mark.s==='unavailable'?'btn-primary':'btn-secondary'}" onclick="markCal('${k}','unavailable')">🚫 Unavailable</button>
       <button class="btn btn-secondary" onclick="markCal('${k}','')">Clear</button>
     </div>
-    ${events.length?`<div style="margin:10px 0"><strong style="font-size:12px;color:var(--bamboo);font-family:'Cinzel',serif;letter-spacing:1px">SCHEDULED:</strong>${events.map(e=>`<div style="padding:6px 0;font-size:14px">• ${e.label||e.note||''}</div>`).join('')}</div>`:''}
-    <div style="margin:14px 0 6px;font-size:11px;color:var(--bamboo);font-family:'Cinzel',serif;letter-spacing:1.5px">ADD ITINERARY / NOTE</div>
+    <div style="margin-top:10px">
+      <button class="btn btn-secondary" onclick="startRange('${k}')">${calRangeStart===k?'⚓ Range start set — click another day':'📐 Start multi-day range from this day'}</button>
+    </div>
+    <div style="margin:14px 0 6px;font-size:11px;color:var(--bamboo);font-family:'Cinzel',serif;letter-spacing:1.5px">TITLE / LABEL</div>
+    <div style="display:flex;gap:6px">
+      <input id="cal-title" placeholder="e.g. Cody WY · Driving WY→MT · Wedding Day" value="${esc(mark.t||'')}" style="flex:1;padding:8px 10px;border:1px solid rgba(212,184,150,0.4);border-radius:4px;font-size:14px;background:var(--parch-pale)">
+      <button class="btn btn-primary" onclick="saveCalTitle('${k}')">Save</button>
+    </div>
+    ${events.length?`<div style="margin:14px 0 0"><strong style="font-size:12px;color:var(--bamboo);font-family:'Cinzel',serif;letter-spacing:1px">SCHEDULED:</strong>${events.map(e=>`<div style="padding:6px 0;font-size:14px">• ${e.label||e.note||''}</div>`).join('')}</div>`:''}
+    <div style="margin:14px 0 6px;font-size:11px;color:var(--bamboo);font-family:'Cinzel',serif;letter-spacing:1.5px">ITINERARY / NOTES (lodging, addresses, contacts)</div>
     <input id="cal-add-note" placeholder="e.g. Lodging at Holiday Inn, 1234 Main St" style="width:100%;padding:8px 10px;border:1px solid rgba(212,184,150,0.4);border-radius:4px;font-size:14px;background:var(--parch-pale);margin-bottom:8px">
-    <button class="btn btn-primary" onclick="addCalNote('${k}')">+ Add</button>
-    ${entries.length?`<div style="margin-top:12px"><strong style="font-size:12px;color:var(--bamboo);font-family:'Cinzel',serif;letter-spacing:1px">YOUR NOTES:</strong>${entries.map((e,i)=>`<div style="padding:8px;background:var(--parch-pale);border-radius:5px;margin-top:6px;font-size:13px;display:flex;align-items:center;gap:8px"><span style="flex:1">📝 ${esc(e.note)}</span><button onclick="delCalNote('${k}',${i})" style="background:none;border:none;color:var(--lgray);cursor:pointer">×</button></div>`).join('')}</div>`:''}
+    <button class="btn btn-primary" onclick="addCalNote('${k}')">+ Add Note</button>
+    ${entries.length?`<div style="margin-top:12px">${entries.map((e,i)=>`<div style="padding:8px;background:var(--parch-pale);border-radius:5px;margin-top:6px;font-size:13px;display:flex;align-items:center;gap:8px"><span style="flex:1">📝 ${esc(e.note)}</span><button onclick="delCalNote('${k}',${i})" style="background:none;border:none;color:var(--lgray);cursor:pointer">×</button></div>`).join('')}</div>`:''}
   `;
 }
-function markCal(k, m){
-  const all=LS.get('cal_marks',{});
-  if(!m) delete all[k]; else all[k]=m;
-  LS.set('cal_marks',all);
+
+function markCal(k, status){
+  if(calRangeStart && calRangeStart!==k){
+    // apply status to the whole range
+    applyRange(calRangeStart, k, status);
+    calRangeStart=null;
+    toast('Range marked');
+  } else {
+    const m = getMark(k); m.s = status; setMark(k, m);
+  }
+  renderCalendar(); openCalDay(k);
+}
+function startRange(k){
+  if(calRangeStart===k){ calRangeStart=null; openCalDay(k); return; }
+  calRangeStart = k;
+  toast('Range start set. Click another day, then pick a status.');
+  renderCalendar(); openCalDay(k);
+}
+function applyRange(startK, endK, status){
+  const a = new Date(startK+'T12:00:00'), b = new Date(endK+'T12:00:00');
+  const [start, end] = a < b ? [a,b] : [b,a];
+  const cur = new Date(start);
+  while(cur <= end){
+    const k = calKey(cur);
+    const m = getMark(k); m.s = status; setMark(k,m);
+    cur.setDate(cur.getDate()+1);
+  }
+}
+function saveCalTitle(k){
+  const t = document.getElementById('cal-title').value.trim();
+  // if a range is active, also save the title across the whole range
+  if(calRangeStart && calRangeStart!==k){
+    const a = new Date(calRangeStart+'T12:00:00'), b = new Date(k+'T12:00:00');
+    const [start, end] = a<b?[a,b]:[b,a];
+    const cur = new Date(start);
+    while(cur<=end){
+      const kk = calKey(cur);
+      const m = getMark(kk); m.t = t; setMark(kk,m);
+      cur.setDate(cur.getDate()+1);
+    }
+    calRangeStart=null;
+    toast('Title applied to range');
+  } else {
+    const m = getMark(k); m.t = t; setMark(k,m);
+    toast('Title saved');
+  }
   renderCalendar(); openCalDay(k);
 }
 function addCalNote(k){
