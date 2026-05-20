@@ -615,6 +615,7 @@ body.compact-page .stats-bar,body.compact-page .progress-wrap{display:none}
         <button class="btn btn-primary" onclick="openLogMeeting()">+ Log Meeting</button>
         <button class="btn btn-secondary" onclick="exportChurchesCSV()">⬇ Export CSV</button>
         <label class="btn btn-secondary" style="cursor:pointer">⬆ Import CSV<input type="file" accept=".csv" style="display:none" onchange="importChurchesCSV(event)"></label>
+        <button class="btn btn-danger" onclick="resetChurches()">🗑 Reset</button>
         <input type="search" id="church-search" placeholder="Search churches..." oninput="filterSearch()" style="flex:1;min-width:160px;padding:8px 12px;border:1px solid rgba(212,184,150,0.4);border-radius:5px;background:var(--white);font-family:'Crimson Pro',serif;font-size:14px">
       </div>
       <div class="filter-wrap">
@@ -748,14 +749,14 @@ body.compact-page .stats-bar,body.compact-page .progress-wrap{display:none}
     <div class="section">
       <div class="section-head"><span class="section-title">DRIVE MODE</span><div class="section-line"></div></div>
       <div class="drive-card">
-        <div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;color:rgba(253,245,232,0.5)">NEXT MEETING</div>
-        <div class="drive-dest" id="drive-dest">First Baptist — Cody, WY</div>
-        <div class="drive-eta" id="drive-eta">Sep 6</div>
-        <div class="drive-meta" id="drive-meta">Pastor Jeremiah Young</div>
+        <div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;color:rgba(253,245,232,0.5)">NEXT EVENT</div>
+        <div class="drive-dest" id="drive-dest">Loading…</div>
+        <div class="drive-eta" id="drive-eta">—</div>
+        <div class="drive-meta" id="drive-meta"></div>
       </div>
       <div class="drive-actions">
-        <button class="drive-btn" onclick="driveAction('arrived')"><span class="em">📍</span>We Arrived</button>
-        <button class="drive-btn" onclick="driveAction('offering')"><span class="em">💵</span>Log Offering</button>
+        <button class="drive-btn" onclick="openTravelPlanForm()"><span class="em">✈️</span>Add Travel Plan</button>
+        <button class="drive-btn" onclick="openLogMeeting()"><span class="em">📅</span>Log Meeting</button>
         <button class="drive-btn" onclick="capturePhoto('adventure')"><span class="em">📸</span>Photo</button>
         <button class="drive-btn" onclick="capturePhoto('expense')"><span class="em">🧾</span>Receipt</button>
       </div>
@@ -1104,6 +1105,9 @@ function showPage(id, btn){
   if(id==='prayer') renderPrayer();
   if(id==='followups') renderFollowups();
   if(id==='actions') renderActions();
+  if(id==='drive') renderDriveMode();
+  if(id==='pipeline') renderChurches();
+  if(id==='financial') renderFinancial();
   updateFab(id);
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -1174,9 +1178,20 @@ function filterChurches(status, btn){
     c.style.display = (status==='all'||c.dataset.status===status)?'flex':'none';
   });
 }
-function editChurch(i){
-  const c = CHURCHES[i];
-  openModal('Edit Church', `
+function editChurch(i){ openChurchModal(i); }
+function openChurchModal(q){
+  let i, c;
+  if(typeof q==='number'){ i=q; c=CHURCHES[i]; }
+  else { i=CHURCHES.findIndex(x=>x.n.toLowerCase().includes(String(q).toLowerCase())); c=i>=0?CHURCHES[i]:null; }
+  if(!c){ alert('Church not found'); return; }
+  const notes=LS.get('chnotes_'+i,'');
+  const meetings=LS.get('meetings_'+i,[])||[];
+  const offerings=LS.get('offerings_'+i,[])||[];
+  openModal(c.n, `
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
+      <button class="btn btn-primary" onclick="openMeetingForm(${i})">📅 Log Meeting</button>
+      <button class="btn btn-primary" style="background:var(--green)" onclick="openOfferingForm(${i})">💵 Add Offering</button>
+    </div>
     <div class="modal-field"><label>Church</label><input id="m-name" value="${esc(c.n)}"></div>
     <div class="modal-field"><label>Pastor / Details</label><input id="m-det" value="${esc(c.d)}"></div>
     <div class="modal-field"><label>Status</label><select id="m-stat" onchange="document.getElementById('m-supp-wrap').style.display=this.value==='supporting'?'block':'none'">
@@ -1191,7 +1206,9 @@ function editChurch(i){
       <input id="m-monthly" type="number" step="5" value="${c.m||''}" placeholder="e.g. 75">
     </div>
     <div class="modal-field"><label>Offering Note (shown in list)</label><input id="m-off" value="${esc(c.o)}" placeholder="e.g. $800 · $75/mo ✅"></div>
-    <div class="modal-field"><label>Notes</label><textarea id="m-notes" placeholder="Phone, email, address, prayer requests...">${esc(LS.get('chnotes_'+i,''))}</textarea></div>
+    <div class="modal-field"><label>Notes</label><textarea id="m-notes" placeholder="Phone, email, address, prayer requests...">${esc(notes)}</textarea></div>
+    ${meetings.length?`<div style="margin-top:14px;padding-top:10px;border-top:1px solid var(--parch-pale)"><strong style="font-size:11px;color:var(--bamboo);font-family:'Cinzel',serif;letter-spacing:1.5px">PAST MEETINGS (${meetings.length})</strong>${meetings.map(m=>`<div style="padding:6px 0;font-size:13px">📅 ${esc(m.dateRange||m.date)}${m.times?' · '+esc(m.times):''}${m.format?' · '+esc(m.format):''}${m.offering?' · '+esc(m.offering):''}</div>`).join('')}</div>`:''}
+    ${offerings.length?`<div style="margin-top:10px"><strong style="font-size:11px;color:var(--bamboo);font-family:'Cinzel',serif;letter-spacing:1.5px">OFFERINGS (${offerings.length})</strong>${offerings.map(o=>`<div style="padding:4px 0;font-size:13px;color:var(--green)">💵 ${esc(o.date)} · $${parseFloat(o.amount).toFixed(2)}${o.notes?' · '+esc(o.notes):''}</div>`).join('')}</div>`:''}
   `, ()=>{
     c.n=val('m-name'); c.d=val('m-det'); c.o=val('m-off'); c.s=val('m-stat');
     c.m = parseFloat(val('m-monthly'))||0;
@@ -1960,9 +1977,10 @@ let lastSyncTs=null;
 function setupAutoSync(){
   if(syncTimer)clearInterval(syncTimer);
   // every 60s when visible
+  // v3.0: tighter real-time loop — every 20 seconds when visible
   syncTimer = setInterval(()=>{
     if(document.visibilityState==='visible' && settings.url) backgroundSync();
-  }, 60000);
+  }, 20000);
   // on tab focus / visibility return
   document.addEventListener('visibilitychange', ()=>{
     if(document.visibilityState==='visible' && settings.url) backgroundSync();
@@ -2351,14 +2369,25 @@ function delCalNote(k,i){
   LS.set('cal_entries',all); openCalDay(k);
 }
 
-/* ============ v2.6: LOG MEETING ============ */
-function openLogMeeting(){
-  openModal('Log a Meeting', `
-    <div class="modal-field"><label>Church / Pastor</label><input id="lm-church" placeholder="e.g. First Baptist — Pastor Smith"></div>
-    <div class="modal-field"><label>City, State</label><input id="lm-loc" placeholder="e.g. Cody, WY"></div>
-    <div class="modal-field"><label>Date</label><input id="lm-date" type="date" value="${new Date().toISOString().slice(0,10)}"></div>
+/* ============ v3.0: RICH MEETING FORM (date ranges, times, addresses, plan) ============ */
+function openLogMeeting(){ openMeetingForm(-1); }
+function openMeetingForm(churchIdx){
+  const c = churchIdx>=0 ? CHURCHES[churchIdx] : null;
+  const today = new Date().toISOString().slice(0,10);
+  openModal('Log Meeting', `
+    <div class="modal-field"><label>Church</label><input id="lm-church" value="${esc(c?c.n:'')}" placeholder="e.g. First Baptist — Cody, WY"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="modal-field"><label>Start Date</label><input id="lm-start" type="date" value="${today}"></div>
+      <div class="modal-field"><label>End Date</label><input id="lm-end" type="date" value="${today}"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="modal-field"><label>Start Time</label><input id="lm-time-start" type="time"></div>
+      <div class="modal-field"><label>End Time</label><input id="lm-time-end" type="time"></div>
+    </div>
+    <div class="modal-field"><label>Address</label><input id="lm-addr" placeholder="123 Main St, City, ST ZIP"></div>
+    <div class="modal-field"><label>Phone</label><input id="lm-phone" type="tel" placeholder="(555) 555-5555"></div>
     <div class="modal-field"><label>Format</label><select id="lm-format">
-      <option>Sunday AM</option><option>Sunday PM</option><option>Full Sunday</option><option>Full Weekend</option><option>Conference</option><option>Mid-week</option><option>Other</option>
+      <option>Sunday AM</option><option>Sunday PM</option><option>Full Sunday AM&amp;PM</option><option>Full Weekend</option><option>Conference</option><option>Mid-week</option><option>Sunday School</option><option>Youth</option><option>VBS</option><option>Revival</option><option>Other</option>
     </select></div>
     <div class="modal-field"><label>Status</label><select id="lm-status">
       <option value="contacted">Contacted (warm lead)</option>
@@ -2366,29 +2395,126 @@ function openLogMeeting(){
       <option value="scheduled" selected>Scheduled</option>
       <option value="completed">Completed</option>
     </select></div>
+    <div class="modal-field"><label>What's Planned (preaching / presentations)</label><textarea id="lm-plan" placeholder="e.g. Preach Sun AM &amp; PM, missions presentation Wed, youth Friday"></textarea></div>
     <div class="modal-field"><label>Offering (if completed)</label><input id="lm-offering" placeholder="$0 or blank"></div>
-    <div class="modal-field"><label>Notes</label><textarea id="lm-notes" placeholder="Pastor's phone, address, key contacts"></textarea></div>
+    <div class="modal-field"><label>Additional Notes</label><textarea id="lm-notes" placeholder="Lodging, route, contacts, prayer requests"></textarea></div>
   `, ()=>{
     const ch=val('lm-church').trim(); if(!ch){alert('Church name required');return;}
-    const loc=val('lm-loc').trim(), dt=val('lm-date'), fmt=val('lm-format'), st=val('lm-status'), off=val('lm-offering').trim(), notes=val('lm-notes').trim();
-    const dateStr = new Date(dt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-    const entry={s:st, n:ch+(loc?', '+loc:''), d:`${dateStr}${notes?' · '+notes:''}`, o:off||(st==='completed'?'$0':'Upcoming'), _logged:true, _ts:Date.now()};
-    CHURCHES.unshift(entry);
+    const start=val('lm-start'), end=val('lm-end')||start;
+    const sD=new Date(start+'T12:00:00'), eD=new Date(end+'T12:00:00');
+    const fmtDate=(d)=>d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const dateRange = sD.toDateString()===eD.toDateString() ? `${fmtDate(sD)}, ${sD.getFullYear()}` : `${fmtDate(sD)}–${fmtDate(eD)}, ${eD.getFullYear()}`;
+    const times = val('lm-time-start') ? `${val('lm-time-start')}${val('lm-time-end')?'–'+val('lm-time-end'):''}` : '';
+    const meeting = { date:start, end, dateRange, times, address:val('lm-addr'), phone:val('lm-phone'),
+      format:val('lm-format'), status:val('lm-status'), plan:val('lm-plan'), notes:val('lm-notes'),
+      offering:val('lm-offering'), user:settings.user, ts:Date.now() };
+    // upsert church entry
+    let cIdx = CHURCHES.findIndex(x=>x.n.toLowerCase()===ch.toLowerCase());
+    if(cIdx<0){ CHURCHES.unshift({s:meeting.status, n:ch, d:[meeting.address,meeting.phone].filter(Boolean).join(' · '), o:meeting.offering||'Upcoming'}); cIdx=0; }
+    else {
+      CHURCHES[cIdx].s = meeting.status;
+      CHURCHES[cIdx].d = `${dateRange}${meeting.address?' · '+meeting.address:''}${meeting.phone?' · '+meeting.phone:''}`;
+      if(meeting.offering) CHURCHES[cIdx].o = meeting.offering;
+    }
     LS.set('churches', CHURCHES);
-    renderChurches();
-    // also push to Sheets meetings
+    // store on church
+    const ms = LS.get('meetings_'+cIdx,[]); ms.unshift(meeting); LS.set('meetings_'+cIdx, ms);
+    // calendar: mark every day in range with status + title, add itinerary note
+    const marks=LS.get('cal_marks',{}); const entries=LS.get('cal_entries',{});
+    const cur = new Date(sD);
+    const calStatus = meeting.status==='completed'?'scheduled':meeting.status;
+    const title = ch.split('—')[0].trim();
+    while(cur <= eD){
+      const k = calKey(cur);
+      marks[k] = {s:calStatus, t:title};
+      const note = `📅 ${ch}${meeting.times?' · '+meeting.times:''}${meeting.address?' · '+meeting.address:''}${meeting.plan?' · Plan: '+meeting.plan:''}`;
+      (entries[k]=entries[k]||[]).push({note, ts:Date.now(), user:settings.user});
+      cur.setDate(cur.getDate()+1);
+    }
+    LS.set('cal_marks', marks); LS.set('cal_entries', entries);
+    // auto prayer + follow-up + sheets sync
+    addAutoPrayer(ch, meeting.status);
+    if(meeting.status==='completed'){
+      const fu=LS.get('followups',[]); fu.push({id:'fu'+Date.now(), church:ch, kind:'30-day thank-you / follow-up', addedTs:Date.now()}); LS.set('followups',fu);
+    }
     if(settings.url){
-      api('addRow',{tab:'Meetings', values:{ID:'m'+Date.now(), Church:ch, City:loc, Date:dateStr, Format:fmt, Status:st, Offering:off, Notes:notes, AddedBy:settings.user}});
+      api('addRow',{tab:'Meetings', values:{ID:'m'+Date.now(), Church:ch, City:meeting.address, Date:dateRange, Format:meeting.format, Status:meeting.status, Offering:meeting.offering, Notes:(meeting.notes||'')+(meeting.plan?' · Plan: '+meeting.plan:''), AddedBy:settings.user}});
     }
-    // auto-add to prayer list
-    addAutoPrayer(ch, st);
-    // auto-create 30-day follow-up if completed
-    if(st==='completed'){
-      const fu=LS.get('followups',[]);
-      fu.push({id:'fu'+Date.now(), church:ch, kind:'30-day thank-you / follow-up', addedTs:Date.now()});
-      LS.set('followups',fu);
-    }
-    closeModal(); toast('Meeting logged'); renderPrayer(); renderFollowups();
+    renderChurches(); renderPrayer(); renderFollowups(); if(typeof renderCalendar==='function')renderCalendar(); if(typeof renderDriveMode==='function')renderDriveMode();
+    closeModal(); toast('✓ Meeting saved · calendar updated');
+  });
+}
+
+/* ============ v3.0: LOG OFFERING ============ */
+function openOfferingForm(churchIdx){
+  const c = CHURCHES[churchIdx];
+  openModal('Log Love Offering', `
+    <div class="modal-field"><label>Church</label><input id="of-church" value="${esc(c.n)}" readonly></div>
+    <div class="modal-field"><label>Date</label><input id="of-date" type="date" value="${new Date().toISOString().slice(0,10)}"></div>
+    <div class="modal-field"><label>Amount ($)</label><input id="of-amt" type="number" step="0.01" placeholder="0.00"></div>
+    <div class="modal-field"><label>Notes (optional)</label><input id="of-notes" placeholder=""></div>
+  `, ()=>{
+    const amt = parseFloat(val('of-amt'))||0;
+    if(amt<=0){alert('Amount required');return;}
+    const date = new Date(val('of-date')+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    const ofs = LS.get('offerings_'+churchIdx,[]);
+    ofs.unshift({date, amount:amt, notes:val('of-notes'), user:settings.user, ts:Date.now()});
+    LS.set('offerings_'+churchIdx, ofs);
+    OFFERINGS.unshift([date, c.n, amt]);
+    LS.set('offerings_extra', LS.get('offerings_extra',[]).concat([[date, c.n, amt]]));
+    if(settings.url) api('addRow',{tab:'Offerings', values:{Date:date, Church:c.n, Amount:amt, Notes:val('of-notes')}});
+    renderFinancial();
+    closeModal(); toast('💵 Offering logged: $'+amt.toFixed(2));
+  });
+}
+
+/* ============ v3.0: TRAVEL PLANS + DYNAMIC DRIVE MODE ============ */
+function getNextEvent(){
+  const events=[];
+  CHURCHES.forEach((c,i)=>{
+    if(c.s!=='scheduled' && c.s!=='supporting') return;
+    const m = c.d.match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d+)(?:[-–](\d+))?,?\s*(\d{4})?/i);
+    if(!m) return;
+    const monthIdx=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'].indexOf(m[1].toLowerCase());
+    const day=parseInt(m[2]); let year=parseInt(m[4]||TODAY.getFullYear());
+    const date=new Date(year,monthIdx,day);
+    if(date < TODAY && !m[4]) { year++; date.setFullYear(year); }
+    if(date >= TODAY) events.push({date, label:c.n, sub:c.d.split('·')[0].trim(), type:'church', idx:i});
+  });
+  (LS.get('travel_plans',[])||[]).forEach((tp,i)=>{
+    const date=new Date(tp.date+'T12:00:00');
+    if(date >= TODAY) events.push({date, label:tp.destination, sub:tp.notes||tp.type||'', type:'travel', idx:i});
+  });
+  events.sort((a,b)=>a.date-b.date);
+  return events[0];
+}
+function renderDriveMode(){
+  const next=getNextEvent();
+  const destEl=document.getElementById('drive-dest'), etaEl=document.getElementById('drive-eta'), metaEl=document.getElementById('drive-meta');
+  if(!destEl) return;
+  if(!next){ destEl.textContent='No upcoming events'; etaEl.textContent='—'; metaEl.textContent='Tap + to add a travel plan'; return; }
+  destEl.textContent = next.label;
+  const daysOut = daysFromToday(next.date);
+  etaEl.textContent = daysOut===0?'TODAY':daysOut===1?'TOMORROW':next.date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  metaEl.textContent = (next.sub||'') + (daysOut>1?' · in '+daysOut+' days':'');
+}
+function openTravelPlanForm(){
+  openModal('Add Travel Plan', `
+    <div class="modal-field"><label>Destination</label><input id="tp-dest" placeholder="e.g. Yellowstone, Family visit, Drive to Cody"></div>
+    <div class="modal-field"><label>Date</label><input id="tp-date" type="date" value="${new Date().toISOString().slice(0,10)}"></div>
+    <div class="modal-field"><label>Address / Route</label><input id="tp-addr" placeholder=""></div>
+    <div class="modal-field"><label>Type</label><select id="tp-type">
+      <option>Deputation drive</option><option>Personal trip</option><option>Family visit</option><option>Vacation</option><option>Other</option>
+    </select></div>
+    <div class="modal-field"><label>Notes</label><textarea id="tp-notes"></textarea></div>
+  `, ()=>{
+    const dest=val('tp-dest').trim(); if(!dest){alert('Destination required');return;}
+    const tp={destination:dest, date:val('tp-date'), address:val('tp-addr'), type:val('tp-type'), notes:val('tp-notes'), ts:Date.now(), user:settings.user};
+    const all=LS.get('travel_plans',[]); all.push(tp); LS.set('travel_plans', all);
+    const marks=LS.get('cal_marks',{}); marks[tp.date]={s:'travel', t:dest.slice(0,12)}; LS.set('cal_marks',marks);
+    const entries=LS.get('cal_entries',{}); (entries[tp.date]=entries[tp.date]||[]).push({note:`✈️ ${dest}${tp.address?' · '+tp.address:''}${tp.notes?' · '+tp.notes:''}`, ts:Date.now(), user:settings.user}); LS.set('cal_entries',entries);
+    renderDriveMode(); renderCalendar();
+    closeModal(); toast('✈️ Travel plan added');
   });
 }
 
@@ -2401,25 +2527,92 @@ function exportChurchesCSV(){
   const a=document.createElement('a'); a.href=u; a.download='churches-'+new Date().toISOString().slice(0,10)+'.csv'; a.click();
   toast('Exported '+CHURCHES.length+' churches');
 }
+/* Robust CSV parser — handles quoted fields, embedded commas, escaped quotes */
+function parseCSV(text){
+  const rows=[]; let i=0,field='',row=[],inQ=false;
+  while(i<text.length){
+    const c=text[i];
+    if(inQ){
+      if(c==='"'){ if(text[i+1]==='"'){field+='"';i+=2;continue;} inQ=false;i++; }
+      else { field+=c;i++; }
+    } else {
+      if(c==='"'){inQ=true;i++;}
+      else if(c===','){row.push(field);field='';i++;}
+      else if(c==='\n'||c==='\r'){
+        if(field.length||row.length){row.push(field);rows.push(row);row=[];field='';}
+        i++; if(c==='\r'&&text[i]==='\n')i++;
+      } else {field+=c;i++;}
+    }
+  }
+  if(field.length||row.length){row.push(field);rows.push(row);}
+  return rows;
+}
+
 function importChurchesCSV(ev){
   const f=ev.target.files[0]; if(!f) return;
+  ev.target.value=''; // reset so re-importing same file fires
   const reader=new FileReader();
   reader.onload=e=>{
     const text=e.target.result;
-    const lines=text.split(/\r?\n/).filter(l=>l.trim());
-    let added=0;
-    lines.slice(1).forEach(line=>{
-      const cells=line.match(/("([^"]|"")*"|[^,]*)(,|$)/g)||[];
-      const parts=cells.map(c=>c.replace(/,$/,'').replace(/^"|"$/g,'').replace(/""/g,'"').trim());
-      if(parts.length<2||!parts[1]) return;
-      CHURCHES.push({s:(parts[0]||'contacted').toLowerCase(), n:parts[1], d:parts[2]||'', o:parts[3]||'New'});
+    const rows=parseCSV(text);
+    if(!rows.length){toast('Empty CSV');return;}
+    const headers=rows[0].map(h=>h.trim().toLowerCase());
+    const find=(...alts)=>{ for(const a of alts){const i=headers.findIndex(h=>h===a.toLowerCase()||h.includes(a.toLowerCase()));if(i>=0)return i;} return -1; };
+    const ix={
+      name:find('church_name','churchname','church name','church'),
+      pastor:find('pastor_name','pastorname','pastor name','pastor'),
+      phone:find('phone'),
+      email:find('email'),
+      address:find('address'),
+      city:find('city'),
+      state:find('state'),
+      website:find('ch_website','website'),
+      contacted:find('contacted?','contacted'),
+      status:find('status'),
+      support:find('support decision','support amount','support'),
+      offering:find('love offering','offering'),
+      notes:find('notes'),
+      schedule:find('schedule','meeting start')
+    };
+    // Deduplicate against existing
+    const existing=new Set(CHURCHES.map(c=>c.n.toLowerCase()));
+    let added=0,skipped=0,dup=0;
+    rows.slice(1).forEach(r=>{
+      const name=(r[ix.name]||'').trim();
+      if(!name){skipped++;return;}
+      const city=(r[ix.city]||'').trim(), state=(r[ix.state]||'').trim();
+      const pastor=(r[ix.pastor]||'').trim(), phone=(r[ix.phone]||'').trim(), email=(r[ix.email]||'').trim();
+      const contacted=(r[ix.contacted]||'').trim().toUpperCase();
+      const statusRaw=ix.status>=0?(r[ix.status]||'').trim().toLowerCase():'';
+      const schedule=(r[ix.schedule]||'').trim();
+      const supportRaw=(r[ix.support]||'').trim();
+      const offering=(r[ix.offering]||'').trim();
+      let s='pending';
+      if(statusRaw.includes('support')||supportRaw.toLowerCase().includes('yes')||supportRaw.toLowerCase().includes('monthly')) s='supporting';
+      else if(statusRaw.includes('complet')) s='completed';
+      else if(statusRaw.includes('schedul')||schedule) s='scheduled';
+      else if(contacted==='TRUE'||contacted==='YES'||statusRaw.includes('contact')) s='contacted';
+      const fullName=name+(city||state?' — '+[city,state].filter(Boolean).join(', '):'');
+      if(existing.has(fullName.toLowerCase())){dup++;return;}
+      existing.add(fullName.toLowerCase());
+      const detail=[pastor,phone,email].filter(Boolean).join(' · ');
+      const o=supportRaw||offering||schedule||'New';
+      // attempt monthly amount
+      const monthly=parseFloat((supportRaw.match(/\$?(\d+)/)||[])[1])||0;
+      CHURCHES.push({s, n:fullName, d:detail, o, m:s==='supporting'?monthly:0});
       added++;
     });
     LS.set('churches',CHURCHES);
     renderChurches();
-    toast('+'+added+' churches imported');
+    toast(`+${added} added${dup?' · '+dup+' duplicates skipped':''}${skipped?' · '+skipped+' empty':''}`);
   };
   reader.readAsText(f);
+}
+
+function resetChurches(){
+  if(!confirm('Remove ALL churches and restore the original 24? This cannot be undone.'))return;
+  LS.del('churches');
+  location.reload();
 }
 function filterSearch(){
   const q=document.getElementById('church-search').value.toLowerCase();
@@ -2546,6 +2739,7 @@ function init(){
   renderSermons();
   renderFollowups();
   renderPhilippines();
+  renderDriveMode();
   updateBadges();
   addSetupHints();
   setupAutoSync();
