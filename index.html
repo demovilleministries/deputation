@@ -2277,19 +2277,16 @@ function openCalDay(k){
   const d=new Date(k+'T12:00:00'); const events=getCalEvents()[k]||[];
   const mark = getMark(k);
   const entries = LS.get('cal_entries',{})[k] || [];
-  const detail=document.getElementById('cal-day-detail');
-  detail.style.display='block';
   const rangeNotice = calRangeStart && calRangeStart!==k
-    ? `<div style="background:var(--gold-light);color:var(--brown);padding:8px 12px;border-radius:6px;font-size:12px;margin-bottom:10px">📍 Range start: ${new Date(calRangeStart+'T12:00:00').toLocaleDateString()} — pick a status below to apply to this whole range, or <a href="#" onclick="calRangeStart=null;openCalDay('${k}');return false">cancel</a></div>`
+    ? `<div style="background:var(--gold-light);color:var(--brown);padding:8px 12px;border-radius:6px;font-size:12px;margin-bottom:10px">📍 Range start: ${new Date(calRangeStart+'T12:00:00').toLocaleDateString()} — pick a status to apply to the range, or <a href="#" onclick="calRangeStart=null;closeModal();openCalDay('${k}');return false">cancel</a></div>`
     : '';
-  detail.innerHTML=`
-    <h4>${d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})}</h4>
+  openModal(d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'}), `
     ${rangeNotice}
     <div style="font-size:11px;color:var(--bamboo);font-family:'Cinzel',serif;letter-spacing:1.5px;margin-bottom:6px">STATUS${mark.s?` — currently: ${mark.s}`:''}</div>
     <div class="cal-mark">
       <button class="btn ${mark.s==='open'?'btn-primary':'btn-secondary'}" onclick="markCal('${k}','open')">🟢 Open</button>
       <button class="btn ${mark.s==='scheduled'?'btn-primary':'btn-secondary'}" onclick="markCal('${k}','scheduled')">📅 Scheduled</button>
-      <button class="btn ${mark.s==='travel'?'btn-primary':'btn-secondary'}" style="${mark.s==='travel'?'':'background:#7A6A5A;color:#fff'}" onclick="markCal('${k}','travel')">✈️ Travel</button>
+      <button class="btn ${mark.s==='travel'?'btn-primary':'btn-secondary'}" onclick="markCal('${k}','travel')">✈️ Travel</button>
       <button class="btn ${mark.s==='unavailable'?'btn-primary':'btn-secondary'}" onclick="markCal('${k}','unavailable')">🚫 Unavailable</button>
       <button class="btn btn-secondary" onclick="markCal('${k}','')">Clear</button>
     </div>
@@ -2306,7 +2303,7 @@ function openCalDay(k){
     <input id="cal-add-note" placeholder="e.g. Lodging at Holiday Inn, 1234 Main St" style="width:100%;padding:8px 10px;border:1px solid rgba(212,184,150,0.4);border-radius:4px;font-size:14px;background:var(--parch-pale);margin-bottom:8px">
     <button class="btn btn-primary" onclick="addCalNote('${k}')">+ Add Note</button>
     ${entries.length?`<div style="margin-top:12px">${entries.map((e,i)=>`<div style="padding:8px;background:var(--parch-pale);border-radius:5px;margin-top:6px;font-size:13px;display:flex;align-items:center;gap:8px"><span style="flex:1">📝 ${esc(e.note)}</span><button onclick="delCalNote('${k}',${i})" style="background:none;border:none;color:var(--lgray);cursor:pointer">×</button></div>`).join('')}</div>`:''}
-  `;
+  `, ()=>{ closeModal(); });
 }
 
 function markCal(k, status){
