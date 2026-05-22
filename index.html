@@ -853,6 +853,11 @@ button,.btn,.action-cb,.ios-tab,.drawer-tile,.cal-day,.church-card,.action-item,
         <button class="filter-btn" onclick="filterChurches('pending',this)">⏳ Pending</button>
         <button class="filter-btn" onclick="filterChurches('contacted',this)">📞 Contacted</button>
       </div>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
+        <label style="font-family:'Cinzel',serif;font-size:11px;color:var(--bamboo);letter-spacing:1.5px;text-transform:uppercase">State:</label>
+        <select id="church-state-filter" onchange="setStateFilter()" style="padding:8px 12px;border:1px solid rgba(212,184,150,0.4);border-radius:5px;background:var(--white);font-family:'Crimson Pro',serif;font-size:14px;flex:1;min-width:160px"></select>
+        <button class="btn btn-secondary" onclick="resetStateFilter()" style="padding:8px 12px">Clear</button>
+      </div>
       <div id="church-list"></div>
     </div>
   </div>
@@ -1152,6 +1157,21 @@ button,.btn,.action-cb,.ios-tab,.drawer-tile,.cal-day,.church-card,.action-item,
         <div class="help">Identifies who added each entry when you both use the same site.</div>
       </div>
       <div class="set-row">
+        <label>Latest Prayer Letter URL</label>
+        <input type="url" id="setting-pl-url" placeholder="https://demovilleministries.com/prayer-letters/may-2026">
+        <div class="help">Used by the 📰 Prayer Letter email template. Update this when you publish a new letter.</div>
+      </div>
+      <div class="set-row">
+        <label>Prayer Letter Title</label>
+        <input type="text" id="setting-pl-title" placeholder="e.g. May 2026 Prayer Letter">
+        <div class="help">Title used in the prayer letter email template.</div>
+      </div>
+      <div class="set-row">
+        <label>Your Cell Number (for email signatures)</label>
+        <input type="tel" id="setting-sender-phone" placeholder="(555) 555-5555">
+        <div class="help">Auto-included in outreach and confirmation templates.</div>
+      </div>
+      <div class="set-row">
         <label>Local Data</label>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn btn-secondary" onclick="exportAll()">⬇ Export Everything (JSON)</button>
@@ -1243,7 +1263,10 @@ const LS = {
 const settings = {
   url: LS.get('s.url',''),
   driveFolderId: LS.get('s.drive',''),
-  user: LS.get('s.user','Christian')
+  user: LS.get('s.user','Christian'),
+  prayerLetterUrl: LS.get('s.plUrl',''),
+  prayerLetterTitle: LS.get('s.plTitle',''),
+  senderPhone: LS.get('s.senderPhone','')
 };
 
 let currentModal=null;
@@ -1463,29 +1486,68 @@ function renderChurches(){
   if(!CHURCHES.length){
     list.innerHTML = '<div style="padding:30px;text-align:center;color:var(--lgray);font-style:italic">Loading master list… or tap <strong>+ Log Meeting</strong> to add one manually.</div>';
   } else {
-    list.innerHTML = CHURCHES.map((c,i)=>`
-      <div class="church-card" data-status="${c.s}">
+    list.innerHTML = CHURCHES.map((c,i)=>{
+      const tel = (c.phone||'').replace(/[^\d+]/g,'');
+      const contactIcons = [
+        c.phone ? `<a href="tel:${tel}" onclick="event.stopPropagation()" title="Call ${esc(c.phone)}" style="text-decoration:none">📞</a>` : '',
+        c.phone ? `<a href="sms:${tel}" onclick="event.stopPropagation()" title="Text ${esc(c.phone)}" style="text-decoration:none">💬</a>` : '',
+        c.email ? `<a href="#" onclick="event.stopPropagation();openEmailTemplates(${i});return false" title="Email ${esc(c.email)}" style="text-decoration:none">✉️</a>` : '',
+        c.addr ? `<a href="${mapsLink(c.addr)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" title="Open in Maps" style="text-decoration:none">🗺️</a>` : ''
+      ].filter(Boolean).join(' ');
+      return `
+      <div class="church-card" data-status="${c.s}" data-state="${c.state||''}">
         <div class="church-dot dot-${c.s}" onclick="editChurch(${i})"></div>
         <div style="flex:1;min-width:0" onclick="editChurch(${i})">
           <div class="church-name">${c.n}</div>
           <div class="church-detail">${c.d}</div>
           ${c.addr?`<div style="font-size:11.5px;color:var(--bamboo);margin-top:2px;font-style:italic">📍 ${esc(c.addr)}</div>`:''}
+          ${contactIcons?`<div style="margin-top:6px;font-size:18px;display:flex;gap:14px">${contactIcons}</div>`:''}
         </div>
-        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;min-width:74px">
           <div class="church-offering">${c.o||''}${c.m?' · $'+c.m+'/mo':''}</div>
-          ${c.addr?`<a href="${mapsLink(c.addr)}" target="_blank" rel="noopener" style="font-size:11px;color:var(--sage);text-decoration:none;font-family:'Cinzel',serif;letter-spacing:.5px" onclick="event.stopPropagation()">↗ MAPS</a>`:''}
         </div>
-      </div>`).join('');
+      </div>`;
+    }).join('');
   }
   const ct=document.getElementById('cnt-all');
   if(ct) ct.textContent='('+CHURCHES.length+')';
+  populateStateFilter();
+  applyChurchFilters();
+}
+let statusFilter='all', stateFilter='all';
+function applyChurchFilters(){
+  document.querySelectorAll('#church-list .church-card').forEach(c=>{
+    const okStatus = statusFilter==='all' || c.dataset.status===statusFilter;
+    const okState = stateFilter==='all' || c.dataset.state===stateFilter;
+    c.style.display = (okStatus && okState) ? 'flex' : 'none';
+  });
 }
 function filterChurches(status, btn){
+  statusFilter = status;
   document.querySelectorAll('#page-pipeline .filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('#church-list .church-card').forEach(c=>{
-    c.style.display = (status==='all'||c.dataset.status===status)?'flex':'none';
-  });
+  if(btn) btn.classList.add('active');
+  applyChurchFilters();
+}
+function populateStateFilter(){
+  const sel = document.getElementById('church-state-filter');
+  if(!sel) return;
+  const states = [...new Set(CHURCHES.map(c=>c.state||'').filter(Boolean))].sort();
+  const cur = sel.value || stateFilter;
+  sel.innerHTML = `<option value="all">All States (${CHURCHES.length})</option>` +
+    states.map(s=>{
+      const ct = CHURCHES.filter(c=>c.state===s).length;
+      return `<option value="${s}">${s} (${ct})</option>`;
+    }).join('');
+  sel.value = cur;
+}
+function setStateFilter(){
+  stateFilter = document.getElementById('church-state-filter').value;
+  applyChurchFilters();
+}
+function resetStateFilter(){
+  stateFilter='all';
+  document.getElementById('church-state-filter').value='all';
+  applyChurchFilters();
 }
 function editChurch(i){ openChurchModal(i); }
 function openChurchModal(q){
@@ -1500,7 +1562,15 @@ function openChurchModal(q){
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
       <button class="btn btn-primary" onclick="openMeetingForm(${i})">📅 Log Meeting</button>
       <button class="btn btn-primary" style="background:var(--green)" onclick="openOfferingForm(${i})">💵 Add Offering</button>
+      <button class="btn btn-primary" style="background:var(--sage)" onclick="openEmailTemplates(${i})">📧 Email Templates</button>
     </div>
+    ${(c.phone||c.email||c.addr)?`<div style="display:flex;gap:14px;font-size:24px;margin:0 0 14px;padding:10px 14px;background:var(--parch-pale);border-radius:10px;justify-content:center">
+      ${c.phone?`<a href="tel:${(c.phone||'').replace(/[^\\d+]/g,'')}" style="text-decoration:none" title="Call">📞</a>`:''}
+      ${c.phone?`<a href="sms:${(c.phone||'').replace(/[^\\d+]/g,'')}" style="text-decoration:none" title="Text">💬</a>`:''}
+      ${c.email?`<a href="mailto:${esc(c.email)}" style="text-decoration:none" title="Email">✉️</a>`:''}
+      ${c.addr?`<a href="${mapsLink(c.addr)}" target="_blank" rel="noopener" style="text-decoration:none" title="Maps">🗺️</a>`:''}
+      ${c.web?`<a href="${esc(c.web)}" target="_blank" rel="noopener" style="text-decoration:none" title="Website">🌐</a>`:''}
+    </div>`:''}
     <div class="modal-field"><label>Church</label><input id="m-name" value="${esc(c.n)}"></div>
     <div class="modal-field"><label>Pastor / Details</label><input id="m-det" value="${esc(c.d)}"></div>
     <div class="modal-field"><label>Address</label><input id="m-addr" value="${esc(c.addr||'')}" placeholder="123 Main St, City, ST ZIP">
@@ -2115,6 +2185,9 @@ function loadSettings(){
   document.getElementById('setting-url').value=settings.url;
   document.getElementById('setting-drive').value=settings.driveFolderId;
   document.getElementById('setting-user').value=settings.user;
+  const e1=document.getElementById('setting-pl-url'); if(e1) e1.value=settings.prayerLetterUrl||'';
+  const e2=document.getElementById('setting-pl-title'); if(e2) e2.value=settings.prayerLetterTitle||'';
+  const e3=document.getElementById('setting-sender-phone'); if(e3) e3.value=settings.senderPhone||'';
   // Populate share panel + show only when at least URL is set
   const sp = document.getElementById('share-panel');
   if(sp){
@@ -2159,6 +2232,9 @@ function saveSettings(){
   settings.url = val('setting-url').trim();
   settings.driveFolderId = val('setting-drive').trim();
   settings.user = val('setting-user');
+  const pu=document.getElementById('setting-pl-url'); if(pu){ settings.prayerLetterUrl=pu.value.trim(); LS.set('s.plUrl', settings.prayerLetterUrl); }
+  const pt=document.getElementById('setting-pl-title'); if(pt){ settings.prayerLetterTitle=pt.value.trim(); LS.set('s.plTitle', settings.prayerLetterTitle); }
+  const sp=document.getElementById('setting-sender-phone'); if(sp){ settings.senderPhone=sp.value.trim(); LS.set('s.senderPhone', settings.senderPhone); }
   LS.set('s.url',settings.url); LS.set('s.drive',settings.driveFolderId); LS.set('s.user',settings.user);
   toast('Saved · testing connection');
   if(settings.url){
@@ -3314,6 +3390,121 @@ function mapLocateMe(){
     mapInstance.setView([latitude, longitude], 10);
     L.circleMarker([latitude,longitude], {radius:8, color:'#2D5A2D', weight:3, fillColor:'#7DD87D', fillOpacity:0.7}).addTo(markerLayer).bindPopup('You are here').openPopup();
   }, ()=>toast('Location unavailable'));
+}
+
+/* ============ v4.2: EMAIL TEMPLATES ============ */
+const TEMPLATES = [
+  {
+    id:'initial',
+    name:'📨 Initial Outreach',
+    subject:'Christian & Leah DeMoville — FBMI Missionaries to the Philippines',
+    body:`Dear {{pastor}},\n\nGreetings in the precious name of our Lord Jesus Christ. My name is Christian DeMoville, and along with my wife Leah, we are commissioned missionaries with First Baptist Mission International (FBMI), called to serve the Lord on the island of Negros in the Philippines.\n\nI grew up on the mission field in the Philippines where my parents have served for over fifteen years. After graduating from Hyles-Anderson College in May 2025, the Lord has burdened our hearts to return alongside my parents' ministry, with the long-term vision of seeing church plants raised up across the Visayas — soul-winning, discipling, Bible-believing IFB churches.\n\nI am writing to humbly inquire whether {{church}} would consider hosting us for a missionary meeting. We would love the opportunity to share our burden, preach the Word, and be a blessing to your congregation. We are currently scheduling weekend meetings and weekday services as the Lord opens doors.\n\nMay we send you our prayer card and a brief introduction video? I'd also welcome the chance to call you at a time convenient for you.\n\nThank you for your prayerful consideration. We rejoice with you in the Lord's work.\n\nIn Christ,\nChristian & Leah DeMoville\nFBMI Missionaries to the Philippines\n{{senderPhone}}`
+  },
+  {
+    id:'followup_meeting',
+    name:'🤝 Follow-up After Meeting',
+    subject:'Thank you, {{pastor}} — from Christian & Leah',
+    body:`Dear {{pastor}},\n\nWe just wanted to take a moment to thank you, Mrs. {{pastor}}, and the dear folks at {{church}} for the love, hospitality, and kindness shown to us during our recent visit. It was truly a blessing to be with you and to share our burden for the Philippines.\n\nWe are praying for you, your family, and the ministry of {{church}}. Would you be willing to prayerfully consider partnering with us on a monthly basis as the Lord leads? Whatever decision the Lord places on your heart, we are deeply grateful for the door you opened to us.\n\nWe will be sure to keep you updated through our prayer letters and would love to stay in touch. If there is anything we can do for you or the church, please don't hesitate to let us know.\n\nGrace and peace,\nChristian & Leah DeMoville\nFBMI Missionaries to the Philippines`
+  },
+  {
+    id:'thankyou_offering',
+    name:'🙏 Thank You for the Offering',
+    subject:'Thank you for the generous offering — Christian & Leah DeMoville',
+    body:`Dear {{pastor}},\n\nWe received the generous love offering from {{church}}, and our hearts are overflowing with gratitude. Thank you, and please pass along our deep thanks to the dear folks who gave so sacrificially. Every dollar represents a step closer to the Philippines and souls being reached for Christ.\n\nWe will be faithful to use these funds for the Lord's work and to keep you and the church updated on the progress He is making. Your investment is laid up in heaven and treasured here.\n\nPlease know we are praying for you and the ministry. May the Lord richly bless every member of {{church}} for their kindness to us.\n\nIn the bonds of Christ,\nChristian & Leah DeMoville`
+  },
+  {
+    id:'prayer_letter',
+    name:'📰 Latest Prayer Letter',
+    subject:'DeMoville Prayer Letter — {{prayerLetterTitle}}',
+    body:`Dear {{pastor}},\n\nGreetings from the DeMovilles. We wanted to share our latest prayer letter with you and the dear folks at {{church}}.\n\n📰 {{prayerLetterTitle}}\n🔗 {{prayerLetterUrl}}\n\nThe Lord has been so good, and we have so much to praise Him for. Specific prayer requests are listed in the letter — would you and the church join us in praying?\n\nThank you for your faithful support and prayers. They reach much further than you know.\n\nIn Christ,\nChristian & Leah DeMoville\nFBMI Missionaries to the Philippines`
+  },
+  {
+    id:'confirm_meeting',
+    name:'📅 Confirm Upcoming Meeting',
+    subject:'Confirming our upcoming meeting at {{church}}',
+    body:`Dear {{pastor}},\n\nI am writing to confirm our upcoming missions meeting at {{church}}. We are very much looking forward to being with you.\n\nIf you could send a few logistical details when you have a moment, it would be a great help:\n\n• Service times (Sunday AM, PM, mid-week, etc.)\n• Format (full Sunday, conference week, mid-week service, etc.)\n• What you would like me to preach or present\n• Address of the church (and lodging if provided)\n• A good cell number for the day of travel\n\nWe are praying for {{church}} and looking forward to a blessed time in the Lord.\n\nIn Christ,\nChristian & Leah DeMoville\n{{senderPhone}}`
+  },
+  {
+    id:'conference_inquiry',
+    name:'🎤 Missions Conference Inquiry',
+    subject:'Missions Conference Availability — DeMovilles',
+    body:`Dear {{pastor}},\n\nGreetings in Christ. I am writing to inquire whether {{church}} hosts an annual missions conference, and if so, whether you might prayerfully consider including us as one of the missionary families.\n\nMy wife Leah and I are commissioned missionaries with FBMI heading to the Philippines, where my parents have served for over fifteen years. We would love to share our burden, preach the Word, and be a blessing to your congregation during a conference week or single service.\n\nIf this would be of interest, please let me know what conference dates you have planned and we'll do our best to fit your schedule. We can also send our prayer card and intro video if helpful.\n\nThank you for the Lord's work at {{church}}.\n\nIn Christ,\nChristian & Leah DeMoville\nFBMI Missionaries to the Philippines\n{{senderPhone}}`
+  }
+];
+function fillTemplate(tpl, c){
+  const senderPhone = settings.senderPhone || '';
+  const ppl = (c.pastor||'').trim() || (c.d||'').split('·')[0].trim() || 'Pastor';
+  const ch = (c.n||'').split(' — ')[0];
+  const subj = tpl.subject
+    .replace(/\{\{pastor\}\}/g, ppl)
+    .replace(/\{\{church\}\}/g, ch)
+    .replace(/\{\{senderPhone\}\}/g, senderPhone)
+    .replace(/\{\{prayerLetterTitle\}\}/g, settings.prayerLetterTitle||'Latest Update')
+    .replace(/\{\{prayerLetterUrl\}\}/g, settings.prayerLetterUrl||'');
+  const body = tpl.body
+    .replace(/\{\{pastor\}\}/g, ppl)
+    .replace(/\{\{church\}\}/g, ch)
+    .replace(/\{\{senderPhone\}\}/g, senderPhone)
+    .replace(/\{\{prayerLetterTitle\}\}/g, settings.prayerLetterTitle||'Latest Update')
+    .replace(/\{\{prayerLetterUrl\}\}/g, settings.prayerLetterUrl||'');
+  return {subject:subj, body};
+}
+function openEmailTemplates(churchIdx){
+  const c = CHURCHES[churchIdx];
+  if(!c){ alert('Church not found'); return; }
+  if(!c.email){
+    if(!confirm('No email on file for this church. Open templates anyway? (you can copy + paste into Gmail)')) return;
+  }
+  const html = `
+    <div style="font-size:13px;color:var(--lgray);margin-bottom:10px">For <strong>${esc(c.n)}</strong>${c.email?` · ${esc(c.email)}`:''}</div>
+    <div class="modal-field">
+      <label>Latest Prayer Letter URL <span style="color:var(--lgray);font-weight:normal;text-transform:none;letter-spacing:0">(saved for next time)</span></label>
+      <input id="tpl-pl-url" value="${esc(settings.prayerLetterUrl||'')}" placeholder="https://...">
+    </div>
+    <div class="modal-field">
+      <label>Prayer Letter Title</label>
+      <input id="tpl-pl-title" value="${esc(settings.prayerLetterTitle||'')}" placeholder="e.g. May 2026 Prayer Letter">
+    </div>
+    <div style="font-family:'Cinzel',serif;font-size:10px;color:var(--bamboo);letter-spacing:1.5px;text-transform:uppercase;margin:10px 0 6px">Choose a Template</div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      ${TEMPLATES.map(t=>`<button class="btn btn-secondary" style="text-align:left;justify-content:flex-start;padding:11px 14px" onclick="composeTemplate(${churchIdx},'${t.id}')">${t.name}</button>`).join('')}
+    </div>
+  `;
+  openModal('📧 Email Templates', html, ()=>{ closeModal(); });
+}
+function composeTemplate(churchIdx, tplId){
+  // Save the prayer letter URL/title into settings if they changed
+  const u = document.getElementById('tpl-pl-url');
+  const t = document.getElementById('tpl-pl-title');
+  if(u){ settings.prayerLetterUrl = u.value.trim(); LS.set('s.plUrl', settings.prayerLetterUrl); }
+  if(t){ settings.prayerLetterTitle = t.value.trim(); LS.set('s.plTitle', settings.prayerLetterTitle); }
+  const c = CHURCHES[churchIdx];
+  const tpl = TEMPLATES.find(x=>x.id===tplId); if(!tpl) return;
+  const {subject, body} = fillTemplate(tpl, c);
+  showComposeModal(c, subject, body);
+}
+function showComposeModal(c, subject, body){
+  const mailto = c.email
+    ? `mailto:${encodeURIComponent(c.email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    : '';
+  const gmail = c.email
+    ? `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(c.email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    : `https://mail.google.com/mail/?view=cm&fs=1&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  openModal('Compose Email', `
+    <div class="modal-field"><label>To</label><input id="cm-to" value="${esc(c.email||'')}"></div>
+    <div class="modal-field"><label>Subject</label><input id="cm-subj" value="${esc(subject)}"></div>
+    <div class="modal-field"><label>Body (editable)</label><textarea id="cm-body" style="min-height:240px;font-family:'Crimson Pro',serif;line-height:1.5">${esc(body)}</textarea></div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">
+      <a href="${mailto}" class="btn btn-primary" onclick="closeModal()">✉️ Open in Mail</a>
+      <a href="${gmail}" target="_blank" class="btn btn-secondary" onclick="closeModal()">📧 Open in Gmail (web)</a>
+      <button class="btn btn-secondary" onclick="copyComposeBody()">📋 Copy Body</button>
+    </div>
+  `, ()=>{ closeModal(); });
+}
+function copyComposeBody(){
+  const body = document.getElementById('cm-body').value;
+  copyText(body);
+  toast('Body copied');
 }
 
 /* ============ INIT ============ */
