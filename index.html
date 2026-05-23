@@ -686,6 +686,7 @@ button,.btn,.action-cb,.ios-tab,.drawer-tile,.cal-day,.church-card,.action-item,
 
   <!-- TIMELINE -->
   <div id="page-timeline" class="page active">
+    <div id="pipeline-alerts" style="margin-top:18px"></div>
     <div class="section">
       <div class="section-head"><span class="section-title">MAY</span><span class="section-year">2026</span><div class="section-line"></div></div>
       <div class="task-box">
@@ -1374,6 +1375,7 @@ function showPage(id, btn){
   // v2.6: compact hero on non-home pages
   document.body.classList.toggle('compact-page', id !== 'timeline');
   currentTab = id;
+  if(id==='timeline') renderPipelineAlerts();
   if(id==='calendar') renderCalendar();
   if(id==='map') setTimeout(renderMap, 50);
   if(id==='prayer') renderPrayer();
@@ -1590,7 +1592,28 @@ function openChurchModal(q){
       <input id="m-monthly" type="number" step="5" value="${c.m||''}" placeholder="e.g. 75">
     </div>
     <div class="modal-field"><label>Offering Note (shown in list)</label><input id="m-off" value="${esc(c.o)}" placeholder="e.g. $800 · $75/mo ✅"></div>
-    <div class="modal-field"><label>Notes</label><textarea id="m-notes" placeholder="Phone, email, address, prayer requests...">${esc(notes)}</textarea></div>
+    ${pipelineProgressHtml(c, i)}
+    <details style="margin:12px 0;background:var(--parch-pale);border-radius:10px;padding:10px 12px">
+      <summary style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:1.5px;color:var(--bamboo);cursor:pointer;text-transform:uppercase">💚 Long-Term Relationship Data</summary>
+      <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="modal-field" style="margin:0"><label>Pastor's Wife</label><input id="m-pwife" value="${esc(c.pastorWife||'')}"></div>
+        <div class="modal-field" style="margin:0"><label>Pref. Contact</label>
+          <select id="m-pref">
+            <option value=""${!c.prefContact?' selected':''}>—</option>
+            <option value="email"${c.prefContact==='email'?' selected':''}>Email</option>
+            <option value="phone"${c.prefContact==='phone'?' selected':''}>Phone Call</option>
+            <option value="text"${c.prefContact==='text'?' selected':''}>Text</option>
+            <option value="letter"${c.prefContact==='letter'?' selected':''}>Letter</option>
+          </select>
+        </div>
+        <div class="modal-field" style="margin:0"><label>Pastor B-Day (MM-DD)</label><input id="m-pbday" value="${esc(c.pastorBday||'')}" placeholder="e.g. 03-21" maxlength="5"></div>
+        <div class="modal-field" style="margin:0"><label>Wife B-Day (MM-DD)</label><input id="m-wbday" value="${esc(c.wifeBday||'')}" placeholder="e.g. 07-04" maxlength="5"></div>
+        <div class="modal-field" style="margin:0"><label>Anniversary (MM-DD)</label><input id="m-anniv" value="${esc(c.anniversary||'')}" placeholder="e.g. 06-15" maxlength="5"></div>
+        <div class="modal-field" style="margin:0"><label>Kids / Family Names</label><input id="m-kids" value="${esc(c.kids||'')}" placeholder="e.g. Sarah, Caleb, Hannah"></div>
+      </div>
+      <div class="modal-field" style="margin:8px 0 0"><label>Lodging / Host Notes</label><input id="m-lodge" value="${esc(c.lodgingNotes||'')}" placeholder="e.g. Missions house — key under mat"></div>
+    </details>
+    <div class="modal-field"><label>Notes</label><textarea id="m-notes" placeholder="Prayer requests, ministry history, burdens...">${esc(notes)}</textarea></div>
     ${meetings.length?`<div style="margin-top:14px;padding-top:10px;border-top:1px solid var(--parch-pale)"><strong style="font-size:11px;color:var(--bamboo);font-family:'Cinzel',serif;letter-spacing:1.5px">PAST MEETINGS (${meetings.length})</strong>${meetings.map(m=>`<div style="padding:6px 0;font-size:13px">📅 ${esc(m.dateRange||m.date)}${m.times?' · '+esc(m.times):''}${m.format?' · '+esc(m.format):''}${m.offering?' · '+esc(m.offering):''}</div>`).join('')}</div>`:''}
     ${offerings.length?`<div style="margin-top:10px"><strong style="font-size:11px;color:var(--bamboo);font-family:'Cinzel',serif;letter-spacing:1.5px">OFFERINGS (${offerings.length})</strong>${offerings.map(o=>`<div style="padding:4px 0;font-size:13px;color:var(--green)">💵 ${esc(o.date)} · $${parseFloat(o.amount).toFixed(2)}${o.notes?' · '+esc(o.notes):''}</div>`).join('')}</div>`:''}
   `, ()=>{
@@ -1599,6 +1622,12 @@ function openChurchModal(q){
     const newAddr = val('m-addr').trim();
     if(newAddr !== (c.addr||'')){ c.addr = newAddr; c.lat=null; c.lon=null; } // re-geocode if changed
     c.phone = val('m-phone'); c.email = val('m-email');
+    // v4.3 long-term relationship fields
+    ['pwife|pastorWife','pref|prefContact','pbday|pastorBday','wbday|wifeBday','anniv|anniversary','kids|kids','lodge|lodgingNotes'].forEach(k=>{
+      const [fid, prop] = k.split('|');
+      const el = document.getElementById('m-'+fid);
+      if(el) c[prop] = el.value.trim();
+    });
     if(c.s==='supporting'){
       if(c.m>0 && !c.o.includes('/mo')) c.o = (c.o?c.o+' · ':'') + '$'+c.m+'/mo ✅';
       const pname = c.n;
@@ -2933,6 +2962,9 @@ function openMeetingForm(churchIdx){
     }
     // Push the church (new or updated) to the shared Churches tab
     pushChurch(CHURCHES[cIdx], cIdx);
+    // v4.3: auto-generate the full deputation workflow timeline
+    const tasksAdded = generateMeetingTasks(cIdx, start, dateRange);
+    if(tasksAdded) toast(`✓ Meeting saved · ${tasksAdded} pipeline tasks added`);
     // auto prayer + follow-up + sheets sync
     addAutoPrayer(ch, meeting.status);
     if(meeting.status==='completed'){
@@ -3507,7 +3539,156 @@ function copyComposeBody(){
   toast('Body copied');
 }
 
-/* ============ INIT ============ */
+/* ============ v4.3: DEPUTATION PIPELINE ============ */
+const PIPELINE_STAGES = [
+  {id:'scheduled',          label:'📌 Scheduled'},
+  {id:'confirm_sent',       label:'📨 Confirmation Sent'},
+  {id:'travel_planned',     label:'✈️ Travel Planned'},
+  {id:'lodging_confirmed',  label:'🏠 Lodging Confirmed'},
+  {id:'pre_confirmed',      label:'✅ Pre-Meeting Confirmed'},
+  {id:'materials_prepared', label:'📦 Materials Prepared'},
+  {id:'packed',             label:'🎒 Packed'},
+  {id:'in_travel',          label:'🚗 In Travel'},
+  {id:'meeting_complete',   label:'⛪ Meeting Complete'},
+  {id:'thankyou_sent',      label:'🙏 Thank-You Sent'},
+  {id:'support_followup',   label:'💌 Support Follow-Up'},
+  {id:'longterm_active',    label:'💚 Long-Term Active'}
+];
+function stageIdx(id){ return PIPELINE_STAGES.findIndex(s=>s.id===id); }
+
+/* Auto-generate the workflow timeline tasks when a meeting is logged. */
+function generateMeetingTasks(churchIdx, meetingDateStr, dateRange){
+  const c = CHURCHES[churchIdx]; if(!c) return 0;
+  const meetingMs = new Date(meetingDateStr+'T12:00:00').getTime();
+  if(isNaN(meetingMs)) return 0;
+  const DAY = 86400000;
+  const ch = c.n.split(' — ')[0];
+  const tasks = [
+    {when: 1,   text:`📨 Send confirmation email to ${ch}`,                                stage:'confirm_sent',       fromBooking:true},
+    {when: -30, text:`✈️ Lock travel for ${ch} (${dateRange||meetingDateStr})`,           stage:'travel_planned'},
+    {when: -21, text:`🏠 Finalize lodging for ${ch}`,                                      stage:'lodging_confirmed'},
+    {when: -7,  text:`✅ Pre-meeting confirmation w/ pastor — ${ch}`,                      stage:'pre_confirmed'},
+    {when: -5,  text:`📦 Prepare materials for ${ch} (prayer cards, display, gifts)`,     stage:'materials_prepared'},
+    {when: -1,  text:`🎒 Pack for ${ch}`,                                                  stage:'packed'},
+    {when: 1,   text:`📝 Log meeting details for ${ch} (offering, support, attendance)`,  stage:'meeting_complete',   afterMeeting:true},
+    {when: 2,   text:`🙏 Send thank-you to ${ch}`,                                         stage:'thankyou_sent',      afterMeeting:true},
+    {when: 3,   text:`💌 Add ${ch} to long-term relationship system`,                     stage:'longterm_active',    afterMeeting:true},
+  ];
+  const now = Date.now();
+  const cust = LS.get('custom_actions',[]);
+  // Remove any existing pipeline tasks for this church (re-generation)
+  const filtered = cust.filter(t => !(t.meta && t.meta.churchIdx===churchIdx && t.meta.kind==='pipeline'));
+  let added = 0;
+  tasks.forEach(t=>{
+    const dueMs = t.fromBooking ? (now + DAY) : (meetingMs + t.when*DAY);
+    // Skip tasks whose window is already past + the stage is already complete
+    const curStageIdx = stageIdx(c.pipeline||'scheduled');
+    if(curStageIdx >= stageIdx(t.stage)) return; // already done
+    if(t.fromBooking && dueMs < now - 3*DAY) return; // booking too old
+    if(!t.afterMeeting && dueMs < now - 14*DAY) return; // window long passed
+    const dueDate = new Date(dueMs);
+    const dueStr = dueDate.toLocaleDateString('en-US',{month:'short',day:'numeric'}) + (dueMs<now?' · overdue':'');
+    const id = 'pipe_'+churchIdx+'_'+t.stage+'_'+now.toString(36)+Math.random().toString(36).slice(2,5);
+    filtered.push({
+      id, text: t.text, due: dueStr,
+      urgent: dueMs < now + 2*DAY,
+      meta: {kind:'pipeline', churchIdx, stage:t.stage, meetingMs, dueMs}
+    });
+    added++;
+  });
+  LS.set('custom_actions', filtered);
+  return added;
+}
+
+/* Advance a church's pipeline stage and tick off the matching task. */
+function advanceStage(churchIdx, stage){
+  const c = CHURCHES[churchIdx]; if(!c) return;
+  c.pipeline = stage;
+  LS.set('churches', CHURCHES);
+  pushChurch(c, churchIdx);
+  // Mark any matching pipeline task done
+  const cust = LS.get('custom_actions',[]);
+  cust.forEach(t=>{
+    if(t.meta && t.meta.kind==='pipeline' && t.meta.churchIdx===churchIdx && t.meta.stage===stage){
+      LS.set('act_'+t.id, true);
+    }
+  });
+  renderActions(); updateBadges();
+  toast('Stage → '+PIPELINE_STAGES.find(s=>s.id===stage).label);
+  // Re-render the church modal so the strip updates
+  openChurchModal(churchIdx);
+}
+function pipelineProgressHtml(c, churchIdx){
+  const cur = c.pipeline || 'scheduled';
+  const ci = stageIdx(cur);
+  return `<div style="background:var(--parch-pale);border-radius:10px;padding:12px;margin:14px 0">
+    <div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:1.5px;color:var(--bamboo);margin-bottom:8px">DEPUTATION PIPELINE — ${esc(PIPELINE_STAGES[ci<0?0:ci].label)}</div>
+    <div style="display:flex;flex-wrap:wrap;gap:4px">
+      ${PIPELINE_STAGES.map((s,i)=>`
+        <button onclick="advanceStage(${churchIdx},'${s.id}')" style="background:${i<=ci?'var(--brown)':'var(--white)'};color:${i<=ci?'var(--parch-light)':'var(--lgray)'};border:1px solid var(--parch-dark);border-radius:14px;padding:5px 10px;font-size:10.5px;font-family:'Cinzel',serif;letter-spacing:.5px;cursor:pointer;-webkit-tap-highlight-color:transparent">${s.label}</button>
+      `).join('')}
+    </div>
+  </div>`;
+}
+
+/* Pipeline alerts: scan all upcoming meetings, surface what's overdue. */
+function getPipelineAlerts(){
+  const out = [];
+  const now = Date.now(), DAY = 86400000;
+  CHURCHES.forEach((c,i)=>{
+    if(c.s==='completed' && (c.pipeline||'')!=='longterm_active'){
+      // Post-meeting items: thank-you, long-term entry
+      const ci = stageIdx(c.pipeline||'meeting_complete');
+      if(ci < stageIdx('thankyou_sent')) out.push({text:`🙏 Send thank-you to ${c.n}`, urgent:true, churchIdx:i});
+      if(ci < stageIdx('longterm_active')) out.push({text:`💌 Set up long-term relationship for ${c.n}`, urgent:false, churchIdx:i});
+    }
+    if(c.s!=='scheduled') return;
+    // Find next meeting date from churches detail
+    const m = (c.d||'').match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d+)/i);
+    if(!m) return;
+    const monthIdx=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'].indexOf(m[1].toLowerCase());
+    const day=parseInt(m[2]);
+    let yr = (new Date()).getFullYear();
+    let d = new Date(yr, monthIdx, day);
+    if((d.getTime()-now)/DAY < -60){ yr++; d=new Date(yr, monthIdx, day); }
+    const days = Math.round((d.getTime()-now)/DAY);
+    const ci = stageIdx(c.pipeline||'scheduled');
+    if(days <= 30 && ci < stageIdx('travel_planned')) out.push({text:`✈️ Travel not locked for ${c.n} — ${days}d out`, urgent:days<14, churchIdx:i});
+    if(days <= 21 && ci < stageIdx('lodging_confirmed')) out.push({text:`🏠 Lodging not confirmed for ${c.n} — ${days}d out`, urgent:days<10, churchIdx:i});
+    if(days <= 7 && days > -2 && ci < stageIdx('pre_confirmed')) out.push({text:`✅ Pre-meeting confirmation needed for ${c.n}`, urgent:true, churchIdx:i});
+    if(days <= 5 && days > -2 && ci < stageIdx('materials_prepared')) out.push({text:`📦 Prep materials for ${c.n}`, urgent:days<2, churchIdx:i});
+    if(days <= 1 && days > -2 && ci < stageIdx('packed')) out.push({text:`🎒 Pack for ${c.n}`, urgent:true, churchIdx:i});
+  });
+  // Relationship reminders: upcoming birthdays/anniversaries in next 14 days
+  const today = new Date();
+  CHURCHES.forEach((c,i)=>{
+    ['pastorBday','wifeBday','anniversary'].forEach(k=>{
+      if(!c[k]) return;
+      const mm = c[k].slice(0,2)|0, dd = c[k].slice(3,5)|0;
+      if(!mm || !dd) return;
+      let d = new Date(today.getFullYear(), mm-1, dd);
+      if((d.getTime()-now)/DAY < -3) d.setFullYear(today.getFullYear()+1);
+      const days = Math.round((d.getTime()-now)/DAY);
+      if(days >= 0 && days <= 14){
+        const label = {pastorBday:'Pastor birthday', wifeBday:"Wife's birthday", anniversary:'Anniversary'}[k];
+        out.push({text:`🎂 ${label} — ${c.n} — in ${days}d`, urgent:days<3, churchIdx:i});
+      }
+    });
+  });
+  return out;
+}
+function renderPipelineAlerts(){
+  const el = document.getElementById('pipeline-alerts'); if(!el) return;
+  const alerts = getPipelineAlerts();
+  if(!alerts.length){ el.innerHTML = ''; return; }
+  el.innerHTML = `<div class="task-box" style="border-left-color:var(--sage);background:var(--sage-pale)">
+    <div class="task-box-title" style="color:var(--sage)">⚙️ Pipeline Action Needed (${alerts.length})</div>
+    ${alerts.slice(0,12).map(a=>`<div onclick="editChurch(${a.churchIdx})" style="padding:7px 0;font-size:14.5px;line-height:1.35;cursor:pointer;${a.urgent?'color:var(--red);font-weight:600':''}">• ${a.text}</div>`).join('')}
+    ${alerts.length>12?`<div style="font-size:11px;color:var(--bamboo);font-style:italic;margin-top:6px">+${alerts.length-12} more …</div>`:''}
+  </div>`;
+}
+
+/* INIT */
 function init(){
   loadSettings();
   updateTodayPill();
@@ -3543,6 +3724,8 @@ function init(){
   else setSync('','Local only');
   // v4: bootstrap the 839+ master church list (one-time)
   bootstrapMasterChurches();
+  // v4.3: pipeline alerts on first paint
+  renderPipelineAlerts();
 }
 init();
 </script>
