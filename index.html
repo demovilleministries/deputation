@@ -3249,29 +3249,76 @@ function addSetupHints(){
 }
 
 /* ============ v4: MASTER CHURCH BOOTSTRAP (839+ list) ============ */
+/* Auto-fill state from "— City, ST" pattern on entries that don't have one. */
+function backfillChurchStates(){
+  let fixed = 0;
+  CHURCHES.forEach(c=>{
+    if(!c.state){
+      const m = (c.n||'').match(/,\s*([A-Z]{2})\s*$/);
+      if(m){ c.state = m[1]; fixed++; }
+    }
+    if(!c.city){
+      const m = (c.n||'').match(/—\s*([^,]+),\s*[A-Z]{2}\s*$/);
+      if(m){ c.city = m[1].trim(); }
+    }
+  });
+  if(fixed){ LS.set('churches', CHURCHES); }
+  return fixed;
+}
+/* Build a key for matching local vs master entries. */
+function churchKey(c){
+  const baseName = (c.n||'').toLowerCase().split(' — ')[0].replace(/\s+/g,' ').trim();
+  const city = (c.city||'').toLowerCase().trim();
+  const state = (c.state||'').toLowerCase().trim();
+  return `${baseName}|${city}|${state}`;
+}
 async function bootstrapMasterChurches(){
-  // Only bootstrap if we have fewer churches than the master list (i.e. first load)
-  if(CHURCHES.length >= 200) return; // already loaded master
+  // Always run — but enrich existing entries, only add truly-new ones.
   try{
-    const res = await fetch('./churches-master.json', {cache:'force-cache'});
+    const res = await fetch('./churches-master.json', {cache:'no-cache'});
     if(!res.ok) return;
     const master = await res.json();
-    const existing = new Set(CHURCHES.map(c=>c.n.toLowerCase()));
-    let added = 0;
+    backfillChurchStates();
+    // Build lookup of local churches by both base-name key AND full name
+    const byKey = {};
+    const byName = {};
+    CHURCHES.forEach(c=>{ byKey[churchKey(c)] = c; byName[(c.n||'').toLowerCase()] = c; });
+    let added = 0, enriched = 0;
     master.forEach(m=>{
-      if(existing.has(m.n.toLowerCase())) return;
-      CHURCHES.push({
-        n: m.n, d: m.d, s: m.s||'pending', o: m.o||'New', m: m.m||0,
-        addr: m.addr||'', city: m.city||'', state: m.state||'', zip: m.zip||'',
-        phone: m.phone||'', email: m.email||'', web: m.web||'', pastor: m.pastor||'',
-        lat: null, lon: null
-      });
-      added++;
+      const mk = churchKey(m);
+      const existing = byKey[mk] || byName[(m.n||'').toLowerCase()];
+      if(existing){
+        // Enrich missing fields without overwriting user-edited data
+        const enrichments = ['addr','city','state','zip','phone','email','web','pastor','pastorWife','kids','notes'];
+        let didEnrich = false;
+        enrichments.forEach(k=>{
+          if((!existing[k] || existing[k]==='') && m[k]){
+            existing[k] = m[k];
+            didEnrich = true;
+          }
+        });
+        // If a richer detail line exists and the local one is short/blank, update it
+        if(m.d && (!existing.d || existing.d.length < (m.d||'').length/2)){
+          existing.d = m.d; didEnrich = true;
+        }
+        if(didEnrich) enriched++;
+      } else {
+        CHURCHES.push({
+          n: m.n, d: m.d, s: m.s||'pending', o: m.o||'New', m: m.m||0,
+          addr: m.addr||'', city: m.city||'', state: m.state||'', zip: m.zip||'',
+          phone: m.phone||'', email: m.email||'', web: m.web||'', pastor: m.pastor||'',
+          pastorWife: m.pastorWife||'', kids: m.kids||'', notes: m.notes||'',
+          lat: null, lon: null
+        });
+        added++;
+      }
     });
-    if(added){
+    if(added || enriched){
       LS.set('churches', CHURCHES);
       renderChurches();
-      toast(`📚 Loaded ${added} churches from master list`);
+      if(added && enriched) toast(`📚 Loaded ${added} churches · enriched ${enriched}`);
+      else if(added) toast(`📚 Loaded ${added} churches from master list`);
+      else toast(`✨ Enriched ${enriched} churches with address/contact data`);
     }
   } catch(e){ console.log('master bootstrap skipped', e); }
 }
