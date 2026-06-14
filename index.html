@@ -405,6 +405,24 @@ body.compact-page .stats-bar,body.compact-page .progress-wrap{display:none}
 .copy-btn:active{background:#2A1408}
 .copy-btn.ok{background:var(--green)}
 
+/* ===== v4.5 — Sub-tab strip used inside grouped tabs (Travel hub) ===== */
+.subnav{display:flex;gap:6px;overflow-x:auto;padding:4px 0 12px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.subnav::-webkit-scrollbar{display:none}
+.subnav-btn{flex-shrink:0;font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:9px 14px;border-radius:18px;border:1px solid rgba(212,184,150,0.4);background:var(--white);color:var(--brown);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s}
+.subnav-btn.active{background:var(--brown);color:var(--parch-light);border-color:var(--brown)}
+.subnav-btn:active{transform:scale(0.97)}
+
+/* Itinerary list */
+.leg-row{display:grid;grid-template-columns:32px 1fr auto;gap:10px;align-items:center;padding:10px 14px;background:var(--white);border:1px solid rgba(212,184,150,0.25);border-radius:10px;margin-bottom:8px;cursor:pointer}
+.leg-row:active{background:var(--parch-pale)}
+.leg-row .leg-icon{font-size:24px;text-align:center;line-height:1}
+.leg-row .leg-title{font-size:14px;font-weight:600;color:var(--brown);line-height:1.3}
+.leg-row .leg-meta{font-size:11.5px;color:var(--lgray);margin-top:2px;font-style:italic}
+.leg-row .leg-time{font-family:'Cinzel',serif;font-size:11px;color:var(--bamboo);letter-spacing:.5px;white-space:nowrap;text-align:right}
+.trip-card{background:var(--white);border:1px solid rgba(212,184,150,0.3);border-radius:14px;padding:14px 16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(74,55,40,0.05)}
+.trip-card h3{font-family:'Cinzel',serif;color:var(--brown);font-size:14px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
+.trip-card .trip-dates{font-size:12px;color:var(--bamboo);font-style:italic;margin-bottom:10px}
+
 /* =============================================================
    v4 — iPhone-FIRST REDESIGN
    ============================================================= */
@@ -603,15 +621,12 @@ button,.btn,.action-cb,.ios-tab,.drawer-tile,.cal-day,.church-card,.action-item,
     <div class="nav-brand">DeMoville ✦ FBMI</div>
     <div class="nav-tabs">
       <button class="nav-tab active" onclick="showPage('timeline',this)">Timeline</button>
-      <button class="nav-tab" onclick="showPage('pipeline',this)">Churches</button>
+      <button class="nav-tab" onclick="showPage('pipeline',this)">Travel</button>
+      <button class="nav-tab" onclick="showPage('calendar',this)">Calendar</button>
       <button class="nav-tab" onclick="showPage('financial',this)">Financial</button>
       <button class="nav-tab" onclick="showPage('actions',this)">Actions</button>
       <button class="nav-tab" onclick="showPage('leads',this)">Leads</button>
-      <button class="nav-tab" onclick="showPage('adventure',this)">Adventure</button>
       <button class="nav-tab" onclick="showPage('expenses',this)">Expenses</button>
-      <button class="nav-tab" onclick="showPage('calendar',this)">Calendar</button>
-      <button class="nav-tab" onclick="showPage('map',this)">Map</button>
-      <button class="nav-tab" onclick="showPage('drive',this)">Drive</button>
       <button class="nav-tab" onclick="showPage('prayer',this)">Prayer</button>
       <button class="nav-tab" onclick="showPage('sermons',this)">Sermons</button>
       <button class="nav-tab" onclick="showPage('followups',this)">Follow-ups</button>
@@ -625,7 +640,7 @@ button,.btn,.action-cb,.ios-tab,.drawer-tile,.cal-day,.church-card,.action-item,
 <!-- iOS-style bottom tab bar (mobile only) -->
 <div class="ios-tabbar" id="ios-tabbar">
   <button class="ios-tab active" data-page="timeline" onclick="goPage('timeline')"><span class="icon">📜</span>Home</button>
-  <button class="ios-tab" data-page="pipeline" onclick="goPage('pipeline')"><span class="icon">⛪</span>Churches</button>
+  <button class="ios-tab" data-page="pipeline" onclick="goPage('pipeline')"><span class="icon">✈️</span>Travel</button>
   <button class="ios-tab" data-page="calendar" onclick="goPage('calendar')"><span class="icon">📅</span>Calendar</button>
   <button class="ios-tab" data-page="actions" onclick="goPage('actions')"><span class="icon">✓</span>Actions<span class="badge-dot"></span></button>
   <button class="ios-tab" data-page="more" onclick="openDrawer()"><span class="icon">≡</span>More</button>
@@ -639,14 +654,15 @@ button,.btn,.action-cb,.ios-tab,.drawer-tile,.cal-day,.church-card,.action-item,
     <div class="drawer-grid">
       <div class="drawer-tile" onclick="goPage('timeline')"><span class="em">📜</span><span class="lbl">Timeline</span></div>
       <div class="drawer-tile" onclick="goPage('pipeline')"><span class="em">⛪</span><span class="lbl">Churches</span></div>
+      <div class="drawer-tile" onclick="goPage('itinerary')"><span class="em">✈️</span><span class="lbl">Itinerary</span></div>
+      <div class="drawer-tile" onclick="goPage('map')"><span class="em">🗺️</span><span class="lbl">Map</span></div>
+      <div class="drawer-tile" onclick="goPage('adventure')"><span class="em">📸</span><span class="lbl">Adventure</span></div>
+      <div class="drawer-tile" onclick="goPage('drive')"><span class="em">🚗</span><span class="lbl">Drive</span></div>
+      <div class="drawer-tile" onclick="goPage('calendar')"><span class="em">📅</span><span class="lbl">Calendar</span></div>
       <div class="drawer-tile" onclick="goPage('financial')"><span class="em">💰</span><span class="lbl">Financial</span></div>
       <div class="drawer-tile" onclick="goPage('actions')"><span class="em">✓</span><span class="lbl">Actions</span></div>
       <div class="drawer-tile" onclick="goPage('leads')"><span class="em">🎯</span><span class="lbl">Leads</span></div>
-      <div class="drawer-tile" onclick="goPage('adventure')"><span class="em">📸</span><span class="lbl">Adventure</span></div>
       <div class="drawer-tile" onclick="goPage('expenses')"><span class="em">🧾</span><span class="lbl">Expenses</span></div>
-      <div class="drawer-tile" onclick="goPage('calendar')"><span class="em">📅</span><span class="lbl">Calendar</span></div>
-      <div class="drawer-tile" onclick="goPage('map')"><span class="em">🗺️</span><span class="lbl">Map</span></div>
-      <div class="drawer-tile" onclick="goPage('drive')"><span class="em">🚗</span><span class="lbl">Drive</span></div>
       <div class="drawer-tile" onclick="goPage('prayer')"><span class="em">🙏</span><span class="lbl">Prayer</span></div>
       <div class="drawer-tile" onclick="goPage('sermons')"><span class="em">📖</span><span class="lbl">Sermons</span></div>
       <div class="drawer-tile" onclick="goPage('followups')"><span class="em">📮</span><span class="lbl">Follow-ups</span></div>
@@ -882,6 +898,17 @@ button,.btn,.action-cb,.ios-tab,.drawer-tile,.cal-day,.church-card,.action-item,
       </div>
       <div id="church-map" style="height:560px;border-radius:14px;border:1px solid rgba(212,184,150,0.3);background:var(--parch-pale);overflow:hidden"></div>
       <p style="font-size:12px;color:var(--lgray);font-style:italic;text-align:center;margin-top:10px">Pins are color-coded by status. Tap any pin to open the church · "Open in Maps" for driving directions.</p>
+    </div>
+  </div>
+
+  <!-- ITINERARY -->
+  <div id="page-itinerary" class="page">
+    <div class="section">
+      <div class="section-head"><span class="section-title">TRIP ITINERARIES</span><div class="section-line"></div></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+        <button class="btn btn-primary" onclick="openTravelPlanForm()">+ New Trip</button>
+      </div>
+      <div id="itinerary-list"></div>
     </div>
   </div>
 
@@ -1172,6 +1199,15 @@ button,.btn,.action-cb,.ios-tab,.drawer-tile,.cal-day,.church-card,.action-item,
         <input type="tel" id="setting-sender-phone" placeholder="(555) 555-5555">
         <div class="help">Auto-included in outreach and confirmation templates.</div>
       </div>
+      <div class="set-row" style="border:2px solid var(--gold);background:linear-gradient(135deg,var(--white),var(--parch-pale))">
+        <label>🎯 Workflow Engine (v5.0 beta)</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px">
+          <button class="btn btn-primary" onclick="setWorkflowEnabled(true);setTimeout(()=>location.reload(),600)">✅ Enable</button>
+          <button class="btn btn-secondary" onclick="setWorkflowEnabled(false);setTimeout(()=>location.reload(),600)">↩ Disable (revert to v4.5)</button>
+          <button class="btn btn-danger" style="margin-left:auto" onclick="if(confirm('Reset workflow migration so it re-runs on next load? Existing workflow_stage values stay intact.'))LS.del('wf_migration_v1')">↻ Re-run migration</button>
+        </div>
+        <div class="help">Layers a 13-stage state machine over Churches. Existing data is preserved. Tap a stage chip in any church modal to advance. Toggling off restores the v4.5 experience instantly.</div>
+      </div>
       <div class="set-row">
         <label>Local Data</label>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -1378,7 +1414,10 @@ function showPage(id, btn){
   if(id==='timeline') renderPipelineAlerts();
   if(id==='calendar') renderCalendar();
   if(id==='map') setTimeout(renderMap, 50);
+  if(id==='itinerary') renderItinerary();
   if(id==='prayer') renderPrayer();
+  // v4.5: subnav for travel-grouped pages
+  if(TRAVEL_PAGES.includes(id)) ensureSubnav(id);
   if(id==='followups') renderFollowups();
   if(id==='actions') renderActions();
   if(id==='drive') renderDriveMode();
@@ -1462,6 +1501,12 @@ function deleteCalNoteRemote(noteId){
 }
 function pushChurch(c, i){
   if(!settings.url || !c || !c.n) return;
+  // v5.0: when workflow is enabled, delegate to extended push that includes workflow + relationship fields.
+  // Falls back to v4.5 behavior when WORKFLOW_ENABLED is false.
+  if(typeof WORKFLOW_ENABLED !== 'undefined' && WORKFLOW_ENABLED && typeof pushChurchExtended === 'function'){
+    pushChurchExtended(c, i);
+    return;
+  }
   const notes = LS.get('chnotes_'+(typeof i==='number'?i:CHURCHES.indexOf(c)), '');
   api('upsertByKey',{tab:'Churches', keyCol:'Name', keyValue:c.n, values:{Detail:c.d||'', Status:c.s||'', Offering:c.o||'', Monthly:c.m||0, Notes:notes||'', AddedBy:settings.user, Updated:new Date().toISOString()}});
 }
@@ -1592,6 +1637,7 @@ function openChurchModal(q){
       <input id="m-monthly" type="number" step="5" value="${c.m||''}" placeholder="e.g. 75">
     </div>
     <div class="modal-field"><label>Offering Note (shown in list)</label><input id="m-off" value="${esc(c.o)}" placeholder="e.g. $800 · $75/mo ✅"></div>
+    ${(typeof renderWorkflowPanel==='function') ? renderWorkflowPanel(c, i) : ''}
     ${pipelineProgressHtml(c, i)}
     <details style="margin:12px 0;background:var(--parch-pale);border-radius:10px;padding:10px 12px">
       <summary style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:1.5px;color:var(--bamboo);cursor:pointer;text-transform:uppercase">💚 Long-Term Relationship Data</summary>
@@ -2574,8 +2620,24 @@ async function backgroundSync(){
         existing.o = row.Offering || existing.o;
         existing.m = parseFloat(row.Monthly)||existing.m||0;
         if(row.Notes) LS.set('chnotes_'+CHURCHES.indexOf(existing), row.Notes);
+        // v5.0: hydrate workflow + relationship fields (only fill local blanks; never overwrite edits).
+        if(row.WorkflowStage && !existing.workflow_stage) existing.workflow_stage = row.WorkflowStage;
+        if(row.WorkflowOutcome && !existing.workflow_outcome) existing.workflow_outcome = row.WorkflowOutcome;
+        if(row.WorkflowActivated && !existing.workflow_activated_ts) existing.workflow_activated_ts = row.WorkflowActivated;
+        ['PastorWife|pastorWife','PastorBday|pastorBday','WifeBday|wifeBday','Anniversary|anniversary','Kids|kids','PrefContact|prefContact','LodgingNotes|lodgingNotes'].forEach(pair=>{
+          const [sheet, lk] = pair.split('|');
+          if(row[sheet] && !existing[lk]) existing[lk] = row[sheet];
+        });
+        if(row.Pipeline && typeof stageIdx==='function' && stageIdx(row.Pipeline) > stageIdx(existing.pipeline||'')) existing.pipeline = row.Pipeline;
+        if(row.Lat && row.Lon && existing.lat==null){ existing.lat = parseFloat(row.Lat); existing.lon = parseFloat(row.Lon); }
       } else {
-        CHURCHES.push({n:row.Name, d:row.Detail||'', s:row.Status||'pending', o:row.Offering||'', m:parseFloat(row.Monthly)||0});
+        CHURCHES.push({n:row.Name, d:row.Detail||'', s:row.Status||'pending', o:row.Offering||'', m:parseFloat(row.Monthly)||0,
+          workflow_stage: row.WorkflowStage||'',
+          pipeline: row.Pipeline||'',
+          pastorWife: row.PastorWife||'', pastorBday: row.PastorBday||'',
+          wifeBday: row.WifeBday||'', anniversary: row.Anniversary||'',
+          kids: row.Kids||'', prefContact: row.PrefContact||'', lodgingNotes: row.LodgingNotes||'',
+          lat: row.Lat?parseFloat(row.Lat):null, lon: row.Lon?parseFloat(row.Lon):null});
         if(row.Notes) LS.set('chnotes_'+(CHURCHES.length-1), row.Notes);
       }
     });
@@ -3015,8 +3077,19 @@ function getNextEvent(){
     if(date >= TODAY) events.push({date, label:c.n, sub:c.d.split('·')[0].trim(), type:'church', idx:i});
   });
   (LS.get('travel_plans',[])||[]).forEach((tp,i)=>{
-    const date=new Date(tp.date+'T12:00:00');
-    if(date >= TODAY) events.push({date, label:tp.destination, sub:tp.notes||tp.type||'', type:'travel', idx:i});
+    if(tp.date){
+      const date=new Date(tp.date+'T12:00:00');
+      if(date >= TODAY) events.push({date, label:tp.destination, sub:tp.notes||tp.type||'', type:'travel', idx:i});
+    }
+    // v4.5: also consider each itinerary leg as an upcoming event
+    (tp.legs||[]).forEach(l=>{
+      if(!l.dateTime) return;
+      const d = new Date(l.dateTime);
+      if(d >= TODAY){
+        const lt = LEG_TYPES[l.type]||LEG_TYPES.other;
+        events.push({date:d, label:(lt.icon+' '+(l.name||lt.label)), sub:(l.address||l.notes||tp.destination||''), type:'leg', idx:i});
+      }
+    });
   });
   events.sort((a,b)=>a.date-b.date);
   return events[0];
@@ -3444,6 +3517,8 @@ function renderMap(){
   // Add markers
   const visible = CHURCHES.filter(c=>c.lat!=null && (mapStatusFilter==='all'||c.s===mapStatusFilter));
   visible.forEach(addMarker);
+  // v4.5: also pin itinerary legs (airports/hotels/rentals/food/etc.)
+  addLegMarkers();
   // Fit bounds if any
   if(visible.length){
     const grp = L.featureGroup(visible.map(c=>L.marker([c.lat,c.lon])));
@@ -3507,26 +3582,72 @@ const TEMPLATES = [
     id:'conference_inquiry',
     name:'🎤 Missions Conference Inquiry',
     subject:'Missions Conference Availability — DeMovilles',
-    body:`Dear {{pastor}},\n\nGreetings in Christ. I am writing to inquire whether {{church}} hosts an annual missions conference, and if so, whether you might prayerfully consider including us as one of the missionary families.\n\nMy wife Leah and I are commissioned missionaries with FBMI heading to the Philippines, where my parents have served for over fifteen years. We would love to share our burden, preach the Word, and be a blessing to your congregation during a conference week or single service.\n\nIf this would be of interest, please let me know what conference dates you have planned and we'll do our best to fit your schedule. We can also send our prayer card and intro video if helpful.\n\nThank you for the Lord's work at {{church}}.\n\nIn Christ,\nChristian & Leah DeMoville\nFBMI Missionaries to the Philippines\n{{senderPhone}}`
+    body:`Dear {{pastor}},\n\nGreetings in Christ. I am writing to inquire whether {{church}} hosts an annual missions conference, and if so, whether you might prayerfully consider including us as one of the missionary families.\n\nMy wife Leah and I are commissioned missionaries with FBMI heading to the Philippines, where my parents have served for over fifteen years. We would love to share our burden, preach the Word, and be a blessing to your congregation during a conference week or single service.\n\nIf this would be of interest, please let me know what conference dates you have planned and we'll do our best to fit your schedule. We can also send our prayer card and intro video if helpful.\n\nThank you for the Lord's work at {{church}}.\n\n{{closing}}\n{{senderPhone}}`
+  },
+  /* v5.0 workflow templates (marriage-aware via {{closing}} / {{senderName}}) */
+  {
+    id:'follow_up',
+    name:'🔁 Follow-Up Outreach',
+    subject:'Following up — Christian DeMoville · FBMI Missionary',
+    body:`Dear {{pastor}},\n\nGreetings again in the Lord. I wrote to you a little while back about the possibility of sharing {{our}} ministry at {{church}} and wanted to follow up in case {{my}} first note slipped past in the busy days of ministry.\n\nNo pressure at all — {{we}} simply wanted to make sure the door is still open for a future meeting whenever the Lord leads. If now isn't the time, please feel free to let {{me}} know and {{we}}'ll reach back out further down the road.\n\nIf you have a moment, {{we}}'d love to send a prayer card and a brief intro to {{our}} work in the Philippines. Just say the word.\n\nThank you for the Lord's work at {{church}}.\n\n{{closing}}\n{{senderPhone}}`
+  },
+  {
+    id:'call_reminder',
+    name:'📞 Call Confirmation',
+    subject:'Looking forward to {{our}} call today',
+    body:`Dear {{pastor}},\n\nJust a quick note that {{we}}'re looking forward to {{our}} phone call today. {{We}}'ll plan to call you at the time we agreed on.\n\nThank you for taking time out of {{our}} busy schedule to speak with {{me}}. {{We}}'ll keep it brief and respectful of your day.\n\n{{closing}}\n{{senderPhone}}`
+  },
+  {
+    id:'info_packet',
+    name:'📦 Information Packet',
+    subject:'Information packet — Christian DeMoville · FBMI Missionary to the Philippines',
+    body:`Dear {{pastor}},\n\nThank you for taking the time to request more information about {{our}} ministry. Below is the full packet you asked for:\n\n📇 Prayer card: [link]\n📑 Information packet: [link]\n✉️ Recommendation letters / testimonials: [link]\n🎬 Ministry intro video: [link]\n📰 Most recent prayer letter: {{prayerLetterUrl}}\n💵 Giving / support information: [link]\n📜 Doctrinal & ministry statement: [link]\n\nPlease feel free to share these with your missions committee or any of your folks who would benefit from seeing {{our}} work. If there's anything else {{we}} can send — or any questions {{we}} can answer — please don't hesitate to ask.\n\nThank you for the Lord's work at {{church}}. {{We}} are praying for you.\n\n{{closing}}\n{{senderPhone}}`
+  },
+  {
+    id:'support_decision',
+    name:'💭 Support Decision Follow-Up',
+    subject:'Following up — support decision for the DeMovilles',
+    body:`Dear {{pastor}},\n\nThank you again for opening {{church}}'s pulpit to {{us}} and for prayerfully considering joining {{us}} on the mission field.\n\n{{We}} wanted to follow up gently to ask whether the Lord has led the board to a decision regarding monthly support. {{We}} certainly understand if the timing isn't right or if more time is needed — please know there is no pressure at all. {{We}} simply want to keep you updated and respect {{our}} process.\n\nIf there's any additional information that would help — financials, an updated prayer letter, or further conversation with {{me}} — please let {{me}} know and {{we}}'ll get it to you right away.\n\n{{We}} are praying for {{church}} and {{our}} ministry there.\n\n{{closing}}\n{{senderPhone}}`
+  },
+  {
+    id:'support_thankyou',
+    name:'🌟 Support Acceptance Thank-You',
+    subject:'Thank you — what a blessing to be partnered with {{church}}',
+    body:`Dear {{pastor}},\n\n{{We}} received the wonderful news that {{church}} has chosen to come alongside {{us}} as monthly supporters of {{our}} ministry. {{We}} are humbled, grateful, and rejoicing with you in what the Lord is doing.\n\nThank you for trusting {{us}} with the resources the Lord has entrusted to {{church}}. {{We}} pledge to be faithful stewards of every dollar — using it for souls being reached, churches being planted, and disciples being made on the island of Negros and across the Visayas.\n\n{{We}} will add {{church}} to {{our}} monthly prayer letter distribution and will be sure to keep you regularly updated. Please let {{us}} know how {{we}} can pray for you and the dear folks at {{church}}.\n\nMay the Lord richly bless every member for their love and sacrifice.\n\n{{closing}}\n{{senderPhone}}`
+  },
+  {
+    id:'annual_update',
+    name:'📅 Annual Update',
+    subject:'Annual update from the DeMovilles · {{prayerLetterTitle}}',
+    body:`Dear {{pastor}},\n\nGreetings in Christ. It has been a blessing to walk this year of ministry partnered with {{church}}. {{We}} wanted to send a more personal annual update to thank you and to let you know how the Lord has been moving.\n\n📰 Latest prayer letter: {{prayerLetterUrl}}\n\nA few highlights from this past year:\n\n• [Highlight 1]\n• [Highlight 2]\n• [Highlight 3]\n\nPraying for {{church}} as well — please know how grateful {{we}} are for your continued faithfulness to the cause of missions.\n\n{{closing}}\n{{senderPhone}}`
+  },
+  {
+    id:'farewell',
+    name:'👋 Farewell / Closing the Relationship',
+    subject:'Thank you — closing notes from the DeMovilles',
+    body:`Dear {{pastor}},\n\nThank you for the time, prayers, and ministry you've shared with {{us}}. {{We}} understand circumstances have changed and {{we}} respect that.\n\n{{We}} want to express {{our}} sincere gratitude for everything {{church}} has invested in {{us}} and the Lord's work in the Philippines. Should the Lord ever lead {{our}} paths back together, the door on {{our}} end remains open.\n\nMay the Lord continue to bless {{church}} richly.\n\n{{closing}}\n{{senderPhone}}`
   }
 ];
 function fillTemplate(tpl, c){
   const senderPhone = settings.senderPhone || '';
   const ppl = (c.pastor||'').trim() || (c.d||'').split('·')[0].trim() || 'Pastor';
   const ch = (c.n||'').split(' — ')[0];
-  const subj = tpl.subject
-    .replace(/\{\{pastor\}\}/g, ppl)
-    .replace(/\{\{church\}\}/g, ch)
-    .replace(/\{\{senderPhone\}\}/g, senderPhone)
-    .replace(/\{\{prayerLetterTitle\}\}/g, settings.prayerLetterTitle||'Latest Update')
-    .replace(/\{\{prayerLetterUrl\}\}/g, settings.prayerLetterUrl||'');
-  const body = tpl.body
-    .replace(/\{\{pastor\}\}/g, ppl)
-    .replace(/\{\{church\}\}/g, ch)
-    .replace(/\{\{senderPhone\}\}/g, senderPhone)
-    .replace(/\{\{prayerLetterTitle\}\}/g, settings.prayerLetterTitle||'Latest Update')
-    .replace(/\{\{prayerLetterUrl\}\}/g, settings.prayerLetterUrl||'');
-  return {subject:subj, body};
+  // v5.0: marriage-aware signature (wedding 2026-08-21)
+  const sig = (typeof getSenderSignature==='function') ? getSenderSignature() : {name:'Christian DeMoville',pairName:'Christian DeMoville',closing:'In Christ,\nChristian DeMoville\nFBMI Missionary to the Philippines',pronoun:'I',possessive:'my'};
+  function fill(s){
+    return (s||'')
+      .replace(/\{\{pastor\}\}/g, ppl)
+      .replace(/\{\{church\}\}/g, ch)
+      .replace(/\{\{senderPhone\}\}/g, senderPhone)
+      .replace(/\{\{prayerLetterTitle\}\}/g, settings.prayerLetterTitle||'Latest Update')
+      .replace(/\{\{prayerLetterUrl\}\}/g, settings.prayerLetterUrl||'')
+      .replace(/\{\{senderName\}\}/g, sig.name)
+      .replace(/\{\{senderPair\}\}/g, sig.pairName)
+      .replace(/\{\{closing\}\}/g, sig.closing)
+      .replace(/\{\{we\}\}/g, sig.pronoun)
+      .replace(/\{\{our\}\}/g, sig.possessive);
+  }
+  return {subject: fill(tpl.subject), body: fill(tpl.body)};
 }
 function openEmailTemplates(churchIdx){
   const c = CHURCHES[churchIdx];
@@ -3584,6 +3705,223 @@ function copyComposeBody(){
   const body = document.getElementById('cm-body').value;
   copyText(body);
   toast('Body copied');
+}
+
+/* ============ v4.5: TRAVEL SUB-NAV + MULTI-STOP ITINERARIES ============ */
+const TRAVEL_PAGES = ['pipeline','itinerary','map','adventure','drive'];
+const TRAVEL_SUBNAV = [
+  {id:'pipeline',  label:'⛪ Churches'},
+  {id:'itinerary', label:'✈️ Itinerary'},
+  {id:'map',       label:'🗺️ Map'},
+  {id:'adventure', label:'📸 Memories'},
+  {id:'drive',     label:'🚗 Drive Mode'}
+];
+function ensureSubnav(pageId){
+  if(!TRAVEL_PAGES.includes(pageId)) return;
+  const pageEl = document.getElementById('page-'+pageId);
+  if(!pageEl) return;
+  // Remove any existing subnav, then insert at the very top
+  const old = pageEl.querySelector(':scope > .subnav'); if(old) old.remove();
+  const div = document.createElement('div');
+  div.className = 'subnav';
+  div.innerHTML = TRAVEL_SUBNAV.map(s=>`<button class="subnav-btn ${s.id===pageId?'active':''}" onclick="goPage('${s.id}')">${s.label}</button>`).join('');
+  pageEl.insertBefore(div, pageEl.firstChild);
+}
+
+const LEG_TYPES = {
+  flight:  {icon:'✈️', label:'Flight',          color:'#5C7A5C'},
+  airport: {icon:'🛫', label:'Airport',         color:'#5C7A5C'},
+  drive:   {icon:'🚗', label:'Drive',           color:'#8B7355'},
+  hotel:   {icon:'🏨', label:'Hotel / Lodging', color:'#C49A2A'},
+  rental:  {icon:'🚙', label:'Car Rental',      color:'#8B7355'},
+  food:    {icon:'🍽️', label:'Food / Meal',     color:'#8a6a10'},
+  gas:     {icon:'⛽', label:'Fuel Stop',       color:'#A89880'},
+  church:  {icon:'⛪', label:'Church Visit',    color:'#4A3728'},
+  sight:   {icon:'📸', label:'Sightseeing',     color:'#7A9E7A'},
+  other:   {icon:'📍', label:'Other Stop',      color:'#7A6A5A'}
+};
+function legSortKey(l){ return l.dateTime ? new Date(l.dateTime).getTime() : Number.MAX_SAFE_INTEGER; }
+function sortLegs(legs){ return (legs||[]).slice().sort((a,b)=>legSortKey(a)-legSortKey(b)); }
+function fmtLegDt(dt){
+  if(!dt) return '—';
+  const d = new Date(dt);
+  return d.toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+}
+
+function openLegForm(tripId, legId){
+  const trips = LS.get('travel_plans', []);
+  const trip = trips.find(t=>t.id===tripId);
+  if(!trip) { toast('Trip not found'); return; }
+  const leg = legId ? (trip.legs||[]).find(l=>l.id===legId) : null;
+  openModal(leg?'Edit Itinerary Stop':'Add Itinerary Stop', `
+    <div class="modal-field"><label>Type</label><select id="leg-type">
+      ${Object.entries(LEG_TYPES).map(([k,v])=>`<option value="${k}"${leg?.type===k?' selected':''}>${v.icon} ${v.label}</option>`).join('')}
+    </select></div>
+    <div class="modal-field"><label>Name / Label</label><input id="leg-name" value="${esc(leg?.name||'')}" placeholder="e.g. Holiday Inn Cody · Icelandair 856 · Walmart Casper"></div>
+    <div class="modal-field"><label>Address / Location</label><input id="leg-addr" value="${esc(leg?.address||'')}" placeholder="123 Main St, City, ST · Airport code · Lat,Lon"></div>
+    <div class="modal-field"><label>Date & Time</label><input type="datetime-local" id="leg-dt" value="${esc(leg?.dateTime||'')}"></div>
+    <div class="modal-field"><label>Confirmation # / Notes</label><textarea id="leg-notes" placeholder="Conf BBAOAI · Gate B12 · Front desk 800-555-1212">${esc(leg?.notes||'')}</textarea></div>
+  `, ()=>{
+    const newLeg = {
+      id: leg?.id || ('leg'+Date.now()+Math.random().toString(36).slice(2,5)),
+      type: val('leg-type'),
+      name: val('leg-name').trim(),
+      address: val('leg-addr').trim(),
+      dateTime: val('leg-dt'),
+      notes: val('leg-notes').trim()
+    };
+    if(!newLeg.name && !newLeg.address){ alert('Enter at least a name or address'); return; }
+    trip.legs = trip.legs || [];
+    if(legId){
+      const i = trip.legs.findIndex(l=>l.id===legId);
+      if(i>=0) trip.legs[i] = newLeg;
+    } else {
+      trip.legs.push(newLeg);
+    }
+    LS.set('travel_plans', trips);
+    pushTravel(trip);
+    closeModal();
+    openTripDetail(tripId);
+    renderItinerary();
+    if(typeof renderMap==='function') renderMap();
+    renderDriveMode();
+    toast(leg?'Stop updated':'Stop added');
+  }, leg ? ()=>{
+    if(!confirm('Delete this stop?')) return;
+    trip.legs = (trip.legs||[]).filter(l=>l.id!==legId);
+    LS.set('travel_plans', trips);
+    pushTravel(trip);
+    closeModal();
+    openTripDetail(tripId);
+    renderItinerary();
+    if(typeof renderMap==='function') renderMap();
+  } : null);
+}
+
+function openTripDetail(tripId){
+  const trips = LS.get('travel_plans', []);
+  const trip = trips.find(t=>t.id===tripId);
+  if(!trip){ toast('Trip not found'); return; }
+  const legs = sortLegs(trip.legs);
+  const legsHtml = legs.length ? legs.map(l=>{
+    const t = LEG_TYPES[l.type]||LEG_TYPES.other;
+    return `<div class="leg-row" onclick="openLegForm('${tripId}','${l.id}')">
+      <div class="leg-icon">${t.icon}</div>
+      <div>
+        <div class="leg-title">${esc(l.name||t.label)}</div>
+        ${l.address?`<div class="leg-meta">📍 ${esc(l.address)}</div>`:''}
+        ${l.notes?`<div class="leg-meta">${esc(l.notes)}</div>`:''}
+      </div>
+      <div class="leg-time">${fmtLegDt(l.dateTime)}${l.address?'<br><a href="'+mapsLink(l.address)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:var(--sage);font-size:10px;text-decoration:none">↗ Maps</a>':''}</div>
+    </div>`;
+  }).join('') : '<div style="padding:20px;text-align:center;color:var(--lgray);font-style:italic;font-size:13px">No stops yet. Tap "+ Add Stop" to build your itinerary.</div>';
+
+  openModal(trip.destination || 'Trip', `
+    <div style="font-size:13px;color:var(--lgray);font-style:italic;margin-bottom:14px">${esc(trip.type||'Trip')}${trip.date?' · starts '+esc(trip.date):''}</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
+      <button class="btn btn-primary" onclick="openLegForm('${tripId}')">+ Add Stop</button>
+      <button class="btn btn-secondary" onclick="editTrip('${tripId}')">✎ Edit Trip</button>
+      <button class="btn btn-secondary" onclick="deleteTrip('${tripId}')" style="color:var(--red)">🗑 Delete Trip</button>
+    </div>
+    <div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:1.5px;color:var(--bamboo);text-transform:uppercase;margin-bottom:8px">Itinerary (${legs.length} ${legs.length===1?'stop':'stops'})</div>
+    ${legsHtml}
+    ${trip.notes?`<div style="margin-top:14px;padding:12px;background:var(--parch-pale);border-radius:8px;font-size:13px"><strong style="font-family:'Cinzel',serif;font-size:10px;color:var(--bamboo);letter-spacing:1px">TRIP NOTES</strong><br>${esc(trip.notes)}</div>`:''}
+  `, ()=>{ closeModal(); });
+}
+
+function deleteTrip(tripId){
+  if(!confirm('Delete this trip and all its stops?')) return;
+  let trips = LS.get('travel_plans', []);
+  trips = trips.filter(t=>t.id!==tripId);
+  LS.set('travel_plans', trips);
+  deleteTravelRemote(tripId);
+  closeModal();
+  renderItinerary();
+  renderDriveMode();
+}
+function editTrip(tripId){
+  // Re-open the travel-plan form with existing data; quick-and-dirty: just call openTravelPlanForm. The user already has openTravelPlanForm; we'll keep it simple by showing a quick edit modal.
+  const trips = LS.get('travel_plans', []);
+  const trip = trips.find(t=>t.id===tripId); if(!trip) return;
+  openModal('Edit Trip', `
+    <div class="modal-field"><label>Destination</label><input id="tp-dest" value="${esc(trip.destination||'')}"></div>
+    <div class="modal-field"><label>Start Date</label><input id="tp-date" type="date" value="${esc(trip.date||'')}"></div>
+    <div class="modal-field"><label>Trip Type</label><select id="tp-type">
+      ${['Deputation drive','Personal trip','Family visit','Vacation','Other'].map(t=>`<option ${trip.type===t?'selected':''}>${t}</option>`).join('')}
+    </select></div>
+    <div class="modal-field"><label>Notes</label><textarea id="tp-notes">${esc(trip.notes||'')}</textarea></div>
+  `, ()=>{
+    trip.destination = val('tp-dest').trim();
+    trip.date = val('tp-date');
+    trip.type = val('tp-type');
+    trip.notes = val('tp-notes').trim();
+    LS.set('travel_plans', trips);
+    pushTravel(trip);
+    closeModal();
+    openTripDetail(tripId);
+    renderItinerary();
+  });
+}
+
+function renderItinerary(){
+  const el = document.getElementById('itinerary-list');
+  if(!el) return;
+  const trips = LS.get('travel_plans', []);
+  if(!trips.length){
+    el.innerHTML = '<div class="coming-soon"><h4>No trips yet</h4><p>Tap "+ New Trip" to plan a trip. Add stops for airports, flights, hotels, rentals, meals, and church visits — each one pins on the map.</p></div>';
+    return;
+  }
+  // Sort by start date
+  const sorted = trips.slice().sort((a,b)=>(new Date(a.date||0))-(new Date(b.date||0)));
+  el.innerHTML = sorted.map(t=>{
+    const legs = sortLegs(t.legs);
+    const legPreview = legs.slice(0,3).map(l=>{
+      const lt = LEG_TYPES[l.type]||LEG_TYPES.other;
+      return `<div style="padding:5px 0;font-size:13px;color:var(--brown)">${lt.icon} ${esc(l.name||lt.label)}${l.dateTime?` <span style="color:var(--lgray);font-style:italic;font-size:11.5px">· ${fmtLegDt(l.dateTime)}</span>`:''}</div>`;
+    }).join('');
+    return `<div class="trip-card" onclick="openTripDetail('${t.id}')">
+      <h3>${esc(t.destination||'Untitled Trip')}</h3>
+      <div class="trip-dates">${esc(t.type||'')}${t.date?' · '+esc(t.date):''} · ${legs.length} stop${legs.length===1?'':'s'}</div>
+      ${legPreview}
+      ${legs.length>3?`<div style="font-size:11.5px;color:var(--bamboo);font-style:italic;margin-top:4px">+${legs.length-3} more stops…</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+/* Map: add leg pins from all trips, color/icon by leg type. */
+function addLegMarkers(){
+  if(!mapInstance || !markerLayer) return;
+  const trips = LS.get('travel_plans', []);
+  let pending = [];
+  trips.forEach((t,ti)=>{
+    (t.legs||[]).forEach((l,li)=>{
+      if(!l.address) return;
+      const cached = getCachedGeo(l.address);
+      const lat = cached?.lat, lon = cached?.lon;
+      if(!lat || !lon){ pending.push({trip:t, leg:l}); return; }
+      const lt = LEG_TYPES[l.type]||LEG_TYPES.other;
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 36' width='28' height='34'><path d='M15 0C7 0 1 6 1 14c0 11 14 22 14 22s14-11 14-22c0-8-6-14-14-14z' fill='${lt.color}' stroke='white' stroke-width='2'/><text x='15' y='20' text-anchor='middle' font-size='14' dominant-baseline='central'>${lt.icon}</text></svg>`;
+      const icon = L.divIcon({ html: svg, iconSize:[28,34], iconAnchor:[14,34], popupAnchor:[0,-32], className:'leg-pin' });
+      const m = L.marker([lat,lon], {icon});
+      const popup = `<div style="font-family:'Crimson Pro',serif;min-width:180px"><strong style="font-family:'Cinzel',serif">${lt.icon} ${esc(l.name||lt.label)}</strong><br><span style="font-size:11.5px;color:#7A6A5A">${esc(t.destination||'')} · ${fmtLegDt(l.dateTime)}</span>${l.address?`<br><span style="font-size:11px;color:#8B7355;font-style:italic">📍 ${esc(l.address)}</span>`:''}<br><a href="${mapsLink(l.address)}" target="_blank" style="color:#5C7A5C;font-size:12px">↗ Open in Maps</a> · <a href="#" onclick="closePopups();openTripDetail('${t.id}');return false" style="color:#4A3728;font-size:12px">✎ Trip</a></div>`;
+      m.bindPopup(popup);
+      m.addTo(markerLayer);
+    });
+  });
+  // Lazily geocode pending leg addresses in background
+  if(pending.length) geocodePendingLegs(pending);
+}
+async function geocodePendingLegs(pending){
+  for(const p of pending){
+    if(getCachedGeo(p.leg.address)) continue;
+    await geocodeOne(p.leg.address);
+    await new Promise(r=>setTimeout(r, 1100));
+    if(currentTab==='map' && mapInstance){
+      markerLayer.clearLayers();
+      CHURCHES.filter(c=>c.lat!=null).forEach(addMarker);
+      addLegMarkers();
+    }
+  }
 }
 
 /* ============ v4.3: DEPUTATION PIPELINE ============ */
@@ -3727,12 +4065,399 @@ function getPipelineAlerts(){
 function renderPipelineAlerts(){
   const el = document.getElementById('pipeline-alerts'); if(!el) return;
   const alerts = getPipelineAlerts();
-  if(!alerts.length){ el.innerHTML = ''; return; }
-  el.innerHTML = `<div class="task-box" style="border-left-color:var(--sage);background:var(--sage-pale)">
-    <div class="task-box-title" style="color:var(--sage)">⚙️ Pipeline Action Needed (${alerts.length})</div>
-    ${alerts.slice(0,12).map(a=>`<div onclick="editChurch(${a.churchIdx})" style="padding:7px 0;font-size:14.5px;line-height:1.35;cursor:pointer;${a.urgent?'color:var(--red);font-weight:600':''}">• ${a.text}</div>`).join('')}
-    ${alerts.length>12?`<div style="font-size:11px;color:var(--bamboo);font-style:italic;margin-top:6px">+${alerts.length-12} more …</div>`:''}
+  // v5.0: Merge workflow alerts in (only when WORKFLOW_ENABLED — additive).
+  const wfAlerts = (typeof getWorkflowAlerts==='function') ? getWorkflowAlerts() : [];
+  let html = '';
+  if(wfAlerts.length){
+    html += `<div class="task-box" style="border-left-color:var(--gold);background:linear-gradient(135deg,var(--white),var(--parch-pale));margin-bottom:10px">
+      <div class="task-box-title" style="color:var(--gold)">🎯 Workflow Action Needed (${wfAlerts.length})</div>
+      ${wfAlerts.slice(0,8).map(a=>`<div onclick="editChurch(${a.churchIdx})" style="padding:7px 0;font-size:14.5px;line-height:1.35;cursor:pointer;${a.urgent?'color:var(--red);font-weight:600':''}">• ${a.text}</div>`).join('')}
+      ${wfAlerts.length>8?`<div style="font-size:11px;color:var(--bamboo);font-style:italic;margin-top:6px">+${wfAlerts.length-8} more …</div>`:''}
+    </div>`;
+  }
+  if(alerts.length){
+    html += `<div class="task-box" style="border-left-color:var(--sage);background:var(--sage-pale)">
+      <div class="task-box-title" style="color:var(--sage)">⚙️ Pipeline Action Needed (${alerts.length})</div>
+      ${alerts.slice(0,12).map(a=>`<div onclick="editChurch(${a.churchIdx})" style="padding:7px 0;font-size:14.5px;line-height:1.35;cursor:pointer;${a.urgent?'color:var(--red);font-weight:600':''}">• ${a.text}</div>`).join('')}
+      ${alerts.length>12?`<div style="font-size:11px;color:var(--bamboo);font-style:italic;margin-top:6px">+${alerts.length-12} more …</div>`:''}
+    </div>`;
+  }
+  el.innerHTML = html;
+}
+
+/* =============================================================
+   v5.0 WORKFLOW ENGINE — additive, feature-flag-gated
+   Per architecture approved by Christian on 2026-06-14.
+   - Mirrors c.pipeline (legacy still authoritative for visual strip).
+   - Migrates existing churches into stages without overwriting edits.
+   - Behind WORKFLOW_ENABLED — set false to fall back to v4.5 behavior.
+   ============================================================= */
+const WORKFLOW_ENABLED = LS.get('wf_enabled', true);
+const WEDDING_DATE = new Date('2026-08-21T00:00:00');
+
+function getSenderSignature(){
+  const now = Date.now();
+  if(now < WEDDING_DATE.getTime()){
+    return {
+      name: 'Christian DeMoville',
+      pairName: 'Christian DeMoville (and future wife Leah)',
+      closing: 'In Christ,\nChristian DeMoville\n(soon to be Mr. & Mrs. — wedding Aug 21, 2026)\nFBMI Missionary to the Philippines',
+      pronoun: 'I', possessive: 'my'
+    };
+  }
+  return {
+    name: 'Christian & Leah DeMoville',
+    pairName: 'Christian & Leah DeMoville',
+    closing: 'In Christ,\nChristian & Leah DeMoville\nFBMI Missionaries to the Philippines',
+    pronoun: 'we', possessive: 'our'
+  };
+}
+
+const WORKFLOW_STAGES = [
+  {id:'not_contacted', label:'Not Contacted', group:'dormant', color:'#A89880', icon:'⚪',
+   description:'Default for every church. Dormant until you click Mark Contacted.',
+   nextStages:['contact_attempted'], autoTasks:[], reminders:[], templates:[]},
+  {id:'contact_attempted', label:'Contact Attempted', group:'active', color:'#8B7355', icon:'📞',
+   description:'You reached out. Awaiting initial response.',
+   nextStages:['awaiting_response','call_scheduled','meeting_scheduled','archived'],
+   autoTasks:[{text:'Follow up if no response from {{church}}', offsetDays:7}],
+   reminders:[{type:'follow_up_check', offsetDays:7, note:'No response yet?'}],
+   templates:['initial']},
+  {id:'awaiting_response', label:'Awaiting Response', group:'active', color:'#A89880', icon:'⏳',
+   description:'Pastor has not yet replied. Patient wait period.',
+   nextStages:['follow_up_due','call_scheduled','meeting_scheduled','archived'],
+   autoTasks:[],
+   reminders:[{type:'follow_up_due', offsetDays:7, note:'Time to send follow-up'}],
+   templates:[]},
+  {id:'follow_up_due', label:'Follow-Up Due', group:'active', color:'#C49A2A', icon:'📨',
+   description:'Time to send a gentle follow-up email.',
+   nextStages:['call_scheduled','meeting_scheduled','awaiting_response','archived'],
+   autoTasks:[{text:'📨 Send follow-up email to {{church}}', urgent:true, offsetDays:0}],
+   reminders:[], templates:['follow_up']},
+  {id:'call_scheduled', label:'Call Scheduled', group:'active', color:'#5C7A5C', icon:'📞',
+   description:'Phone call with pastor on the books.',
+   nextStages:['meeting_scheduled','awaiting_response','archived','contact_attempted'],
+   autoTasks:[{text:'📞 Call Pastor {{pastor}} ({{church}})', urgent:true, useScheduledDate:true}],
+   reminders:[{type:'call_t_1d', offsetFromScheduled:-1, note:'Call tomorrow'}],
+   calendarIntegration:'add_call_event', templates:['call_reminder']},
+  {id:'meeting_scheduled', label:'Meeting Scheduled', group:'committed', color:'#8B7355', icon:'📅',
+   description:'Meeting date is set. The pre-meeting pipeline activates.',
+   nextStages:['info_packet_needed','meeting_confirmed','archived'],
+   autoTasks:[], reminders:[], templates:['initial','confirm_meeting']},
+  {id:'info_packet_needed', label:'Information Packet Needed', group:'committed', color:'#C49A2A', icon:'📦',
+   description:'Pastor requested intro materials.',
+   nextStages:['meeting_confirmed','meeting_scheduled'],
+   autoTasks:[{text:'📦 Send info packet to {{church}}: prayer card · packet · recommendation letters · intro video · prayer letter · giving info · doctrinal statement', urgent:true, offsetDays:0}],
+   reminders:[{type:'packet_followup', offsetDays:2, note:'Check pastor received packet'}],
+   templates:['info_packet']},
+  {id:'meeting_confirmed', label:'Meeting Confirmed', group:'committed', color:'#2D5A2D', icon:'✅',
+   description:'Pastor re-confirmed. Pre-meeting prep activates.',
+   nextStages:['meeting_completed','archived'],
+   autoTasks:[], reminders:[], templates:['confirm_meeting']},
+  {id:'meeting_completed', label:'Meeting Completed', group:'committed', color:'#5C7A5C', icon:'⛪',
+   description:'Meeting happened. Log outcome + start follow-up.',
+   nextStages:['support_pending','supporting_church','long_term_relationship','archived'],
+   autoTasks:[
+     {text:'📝 Log offering / attendance / decisions for {{church}}', urgent:true, offsetDays:1},
+     {text:'🙏 Send thank-you to {{church}}', urgent:true, offsetDays:2}
+   ],
+   reminders:[{type:'thank_you_due', offsetDays:2}, {type:'monthly_check', offsetDays:30}],
+   templates:['followup_meeting','thankyou_offering']},
+  {id:'support_pending', label:'Support Pending', group:'committed', color:'#C49A2A', icon:'💭',
+   description:'Pastor said "we will discuss it" — waiting for the board.',
+   nextStages:['supporting_church','long_term_relationship','archived'],
+   autoTasks:[{text:'💭 Follow up for support decision — {{church}}', offsetDays:28}],
+   reminders:[
+     {type:'decision_check_4w', offsetDays:28},
+     {type:'decision_check_8w', offsetDays:56},
+     {type:'decision_check_12w', offsetDays:84, note:'Suggest archive if no decision'}
+   ],
+   templates:['support_decision']},
+  {id:'supporting_church', label:'Supporting Church', group:'committed', color:'#C49A2A', icon:'💚',
+   description:'Monthly support locked in.',
+   nextStages:['long_term_relationship','archived'],
+   autoTasks:[
+     {text:'✉️ Send support-acceptance thank-you to {{church}}', urgent:true, offsetDays:1},
+     {text:'📰 Add {{church}} to monthly prayer-letter distribution', offsetDays:1}
+   ],
+   reminders:[{type:'monthly_giving_check', recurring:'monthly'},{type:'quarterly_update', recurring:'quarterly'}],
+   templates:['support_thankyou','prayer_letter']},
+  {id:'long_term_relationship', label:'Long-Term Relationship', group:'committed', color:'#2D5A2D', icon:'🤝',
+   description:'Established partnership. Maintain the bond.',
+   nextStages:['archived'],
+   autoTasks:[],
+   reminders:[
+     {type:'pastor_bday', recurring:'yearly_bday', sourceField:'pastorBday'},
+     {type:'wife_bday', recurring:'yearly_bday', sourceField:'wifeBday'},
+     {type:'anniversary', recurring:'yearly_bday', sourceField:'anniversary'},
+     {type:'yearly_visit', recurring:'every_11_months'}
+   ],
+   templates:['prayer_letter','annual_update']},
+  {id:'archived', label:'Archived / Closed', group:'archived', color:'#7A6A5A', icon:'📦',
+   description:'No longer pursuing. Re-openable.',
+   nextStages:['not_contacted'], autoTasks:[], reminders:[], templates:['farewell']}
+];
+
+const STAGE_TO_LEGACY_PIPELINE = {
+  not_contacted:'', contact_attempted:'', awaiting_response:'',
+  follow_up_due:'', call_scheduled:'', meeting_scheduled:'scheduled',
+  info_packet_needed:'scheduled', meeting_confirmed:'pre_confirmed',
+  meeting_completed:'meeting_complete', support_pending:'support_followup',
+  supporting_church:'longterm_active', long_term_relationship:'longterm_active',
+  archived:''
+};
+
+function getStageDef(id){ return WORKFLOW_STAGES.find(s=>s.id===id); }
+function getNextStages(id){ const def = getStageDef(id); return def ? def.nextStages.map(getStageDef).filter(Boolean) : []; }
+
+function setStage(churchIdx, newStageId, opts){
+  if(!WORKFLOW_ENABLED) return false;
+  const c = CHURCHES[churchIdx]; if(!c) return false;
+  const def = getStageDef(newStageId); if(!def) return false;
+  const fromStage = c.workflow_stage || 'not_contacted';
+  if(fromStage === newStageId && !opts?.force) return false;
+  const history = c.workflow_history || [];
+  history.push({
+    stage:newStageId, from:fromStage, ts:new Date().toISOString(),
+    user:settings.user||'Christian', method:opts?.method||'',
+    outcome:opts?.outcome||'', note:opts?.note||''
+  });
+  c.workflow_history = history;
+  c.workflow_stage = newStageId;
+  c.workflow_outcome = opts?.outcome || c.workflow_outcome || '';
+  if(!c.workflow_activated_ts) c.workflow_activated_ts = new Date().toISOString();
+  // Mirror to legacy pipeline (don't downgrade)
+  const legacy = STAGE_TO_LEGACY_PIPELINE[newStageId];
+  if(legacy && stageIdx(legacy) > stageIdx(c.pipeline||'')) c.pipeline = legacy;
+  // Auto-tasks
+  const tasks = LS.get('custom_actions', []);
+  (def.autoTasks||[]).forEach((t,ti)=>{
+    const baseTs = opts?.scheduledDate ? new Date(opts.scheduledDate).getTime() : Date.now();
+    const dueMs = baseTs + (t.offsetDays||0)*86400000;
+    const id = 'wf_'+churchIdx+'_'+newStageId+'_'+ti+'_'+Date.now().toString(36);
+    const text = (t.text||'').replace(/\{\{church\}\}/g, c.n.split(' — ')[0]).replace(/\{\{pastor\}\}/g, c.pastor||'Pastor');
+    tasks.push({id, text, due:new Date(dueMs).toLocaleDateString('en-US',{month:'short',day:'numeric'}),
+      urgent:!!t.urgent, meta:{kind:'workflow', churchIdx, stage:newStageId, source:'auto', dueMs}});
+  });
+  LS.set('custom_actions', tasks);
+  // Reminders
+  const reminders = LS.get('wf_reminders', []);
+  (def.reminders||[]).forEach((r,ri)=>{
+    let remindAt;
+    if(r.offsetDays !== undefined){ remindAt = new Date(Date.now() + r.offsetDays*86400000); }
+    else if(r.offsetFromScheduled !== undefined && opts?.scheduledDate){
+      remindAt = new Date(new Date(opts.scheduledDate).getTime() + r.offsetFromScheduled*86400000);
+    } else return;
+    reminders.push({id:'rem_'+churchIdx+'_'+newStageId+'_'+ri+'_'+Date.now().toString(36),
+      churchIdx, churchName:c.n, stage:newStageId,
+      remindAt:remindAt.toISOString(), type:r.type, note:r.note||'', fired:false});
+  });
+  LS.set('wf_reminders', reminders);
+  // Packet-sent auto-detect
+  if(newStageId === 'info_packet_needed' && opts?.method === 'email' && opts?.templateIncludesPacket){
+    c.packet_sent_ts = new Date().toISOString();
+  }
+  LS.set('churches', CHURCHES);
+  pushChurchExtended(c, churchIdx);
+  if(settings.url){
+    api('addRow', {tab:'Workflow_Log', values:{
+      ID:'wfl_'+Date.now().toString(36), ChurchName:c.n,
+      FromStage:fromStage, ToStage:newStageId,
+      Timestamp:new Date().toISOString(), User:settings.user||'Christian',
+      Method:opts?.method||'', Outcome:opts?.outcome||'', Note:opts?.note||''
+    }});
+    (def.autoTasks||[]).forEach((t,ti)=>{
+      const text = (t.text||'').replace(/\{\{church\}\}/g, c.n.split(' — ')[0]).replace(/\{\{pastor\}\}/g, c.pastor||'Pastor');
+      api('addRow', {tab:'Workflow_Tasks', values:{
+        ID:'wft_'+churchIdx+'_'+newStageId+'_'+ti+'_'+Date.now().toString(36),
+        ChurchName:c.n, Stage:newStageId, Task:text,
+        DueDate:new Date(Date.now() + (t.offsetDays||0)*86400000).toISOString(),
+        Done:false, AddedBy:settings.user||'Christian',
+        AddedTs:new Date().toISOString(), Source:'auto:'+newStageId
+      }});
+    });
+  }
+  toast('Stage → '+def.icon+' '+def.label);
+  if(typeof renderChurches==='function') renderChurches();
+  if(typeof renderPipelineAlerts==='function') renderPipelineAlerts();
+  return true;
+}
+
+function pushChurchExtended(c, i){
+  if(!settings.url || !c || !c.n) return;
+  const notes = LS.get('chnotes_'+(typeof i==='number'?i:CHURCHES.indexOf(c)), '');
+  api('upsertByKey', {tab:'Churches', keyCol:'Name', keyValue:c.n, values:{
+    Detail:c.d||'', Status:c.s||'', Offering:c.o||'', Monthly:c.m||0, Notes:notes||'',
+    Pipeline:c.pipeline||'',
+    WorkflowStage:c.workflow_stage||'',
+    WorkflowOutcome:c.workflow_outcome||'',
+    WorkflowActivated:c.workflow_activated_ts||'',
+    PastorWife:c.pastorWife||'', PastorBday:c.pastorBday||'',
+    WifeBday:c.wifeBday||'', Anniversary:c.anniversary||'',
+    Kids:c.kids||'', PrefContact:c.prefContact||'', LodgingNotes:c.lodgingNotes||'',
+    Lat:c.lat||'', Lon:c.lon||'',
+    AddedBy:settings.user||'Christian', Updated:new Date().toISOString()
+  }});
+}
+
+function migrateWorkflow(){
+  if(!WORKFLOW_ENABLED) return 0;
+  if(LS.get('wf_migration_v1', false)) return 0;
+  let migrated = 0;
+  const now = new Date().toISOString();
+  CHURCHES.forEach(c=>{
+    if(c.workflow_stage) return;
+    let stage;
+    const status = (c.s||'').toLowerCase();
+    if(status === 'supporting') stage = 'supporting_church';
+    else if(status === 'completed') stage = 'meeting_completed';
+    else if(status === 'scheduled'){
+      const pi = typeof stageIdx === 'function' ? stageIdx(c.pipeline||'') : -1;
+      const preIdx = typeof stageIdx === 'function' ? stageIdx('pre_confirmed') : 0;
+      stage = (pi >= preIdx && preIdx > 0) ? 'meeting_confirmed' : 'meeting_scheduled';
+    } else if(status === 'contacted') stage = 'contact_attempted';
+    else stage = 'not_contacted';
+    c.workflow_stage = stage;
+    c.workflow_activated_ts = (stage !== 'not_contacted') ? now : '';
+    c.workflow_history = [{stage, from:'', ts:now, user:'system',
+      outcome:'migrated from legacy status: '+status, note:'auto-migration v1'}];
+    migrated++;
+  });
+  if(migrated){
+    LS.set('churches', CHURCHES);
+    LS.set('wf_migration_v1', true);
+    console.log(`v5.0 workflow migration: ${migrated} churches assigned initial stages`);
+    toast(`✨ Workflow engine activated · ${migrated} churches migrated`);
+  }
+  return migrated;
+}
+
+function runWorkflowTick(){
+  if(!WORKFLOW_ENABLED) return;
+  const now = Date.now(), DAY = 86400000;
+  let advanced = 0;
+  CHURCHES.forEach((c,i)=>{
+    if(c.workflow_stage !== 'awaiting_response') return;
+    const last = (c.workflow_history||[]).slice(-1)[0];
+    if(!last) return;
+    const ageDays = (now - new Date(last.ts).getTime())/DAY;
+    if(ageDays >= 7){ setStage(i, 'follow_up_due', {outcome:'auto: 7 days no response'}); advanced++; }
+  });
+  if(advanced && typeof renderPipelineAlerts==='function') renderPipelineAlerts();
+}
+
+function getWorkflowAlerts(){
+  if(!WORKFLOW_ENABLED) return [];
+  const alerts = [];
+  const now = Date.now(), DAY = 86400000;
+  const reminders = LS.get('wf_reminders', []);
+  reminders.filter(r=>!r.fired).forEach(r=>{
+    const due = new Date(r.remindAt).getTime();
+    const days = Math.round((due - now)/DAY);
+    if(days <= 1){
+      alerts.push({text:`${getStageDef(r.stage)?.icon||'⏰'} ${r.note||r.type} — ${r.churchName}`,
+        urgent:days < 0, churchIdx:r.churchIdx, sortKey:days});
+    }
+  });
+  const tasks = LS.get('custom_actions', []).filter(t=>t.meta?.kind==='workflow' && !LS.get('act_'+t.id, false));
+  tasks.forEach(t=>{
+    const due = t.meta?.dueMs || 0;
+    const days = Math.round((due - now)/DAY);
+    if(days <= 3) alerts.push({text:t.text, urgent:t.urgent||days<0, churchIdx:t.meta.churchIdx, sortKey:days});
+  });
+  CHURCHES.forEach((c,i)=>{
+    if(!['awaiting_response','follow_up_due','support_pending'].includes(c.workflow_stage)) return;
+    const last = (c.workflow_history||[]).slice(-1)[0];
+    if(!last) return;
+    const ageDays = (now - new Date(last.ts).getTime())/DAY;
+    if(ageDays >= 90){
+      alerts.push({text:`📦 Suggest archive — ${c.n} (no movement ${Math.round(ageDays)}d)`,
+        urgent:false, churchIdx:i, sortKey:999});
+    }
+  });
+  alerts.sort((a,b)=>(a.urgent!==b.urgent ? (a.urgent?-1:1) : (a.sortKey-b.sortKey)));
+  return alerts;
+}
+
+function renderWorkflowPanel(c, i){
+  if(!WORKFLOW_ENABLED) return '';
+  const stage = c.workflow_stage || 'not_contacted';
+  const def = getStageDef(stage);
+  const history = c.workflow_history || [];
+  const next = getNextStages(stage);
+  const hist3 = history.slice(-3).reverse();
+  return `<div style="background:linear-gradient(135deg,var(--white),var(--parch-pale));border-radius:10px;padding:14px;margin:14px 0;border-left:4px solid ${def?.color||'#8B7355'}">
+    <div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:1.5px;color:var(--bamboo);margin-bottom:8px">WORKFLOW STAGE</div>
+    <div style="font-family:'Cinzel',serif;font-size:14px;color:var(--brown);font-weight:600;margin-bottom:4px">${def?.icon||''} ${esc(def?.label||stage)}</div>
+    <div style="font-size:12px;color:var(--lgray);font-style:italic;margin-bottom:12px">${esc(def?.description||'')}</div>
+    ${stage === 'not_contacted' ? `<button class="btn btn-primary" style="width:100%;margin-bottom:10px" onclick="advanceStageWithMethod(${i},'contact_attempted')">📞 Mark Contacted</button>`:''}
+    ${next.length ? `<div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:1.5px;color:var(--bamboo);margin-bottom:6px">ADVANCE TO</div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px">
+        ${next.map(n=>`<button onclick="advanceStageWithMethod(${i},'${n.id}')" style="background:var(--white);color:${n.color};border:1.5px solid ${n.color};border-radius:14px;padding:6px 12px;font-size:10.5px;font-family:'Cinzel',serif;letter-spacing:.5px;cursor:pointer">${n.icon} ${esc(n.label)}</button>`).join('')}
+      </div>`:''}
+    ${hist3.length?`<div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:1.5px;color:var(--bamboo);margin:10px 0 6px">HISTORY</div>
+      <div style="font-size:11.5px;color:var(--brown)">${hist3.map(h=>{
+        const d = new Date(h.ts); const sDef = getStageDef(h.stage);
+        return `<div style="padding:4px 0;border-bottom:1px solid rgba(212,184,150,0.2)">${sDef?.icon||'•'} <strong>${esc(sDef?.label||h.stage)}</strong> · ${d.toLocaleDateString()}${h.method?' · '+esc(h.method):''}${h.outcome?'<br><em style="color:var(--lgray);font-size:10.5px">'+esc(h.outcome)+'</em>':''}</div>`;
+      }).join('')}</div>`:''}
   </div>`;
+}
+
+function advanceStageWithMethod(churchIdx, newStageId){
+  const def = getStageDef(newStageId); if(!def) return;
+  const needsMethod = ['contact_attempted','follow_up_due'];
+  const needsScheduledDate = ['call_scheduled','meeting_scheduled'];
+  if(needsMethod.includes(newStageId)){
+    openModal(`${def.icon} ${def.label}`, `
+      <div style="font-size:13px;color:var(--lgray);margin-bottom:10px">How did you contact this church?</div>
+      <div class="modal-field"><label>Method</label>
+        <select id="wf-method">
+          <option value="email">📧 Email</option>
+          <option value="phone">📞 Phone Call</option>
+          <option value="text">💬 Text</option>
+          <option value="in-person">🤝 In-Person</option>
+          <option value="referral">↗️ Referral</option>
+        </select>
+      </div>
+      <div class="modal-field"><label>Template Includes Packet Link?</label>
+        <select id="wf-tpl-packet"><option value="no">No</option><option value="yes">Yes — auto-marks Packet Sent</option></select>
+      </div>
+      <div class="modal-field"><label>Outcome / Notes (optional)</label>
+        <textarea id="wf-outcome" placeholder="Left voicemail · spoke with secretary · pastor said call back next week"></textarea>
+      </div>
+    `, ()=>{
+      const method = document.getElementById('wf-method').value;
+      const templateIncludesPacket = document.getElementById('wf-tpl-packet').value === 'yes';
+      const outcome = document.getElementById('wf-outcome').value.trim();
+      closeModal();
+      setStage(churchIdx, newStageId, {method, outcome, templateIncludesPacket});
+      editChurch(churchIdx);
+    });
+    return;
+  }
+  if(needsScheduledDate.includes(newStageId)){
+    openModal(`${def.icon} Schedule ${def.label}`, `
+      <div class="modal-field"><label>Date & Time</label><input type="datetime-local" id="wf-when"></div>
+      <div class="modal-field"><label>Notes (optional)</label><textarea id="wf-outcome" placeholder="30 min call · pastor's office time"></textarea></div>
+    `, ()=>{
+      const when = document.getElementById('wf-when').value;
+      const outcome = document.getElementById('wf-outcome').value.trim();
+      closeModal();
+      setStage(churchIdx, newStageId, {scheduledDate:when, outcome});
+      editChurch(churchIdx);
+    });
+    return;
+  }
+  if(newStageId === 'archived'){
+    if(!confirm(`Archive ${CHURCHES[churchIdx].n}? This is reversible — you can re-open later.`)) return;
+  }
+  setStage(churchIdx, newStageId);
+  editChurch(churchIdx);
+}
+
+function setWorkflowEnabled(on){
+  LS.set('wf_enabled', !!on);
+  toast('Workflow engine: '+(on?'ENABLED':'disabled')+' · refresh to apply');
 }
 
 /* INIT */
@@ -3771,6 +4496,11 @@ function init(){
   else setSync('','Local only');
   // v4: bootstrap the 839+ master church list (one-time)
   bootstrapMasterChurches();
+  // v5.0: idempotent workflow migration + hourly tick
+  if(WORKFLOW_ENABLED){
+    setTimeout(()=>{ migrateWorkflow(); runWorkflowTick(); renderPipelineAlerts(); }, 800);
+    setInterval(runWorkflowTick, 60*60*1000); // hourly
+  }
   // v4.3: pipeline alerts on first paint
   renderPipelineAlerts();
 }
