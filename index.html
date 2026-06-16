@@ -1605,7 +1605,12 @@ function openChurchModal(q){
   const notes=LS.get('chnotes_'+i,'');
   const meetings=LS.get('meetings_'+i,[])||[];
   const offerings=LS.get('offerings_'+i,[])||[];
+  // v5.1: auto-expand relationship data for active supporters / long-term
+  const _expandRelationship = WORKFLOW_ENABLED && ['supporting_church','long_term_relationship','meeting_completed'].includes(c.workflow_stage||'');
   openModal(c.n, `
+    ${(typeof renderAtAGlanceCard==='function') ? renderAtAGlanceCard(c, i) : ''}
+    ${(typeof renderWorkflowPanel==='function') ? renderWorkflowPanel(c, i) : ''}
+    ${pipelineProgressHtml(c, i)}
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
       <button class="btn btn-primary" onclick="openMeetingForm(${i})">📅 Log Meeting</button>
       <button class="btn btn-primary" style="background:var(--green)" onclick="openOfferingForm(${i})">💵 Add Offering</button>
@@ -1618,29 +1623,32 @@ function openChurchModal(q){
       ${c.addr?`<a href="${mapsLink(c.addr)}" target="_blank" rel="noopener" style="text-decoration:none" title="Maps">🗺️</a>`:''}
       ${c.web?`<a href="${esc(c.web)}" target="_blank" rel="noopener" style="text-decoration:none" title="Website">🌐</a>`:''}
     </div>`:''}
-    <div class="modal-field"><label>Church</label><input id="m-name" value="${esc(c.n)}"></div>
-    <div class="modal-field"><label>Pastor / Details</label><input id="m-det" value="${esc(c.d)}"></div>
-    <div class="modal-field"><label>Address</label><input id="m-addr" value="${esc(c.addr||'')}" placeholder="123 Main St, City, ST ZIP">
-      ${c.addr?`<div style="margin-top:6px"><a href="${mapsLink(c.addr)}" target="_blank" rel="noopener" style="color:var(--sage);font-size:12px">↗ Open in Maps</a></div>`:''}
-    </div>
-    <div class="modal-field"><label>Phone</label><input id="m-phone" value="${esc(c.phone||'')}" type="tel"></div>
-    <div class="modal-field"><label>Email</label><input id="m-email" value="${esc(c.email||'')}" type="email"></div>
-    <div class="modal-field"><label>Status</label><select id="m-stat" onchange="document.getElementById('m-supp-wrap').style.display=this.value==='supporting'?'block':'none'">
-      <option value="completed"${c.s==='completed'?' selected':''}>✅ Completed (meeting done)</option>
-      <option value="scheduled"${c.s==='scheduled'?' selected':''}>📅 Scheduled</option>
-      <option value="supporting"${c.s==='supporting'?' selected':''}>💚 Supporting (monthly partner)</option>
-      <option value="pending"${c.s==='pending'?' selected':''}>⏳ Pending</option>
-      <option value="contacted"${c.s==='contacted'?' selected':''}>📞 Contacted (warm lead)</option>
-    </select></div>
-    <div class="modal-field" id="m-supp-wrap" style="display:${c.s==='supporting'?'block':'none'}">
-      <label>Monthly Support Amount ($)</label>
-      <input id="m-monthly" type="number" step="5" value="${c.m||''}" placeholder="e.g. 75">
-    </div>
-    <div class="modal-field"><label>Offering Note (shown in list)</label><input id="m-off" value="${esc(c.o)}" placeholder="e.g. $800 · $75/mo ✅"></div>
-    ${(typeof renderWorkflowPanel==='function') ? renderWorkflowPanel(c, i) : ''}
-    ${pipelineProgressHtml(c, i)}
-    <details style="margin:12px 0;background:var(--parch-pale);border-radius:10px;padding:10px 12px">
-      <summary style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:1.5px;color:var(--bamboo);cursor:pointer;text-transform:uppercase">💚 Long-Term Relationship Data</summary>
+    <details style="margin:0 0 12px;background:var(--parch-pale);border-radius:10px;padding:10px 12px">
+      <summary style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:1.5px;color:var(--bamboo);cursor:pointer;text-transform:uppercase">✎ Editable Church Info</summary>
+      <div style="margin-top:10px">
+        <div class="modal-field"><label>Church</label><input id="m-name" value="${esc(c.n)}"></div>
+        <div class="modal-field"><label>Pastor / Details</label><input id="m-det" value="${esc(c.d)}"></div>
+        <div class="modal-field"><label>Address</label><input id="m-addr" value="${esc(c.addr||'')}" placeholder="123 Main St, City, ST ZIP">
+          ${c.addr?`<div style="margin-top:6px"><a href="${mapsLink(c.addr)}" target="_blank" rel="noopener" style="color:var(--sage);font-size:12px">↗ Open in Maps</a></div>`:''}
+        </div>
+        <div class="modal-field"><label>Phone</label><input id="m-phone" value="${esc(c.phone||'')}" type="tel"></div>
+        <div class="modal-field"><label>Email</label><input id="m-email" value="${esc(c.email||'')}" type="email"></div>
+        <div class="modal-field"><label>Status (legacy)</label><select id="m-stat" onchange="document.getElementById('m-supp-wrap').style.display=this.value==='supporting'?'block':'none'">
+          <option value="completed"${c.s==='completed'?' selected':''}>✅ Completed (meeting done)</option>
+          <option value="scheduled"${c.s==='scheduled'?' selected':''}>📅 Scheduled</option>
+          <option value="supporting"${c.s==='supporting'?' selected':''}>💚 Supporting (monthly partner)</option>
+          <option value="pending"${c.s==='pending'?' selected':''}>⏳ Pending</option>
+          <option value="contacted"${c.s==='contacted'?' selected':''}>📞 Contacted (warm lead)</option>
+        </select></div>
+        <div class="modal-field" id="m-supp-wrap" style="display:${c.s==='supporting'?'block':'none'}">
+          <label>Monthly Support Amount ($)</label>
+          <input id="m-monthly" type="number" step="5" value="${c.m||''}" placeholder="e.g. 75">
+        </div>
+        <div class="modal-field"><label>Offering Note (shown in list)</label><input id="m-off" value="${esc(c.o)}" placeholder="e.g. $800 · $75/mo ✅"></div>
+      </div>
+    </details>
+    <details ${_expandRelationship?'open':''} style="margin:12px 0;background:var(--parch-pale);border-radius:10px;padding:10px 12px">
+      <summary style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:1.5px;color:var(--bamboo);cursor:pointer;text-transform:uppercase">💚 Long-Term Relationship Data${_expandRelationship?' · expanded':''}</summary>
       <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
         <div class="modal-field" style="margin:0"><label>Pastor's Wife</label><input id="m-pwife" value="${esc(c.pastorWife||'')}"></div>
         <div class="modal-field" style="margin:0"><label>Pref. Contact</label>
@@ -4377,6 +4385,241 @@ function getWorkflowAlerts(){
   });
   alerts.sort((a,b)=>(a.urgent!==b.urgent ? (a.urgent?-1:1) : (a.sortKey-b.sortKey)));
   return alerts;
+}
+
+/* ============ v5.1: AT-A-GLANCE CARD HELPERS ============ */
+/* Returns the most urgent open workflow task for this church, or null. */
+function getNextWorkflowTask(churchIdx){
+  if(!WORKFLOW_ENABLED) return null;
+  const tasks = LS.get('custom_actions', []).filter(t =>
+    t.meta && t.meta.kind === 'workflow' && t.meta.churchIdx === churchIdx && !LS.get('act_'+t.id, false)
+  );
+  if(!tasks.length) return null;
+  // Sort: urgent first, then earliest due
+  tasks.sort((a,b)=>{
+    if(!!b.urgent - !!a.urgent !== 0) return !!b.urgent - !!a.urgent;
+    return (a.meta?.dueMs||0) - (b.meta?.dueMs||0);
+  });
+  return tasks[0];
+}
+
+function getLastContactInfo(c){
+  const hist = c.workflow_history || [];
+  if(!hist.length) return null;
+  // Find latest entry with a method (user-initiated contact), else fall back to latest entry
+  const withMethod = [...hist].reverse().find(h => h.method);
+  return withMethod || hist[hist.length-1];
+}
+
+function getPacketStatus(c){
+  if(c.packet_sent_ts){
+    return { sent: true, ts: c.packet_sent_ts, label: 'Sent ' + new Date(c.packet_sent_ts).toLocaleDateString() };
+  }
+  // Scan history for any method=email with templateIncludesPacket flag
+  return { sent: false, label: 'Not sent yet' };
+}
+
+function getUpcomingMeeting(c, churchIdx){
+  // Pull from per-church meetings cache (saved by openMeetingForm)
+  const meetings = LS.get('meetings_'+churchIdx, []) || [];
+  const now = Date.now();
+  // Most recent meeting whose start date is in future
+  const future = meetings
+    .filter(m => m.date && new Date(m.date+'T12:00:00').getTime() >= now)
+    .sort((a,b)=> new Date(a.date) - new Date(b.date));
+  if(future.length) return future[0];
+  // Fallback: try to parse from c.d "Pastor X · Sep 6, 2026"
+  if(c.s === 'scheduled' && typeof parseChurchMeetingDate === 'function'){
+    const d = parseChurchMeetingDate(c);
+    if(d && d.getTime() >= now){
+      return { date: d.toISOString().slice(0,10), dateRange: d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}), times:'', address:c.addr||'', format:'', plan:'', notes:'(parsed from church detail; log full meeting for details)' };
+    }
+  }
+  return null;
+}
+
+function getChurchReminders(churchIdx){
+  const out = [];
+  const now = Date.now(), DAY = 86400000;
+  // Stored reminders for this church
+  const reminders = LS.get('wf_reminders', []).filter(r => !r.fired && r.churchIdx === churchIdx);
+  reminders.forEach(r => {
+    const remindAt = new Date(r.remindAt).getTime();
+    const days = Math.round((remindAt - now) / DAY);
+    if(days <= 30) out.push({ days, label: r.note || r.type, type: r.type });
+  });
+  // Birthdays / anniversary (computed) — only show for active relationship stages
+  const c = CHURCHES[churchIdx];
+  if(c && ['supporting_church','long_term_relationship'].includes(c.workflow_stage)){
+    [
+      {field:'pastorBday', icon:'🎂', label:'Pastor birthday'},
+      {field:'wifeBday',   icon:'🎂', label:"Wife's birthday"},
+      {field:'anniversary',icon:'💍', label:'Anniversary'}
+    ].forEach(item => {
+      const v = c[item.field];
+      if(!v) return;
+      const mm = parseInt(v.slice(0,2), 10), dd = parseInt(v.slice(3,5), 10);
+      if(!mm || !dd) return;
+      let d = new Date(new Date().getFullYear(), mm-1, dd);
+      if((d.getTime()-now)/DAY < -3) d.setFullYear(new Date().getFullYear()+1);
+      const days = Math.round((d.getTime()-now)/DAY);
+      if(days >= 0 && days <= 30){
+        out.push({ days, label: item.icon+' '+item.label+' — '+d.toLocaleDateString('en-US',{month:'short',day:'numeric'}), type:'date' });
+      }
+    });
+  }
+  out.sort((a,b)=> a.days - b.days);
+  return out;
+}
+
+function markNextTaskDone(churchIdx){
+  const t = getNextWorkflowTask(churchIdx);
+  if(!t){ toast('No open workflow task'); return; }
+  LS.set('act_'+t.id, true);
+  if(settings.url){
+    api('upsertByKey', {tab:'Workflow_Tasks', keyCol:'ID', keyValue:t.id, values:{ Done:true, CompletedTs:new Date().toISOString() }});
+  }
+  toast('✓ Task completed');
+  if(typeof renderActions==='function') renderActions();
+  if(typeof renderPipelineAlerts==='function') renderPipelineAlerts();
+  editChurch(churchIdx); // re-render the modal
+}
+
+/* Format helpers */
+function daysAgoLabel(ts){
+  const days = Math.round((Date.now() - new Date(ts).getTime()) / 86400000);
+  if(days === 0) return 'today';
+  if(days === 1) return 'yesterday';
+  if(days < 7) return days+' days ago';
+  if(days < 30) return Math.floor(days/7)+'w ago';
+  if(days < 365) return Math.floor(days/30)+'mo ago';
+  return Math.floor(days/365)+'y ago';
+}
+function daysUntilLabel(ts){
+  const days = Math.round((new Date(ts).getTime() - Date.now()) / 86400000);
+  if(days < 0) return Math.abs(days)+'d overdue';
+  if(days === 0) return 'today';
+  if(days === 1) return 'tomorrow';
+  if(days < 7) return 'in '+days+'d';
+  if(days < 30) return 'in '+Math.floor(days/7)+'w';
+  return 'in '+Math.floor(days/30)+'mo';
+}
+const METHOD_ICONS = { email:'📧', phone:'📞', text:'💬', 'in-person':'🤝', referral:'↗️' };
+
+/* The at-a-glance card. This is the SOLE purpose: answer "what do I do next" instantly. */
+function renderAtAGlanceCard(c, i){
+  if(!WORKFLOW_ENABLED) return '';
+  const stage = c.workflow_stage || 'not_contacted';
+  const def = getStageDef(stage);
+  const stageColor = def?.color || '#8B7355';
+  const nextTask = getNextWorkflowTask(i);
+  const lastContact = getLastContactInfo(c);
+  const packet = getPacketStatus(c);
+  const nextMeeting = getUpcomingMeeting(c, i);
+  const reminders = getChurchReminders(i);
+  const showRelationship = ['supporting_church','long_term_relationship'].includes(stage);
+
+  // --- Section: Stage banner ---
+  let html = `<div style="background:linear-gradient(135deg,${stageColor}22,${stageColor}08);border:2px solid ${stageColor};border-radius:14px;padding:0;margin:0 0 16px;overflow:hidden;box-shadow:0 2px 12px rgba(74,55,40,0.08)">
+    <div style="background:${stageColor};color:#FFFDF8;padding:10px 16px;font-family:'Cinzel',serif;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;display:flex;align-items:center;gap:8px">
+      <span style="font-size:18px">${def?.icon||'⚪'}</span>
+      <span style="flex:1">${esc(def?.label||stage)}</span>
+      ${c.workflow_activated_ts?`<span style="font-size:10px;opacity:0.85;font-family:'Crimson Pro',serif;font-style:italic;text-transform:none;letter-spacing:0">activated ${new Date(c.workflow_activated_ts).toLocaleDateString()}</span>`:''}
+    </div>
+    <div style="padding:14px 16px;background:rgba(255,253,248,0.6)">`;
+
+  // --- Section: DO NEXT ---
+  if(nextTask){
+    const dueMs = nextTask.meta?.dueMs || 0;
+    const overdue = dueMs > 0 && dueMs < Date.now();
+    const taskBg = nextTask.urgent || overdue ? 'rgba(139,32,32,0.08)' : 'rgba(196,154,42,0.10)';
+    const taskBorder = nextTask.urgent || overdue ? 'var(--red)' : 'var(--gold)';
+    const taskColor = nextTask.urgent || overdue ? 'var(--red)' : 'var(--brown)';
+    html += `<div style="background:${taskBg};border-left:4px solid ${taskBorder};border-radius:8px;padding:11px 14px;margin-bottom:12px">
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <button onclick="markNextTaskDone(${i})" style="margin-top:1px;width:24px;height:24px;border:2px solid ${taskColor};border-radius:5px;background:var(--white);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:0" title="Mark Done">✓</button>
+        <div style="flex:1">
+          <div style="font-family:'Cinzel',serif;font-size:9.5px;letter-spacing:1.5px;color:${taskColor};text-transform:uppercase;margin-bottom:3px">📌 Do Next${overdue?' · OVERDUE':nextTask.urgent?' · URGENT':''}</div>
+          <div style="font-size:14.5px;font-weight:600;color:${taskColor};line-height:1.3">${esc(nextTask.text)}</div>
+          ${dueMs?`<div style="font-size:11px;color:var(--lgray);font-style:italic;margin-top:2px">Due ${daysUntilLabel(dueMs)} (${new Date(dueMs).toLocaleDateString()})</div>`:''}
+        </div>
+      </div>
+    </div>`;
+  } else {
+    // No open task — show "advance to next stage" prompt
+    const next = getNextStages(stage);
+    if(next.length){
+      html += `<div style="background:rgba(125,154,122,0.10);border-left:4px solid var(--sage);border-radius:8px;padding:11px 14px;margin-bottom:12px">
+        <div style="font-family:'Cinzel',serif;font-size:9.5px;letter-spacing:1.5px;color:var(--sage);text-transform:uppercase;margin-bottom:6px">📌 Do Next · Choose next stage</div>
+        <div style="display:flex;flex-wrap:wrap;gap:4px">
+          ${next.slice(0,4).map(n=>`<button onclick="advanceStageWithMethod(${i},'${n.id}')" style="background:var(--white);color:${n.color};border:1.5px solid ${n.color};border-radius:14px;padding:5px 11px;font-size:11px;font-family:'Cinzel',serif;cursor:pointer">${n.icon} ${esc(n.label)}</button>`).join('')}
+        </div>
+      </div>`;
+    } else {
+      html += `<div style="padding:8px 0;font-size:13px;color:var(--lgray);font-style:italic">No open tasks. Workflow is at its end stage.</div>`;
+    }
+  }
+
+  // --- Section: 2-column quick facts (Last Contact + Packet) ---
+  html += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">`;
+
+  // Last contact
+  if(lastContact){
+    const methodIcon = METHOD_ICONS[lastContact.method] || '•';
+    html += `<div style="background:var(--white);border:1px solid rgba(212,184,150,0.3);border-radius:8px;padding:9px 11px">
+      <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:1.2px;color:var(--bamboo);text-transform:uppercase;margin-bottom:3px">🕐 Last Contact</div>
+      <div style="font-size:13px;font-weight:600;color:var(--brown)">${daysAgoLabel(lastContact.ts)}${lastContact.method?` · ${methodIcon} ${esc(lastContact.method)}`:''}</div>
+      ${lastContact.outcome?`<div style="font-size:11px;color:var(--lgray);font-style:italic;margin-top:2px;line-height:1.3">"${esc(lastContact.outcome).slice(0,80)}${lastContact.outcome.length>80?'…':''}"</div>`:''}
+    </div>`;
+  } else {
+    html += `<div style="background:var(--white);border:1px solid rgba(212,184,150,0.3);border-radius:8px;padding:9px 11px">
+      <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:1.2px;color:var(--bamboo);text-transform:uppercase;margin-bottom:3px">🕐 Last Contact</div>
+      <div style="font-size:13px;color:var(--lgray);font-style:italic">None recorded</div>
+    </div>`;
+  }
+
+  // Packet status
+  const packetColor = packet.sent ? 'var(--green)' : (['info_packet_needed','meeting_scheduled','meeting_confirmed'].includes(stage) ? 'var(--red)' : 'var(--bamboo)');
+  const packetIcon = packet.sent ? '✓' : (packetColor === 'var(--red)' ? '⚠️' : '○');
+  html += `<div style="background:var(--white);border:1px solid rgba(212,184,150,0.3);border-radius:8px;padding:9px 11px">
+    <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:1.2px;color:var(--bamboo);text-transform:uppercase;margin-bottom:3px">📦 Info Packet</div>
+    <div style="font-size:13px;font-weight:600;color:${packetColor}">${packetIcon} ${esc(packet.label)}</div>
+  </div>`;
+  html += `</div>`;
+
+  // --- Section: Next meeting (if any) ---
+  if(nextMeeting){
+    const md = nextMeeting.dateRange || nextMeeting.date;
+    const ms = new Date(nextMeeting.date+'T12:00:00').getTime();
+    const daysOut = Math.round((ms - Date.now())/86400000);
+    const dayStr = daysOut <= 0 ? 'TODAY' : (daysOut === 1 ? 'TOMORROW' : `in ${daysOut} days`);
+    html += `<div style="background:rgba(92,122,92,0.08);border-left:4px solid var(--sage);border-radius:8px;padding:11px 14px;margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px">
+        <div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:1.5px;color:var(--sage);text-transform:uppercase">📅 Next Meeting</div>
+        <div style="font-family:'Cinzel',serif;font-size:11px;color:var(--brown);font-weight:600">${dayStr}</div>
+      </div>
+      <div style="font-size:14px;font-weight:600;color:var(--brown);margin-bottom:3px">${esc(md)}${nextMeeting.times?' · '+esc(nextMeeting.times):''}</div>
+      ${nextMeeting.format?`<div style="font-size:12px;color:var(--brown);margin-bottom:2px">📋 ${esc(nextMeeting.format)}</div>`:''}
+      ${nextMeeting.address?`<div style="font-size:11.5px;color:var(--bamboo);font-style:italic">📍 ${esc(nextMeeting.address)}${nextMeeting.address ? ` · <a href="${mapsLink(nextMeeting.address)}" target="_blank" rel="noopener" style="color:var(--sage);text-decoration:none">↗ Maps</a>` : ''}</div>`:''}
+      ${nextMeeting.plan?`<div style="font-size:11.5px;color:var(--brown);margin-top:4px;line-height:1.35"><strong>Plan:</strong> ${esc(nextMeeting.plan)}</div>`:''}
+      ${nextMeeting.notes?`<div style="font-size:11px;color:var(--lgray);font-style:italic;margin-top:3px;line-height:1.3">${esc(nextMeeting.notes)}</div>`:''}
+    </div>`;
+  }
+
+  // --- Section: Upcoming reminders (only if any) ---
+  if(reminders.length){
+    html += `<div style="background:rgba(196,154,42,0.08);border-left:4px solid var(--gold);border-radius:8px;padding:11px 14px;margin-bottom:6px">
+      <div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase;margin-bottom:6px">🔔 Upcoming Reminders</div>
+      ${reminders.slice(0,5).map(r=>`<div style="padding:3px 0;font-size:13px;color:var(--brown);line-height:1.3">${esc(r.label)} <span style="color:var(--lgray);font-style:italic;font-size:11px">· in ${r.days}d</span></div>`).join('')}
+      ${reminders.length>5?`<div style="font-size:11px;color:var(--bamboo);font-style:italic;margin-top:3px">+${reminders.length-5} more</div>`:''}
+    </div>`;
+  } else if(showRelationship){
+    // For supporting/long-term relationships, show a friendly empty state
+    html += `<div style="font-size:11.5px;color:var(--lgray);font-style:italic;text-align:center;padding:6px">No reminders in the next 30 days. ${(!c.pastorBday && !c.wifeBday && !c.anniversary) ? 'Add birthdays / anniversary below to enable yearly nudges.' : 'You are caught up.'}</div>`;
+  }
+
+  html += `</div></div>`;
+  return html;
 }
 
 function renderWorkflowPanel(c, i){
